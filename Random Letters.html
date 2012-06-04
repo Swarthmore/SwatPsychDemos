@@ -14,9 +14,6 @@
        
        <script type = "text/JavaScript">
 				$(document).ready(function() {
-					$('#letters').css({'height':(($(window).height())-50) + 'px'});
-					$('#letters').css({'width': (($(window).width())-50) + 'px'});
-					
 					$('#typesDistractors').change(function() {
 						var field = $(this);
 				    	var numDistractors = $(".distractor").length
@@ -34,40 +31,8 @@
 			        		};
 			        	}
 			        });
-				});
-				
-				$(window).resize(function(){
-    			    $('#letters').css({'height':(($(window).height())-50) + 'px'});
-       			    $('#letters').css({'width':(($(window).width())-50) + 'px'});
-		        });
+				});		
       </script>
-      <script type = "text/JavaScript">
-			$(window).resize(function(){
-				winWidth = $(window).width()-100;
-				winHeight = $(window).height()-100;
-			});
-	   
-	   		$(document).keydown(function(e) {
-	    		var code = (e.keyCode ? e.keyCode : e.which);
-	    		if (code == 32){
-					$("#letters").text("");
-	    			for (i=0;i<=50;i=i+1) {
-	    			    var randNum3 = Math.floor(Math.random()*winHeight);
-	     				var randNum4 = Math.floor(Math.random()*winWidth);
-	    				$("#letters").append("<div id='letter_div_" + i +"' style= 'width:12px; color:white'>R<div/>");
-	    				$("#letter_div_"+ i).offset({ top: 10+randNum3, left: 10+randNum4});
-	   				
-	    				while($("#letter_div_"+i).overlaps('.placed')){
-	    						var randNum = Math.floor(Math.random()*winHeight);
-	     						var randNum2 = Math.floor(Math.random()*winWidth);
-	     						$("#letter_div_"+ i).offset({ top: 10+randNum, left: 10+randNum2});
-	    				}; 
-	    				$("#letter_div_"+ i).addClass("placed");
-	    				
-	    			}
-	     		}
-		    });
-       </script> 
    </head>
    <body>
 	   <div id="form">
