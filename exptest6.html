@@ -1,0 +1,94 @@
+<!doctype html>
+<!--Random 'R' stuff written by David Nahmias-->
+<html>
+   <head>
+       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+        <script src="jquery.overlaps.js"></script>
+   </head>
+   <body>
+   <div id="letters" style="width:2000px; height:2000px; background-color:black"></div>
+   		<br/>
+   		<br/>
+       <script type = "text/JavaScript">
+       $(function(){
+        $('#letters').css({'height':(($(window).height())-50)+'px'});
+
+        $(window).resize(function(){
+        $('#letters').css({'height':(($(window).height())-50)+'px'});
+        });
+       });
+          $(function(){
+        $('#letters').css({'width':(($(window).width())-50)+'px'});
+
+        $(window).resize(function(){
+        $('#letters').css({'width':(($(window).width())-50)+'px'});
+        });
+       });
+       
+
+
+
+			
+    	$(document).keydown(function(e) {
+    		var code = (e.keyCode ? e.keyCode : e.which);
+    		if (code == 32){
+
+    			winWidth = $("#letters").width()-40;
+				winHeight = $("#letters").height()-40;
+				console.log(winHeight);
+				console.log(winWidth);
+				$("#letters").text("");
+				for (k=0;k<=0;k++){
+    			for (i=0;i<=1000;i++){
+    		    	var randNum3 = Math.floor(Math.random()*winHeight);
+     				var randNum4 = Math.floor(Math.random()*winWidth);
+					var xSector = Math.floor(10*(10+randNum4)/winWidth);
+					var ySector = Math.floor(10*(10+randNum3)/winHeight);
+    				$("#letters").append("<div id='letter_div_" + i +"' style= 'width:12px; color:white'>Q<div/>");
+    				$("#letter_div_"+ i).offset({ top: 10+randNum3, left: 10+randNum4});
+					while($("#letter_div_"+i).overlaps($(".sector" + xSector + "_" + ySector))){
+    						var randNum = Math.floor(Math.random()*winHeight);
+     						var randNum2 = Math.floor(Math.random()*winWidth);
+							xSector = Math.floor(10*(10+randNum2)/winWidth);
+							ySector = Math.floor(10*(10+randNum)/winHeight);
+							$("#letter_div_"+ i).offset({ top: 10+randNum, left: 10+randNum2});
+//     						alert(i + " " + (10 +randNum) + " " + (10 + randNum2) );
+    				} 
+    			
+    				$("#letter_div_"+ i).addClass("sector" + xSector + "_" + ySector);
+    			}
+    			}
+    			
+    			for (j=0;j<1;j++){
+    		    	var randNum7 = Math.floor(Math.random()*winHeight);
+     				var randNum8 = Math.floor(Math.random()*winWidth);
+    				$("#letters").append("<div id='targ_letter_div_" + j +"' style= 'width:12px; color:white'>O<div/>");
+    				$("#targ_letter_div_"+ j).offset({ top: 10+randNum7, left: 10+randNum8});
+					var xSector = Math.floor(10*(10+randNum6)/winWidth);
+					var ySector = Math.floor(10*(10+randNum5)/winHeight);
+    			
+    				while($("#targ_letter_div_"+j).overlaps($(".sector" + xSector + "_" + ySector))){
+    						var randNum5 = Math.floor(Math.random()*winHeight);
+     						var randNum6 = Math.floor(Math.random()*winWidth);
+     						xSector = Math.floor(10*(10+randNum6)/winWidth);
+							ySector = Math.floor(10*(10+randNum5)/winHeight);
+     						$("#targ_letter_div_"+ j).offset({ top: 10+randNum5, left: 10+randNum6});
+//     						alert(j + " " + (10 +randNum) + " " + (10 + randNum2) );
+    				} 
+    			
+    				$("#targ_letter_div_"+ j).addClass("placed");
+    			}
+    			/*
+    			else{
+     				var randNum = Math.floor(Math.random()*480);
+     				var randNum2 = Math.floor(Math.random()*480);
+     				$("#letter_div_"+ i).offset({ top: 10+randNum, left: 10+randNum2});
+			 }
+				*/
+     		
+     		}
+    });
+       </script>
+
+   </body>
+</html>
