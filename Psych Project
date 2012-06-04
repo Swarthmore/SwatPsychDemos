@@ -1,0 +1,20 @@
+<html>
+	<head>
+
+	</head>
+	<body>
+		<h1>
+		Pysch Test
+		</h1>
+		
+		<div id = "settings">
+			<p> Select your parameters. </p>
+			<form >
+				
+			
+			</form>
+		</div>
+	</body>
+
+
+</html>

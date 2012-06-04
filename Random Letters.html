@@ -1,0 +1,103 @@
+<!doctype html>
+<!--Random stuff written by David Nahmias-->
+<html>
+   <head>
+		<link href="css/form.css" rel="stylesheet" type="text/css">
+    	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    	<script src="jquery.overlaps.js"></script>
+    	<script type = "text/JavaScript">
+    	$(document).ready(function(){
+    		$('#letters').hide();
+    	});
+    	</script>
+       
+       
+       <script type = "text/JavaScript">
+				$(document).ready(function() {
+					$('#letters').css({'height':(($(window).height())-50) + 'px'});
+					$('#letters').css({'width': (($(window).width())-50) + 'px'});
+					
+					$('#typesDistractors').change(function() {
+						var field = $(this);
+				    	var numDistractors = $(".distractor").length
+				    	if(field.val() > numDistractors) {
+				       		for(i=numDistractors + 1; i<= field.val();i++) {
+								$('#TypesOfDistractors').append("<div id='distractor" + i + "' class='indent distractor'>\
+																<label for='distractor" + i + "' class = 'label'> Distractor " + i + " </label>\
+																<input name='distractor" + i + "' type='text' id='distractor" + i + "' size='10'> </div>");
+			        		};
+			        	}
+			        	else if(field.val() < numDistractors){
+			        		for(i=numDistractors; i>field.val(); i=i-1){
+			        			$('#distractor' + i).remove();
+			        			console.log(i);
+			        		};
+			        	}
+			        });
+				});
+				
+				$(window).resize(function(){
+    			    $('#letters').css({'height':(($(window).height())-50) + 'px'});
+       			    $('#letters').css({'width':(($(window).width())-50) + 'px'});
+		        });
+      </script>
+      <script type = "text/JavaScript">
+			$(window).resize(function(){
+				winWidth = $(window).width()-100;
+				winHeight = $(window).height()-100;
+			});
+	   
+	   		$(document).keydown(function(e) {
+	    		var code = (e.keyCode ? e.keyCode : e.which);
+	    		if (code == 32){
+					$("#letters").text("");
+	    			for (i=0;i<=50;i=i+1) {
+	    			    var randNum3 = Math.floor(Math.random()*winHeight);
+	     				var randNum4 = Math.floor(Math.random()*winWidth);
+	    				$("#letters").append("<div id='letter_div_" + i +"' style= 'width:12px; color:white'>R<div/>");
+	    				$("#letter_div_"+ i).offset({ top: 10+randNum3, left: 10+randNum4});
+	   				
+	    				while($("#letter_div_"+i).overlaps('.placed')){
+	    						var randNum = Math.floor(Math.random()*winHeight);
+	     						var randNum2 = Math.floor(Math.random()*winWidth);
+	     						$("#letter_div_"+ i).offset({ top: 10+randNum, left: 10+randNum2});
+	    				}; 
+	    				$("#letter_div_"+ i).addClass("placed");
+	    				
+	    			}
+	     		}
+		    });
+       </script> 
+   </head>
+   <body>
+	   <div id="form">
+			<h1> Parameters </h1>
+			<form>
+				<fieldset>
+				<div id = "TypesOfDistractors">	            
+		            How many types of distractors do you want?
+    		        <input name="typesDistractors" type="text" id="typesDistractors" size="10" defaultValue= "1" value='1'>
+    		        	<div id = "Distractors" class="indent distractor">
+    		        		<label for='distractor1' class = 'label'> Distractor 1 </label>
+    		        		<input name='distractor1' type='text' id='distractor1' size='10'>
+    		        	</div>
+    		    </div>
+    		    <div id= "Target">
+    		    	What is your target letter?
+    		    	<input name="target" type="text" id="TargetLetter" size="10">
+    		    </div>
+    		    </fieldset>
+			</form>
+	   </div>
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   <div id="letters" style="width:10px; height:10px; background-color:black"></div>     
+
+   </body>
+</html>
