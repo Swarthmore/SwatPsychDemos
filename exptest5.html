@@ -4,7 +4,6 @@
    <head>
        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
         <script src="jquery.overlaps.js"></script>
-         <script src="jquery.fullscreen.js"></script>
    </head>
    <body>
    <div id="letters" style="width:2000px; height:2000px; background-color:black"></div>
@@ -33,7 +32,7 @@
     	$(document).keydown(function(e) {
     		var code = (e.keyCode ? e.keyCode : e.which);
     		if (code == 32){
-
+				var t1= new Date();
     			winWidth = $("#letters").width()-40;
 				winHeight = $("#letters").height()-40;
 				$("#letters").text("");
@@ -50,7 +49,7 @@
      						$("#letter_div_"+ i).offset({ top: 10+randNum, left: 10+randNum2});
 //     						alert(i + " " + (10 +randNum) + " " + (10 + randNum2) );
     				} 
-    			
+    				console.log("letter " +i);
     				$("#letter_div_"+ i).addClass("placed");
     			}
     			}
@@ -70,6 +69,13 @@
     			
     				$("#targ_letter_div_"+ j).addClass("placed");
     			}
+    			var t2= new Date();
+				var start= t1.getTime();
+				var end=t2.getTime();
+				var elapsed= (end-start)/1000
+				console.log(elapsed)
+				console.log('ready');
+
     			/*
     			else{
      				var randNum = Math.floor(Math.random()*480);
