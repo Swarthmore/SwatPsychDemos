@@ -10,20 +10,18 @@
 <script type = "text/JavaScript">
     	var newScreen = function(t){
     		var t1= new Date();
-			$("#letters").text("");
     		winWidth = $("#letters").width()-40;
 			winHeight = $("#letters").height()-40;
 			//console.log(winHeight);
 			//console.log(winWidth);
-			var numberDistractors = 100
 			var gridSize = 20;
-			for (i=0;i<numberDistractors;i++){
+    		for (i=0;i<=5000;i++){
     	    	//console.log('loop number ' + i);
     	    	var randNum3 = Math.floor(Math.random()*winHeight);
     			var randNum4 = Math.floor(Math.random()*winWidth);
 				var xSector = Math.floor(gridSize*(10+randNum4)/winWidth);
 				var ySector = Math.floor(gridSize*(10+randNum3)/winHeight);
-    			$("#letters").append("<div id='trial_" + t + "_letter_div_" + i +"' class='letters trial_" + t + "' style= 'width:12px; color:none'>Q</div>"); //adds letter
+    			$("#letters").append("<div id='trial_" + t + "_letter_div_" + i +"' class='letters hidden trial_" + t + "' style= 'width:12px; color:white'>Q</div>"); //adds letter
     			$("#trial_" + t + "_letter_div_"+ i).offset({ top: 10+randNum3, left: 10+randNum4}); //offsets letter to random position
 				//console.log("sector" + xSector + "_" + ySector);
 				//console.log($("#trial_" + t + "_letter_div_"+i).overlaps($(".trial_" + t +".sector" + xSector + "_" + ySector)));
@@ -37,7 +35,6 @@
 					$("#trial_" + t +"_letter_div_"+ i).offset({ top: 10+randNum, left: 10+randNum2});
 					
 				} 
-				$("#trial_" + t + "_letter_div_"+ i).addClass("placed");
 				console.log('trial '+t + " letter " +i);
 				console.log($("#trial_" + t +"_letter_div_"+ i).css('top'));
     			for(k=0;k<=2;k++){
@@ -50,12 +47,12 @@
     		for (j=0;j<1;j++){
     		    var randNum7 = Math.floor(Math.random()*winHeight);
      			var randNum8 = Math.floor(Math.random()*winWidth);
-    			$("#letters").append("<div id='trial_" +t+"_targ_letter_div_" + j +"' class='letters trial_" + t + "' style='width:12px; color:none'>O</div>");
+    			$("#letters").append("<div id='trial_" +t+"_targ_letter_div_" + j +"' class='letters hidden trial_" + t + "' style='width:12px; color:white'>O</div>");
     			$("#trial_" +t+"_targ_letter_div_"+ j).offset({ top: 10+randNum7, left: 10+randNum8});
 				var xSector = Math.floor(gridSize*(10+randNum6)/winWidth);
 				var ySector = Math.floor(gridSize*(10+randNum5)/winHeight);
 				    			
-    			while($("#trial_" + t + "_targ_letter_div_"+j).overlaps($('.placed'))){
+    			while($("#trial_" + t + "_targ_letter_div_"+j).overlaps($(".trial_" + t +".sector" + xSector + "_" + ySector))){
     				var randNum5 = Math.floor(Math.random()*winHeight);
      				var randNum6 = Math.floor(Math.random()*winWidth);
      				xSector = Math.floor(gridSize*(10+randNum6)/winWidth);
@@ -73,7 +70,7 @@
     	};
     	
     	$(document).ready(function(){
-    		$('body').append('<div id="letters" class="letters" style="width:2000px; height:2000px; background-color:none"></div>');
+    		$('body').append('<div id="letters" class="letters" style="width:2000px; height:2000px; background-color:black"></div>');
         	$('#letters').css({'height':(($(window).height())-50)+'px'});
         	$(window).resize(function(){
 		        $('#letters').css({'height':(($(window).height())-50)+'px'});
@@ -82,7 +79,9 @@
 
        		$(window).resize(function(){
        			$('#letters').css({'width':(($(window).width())-50)+'px'});
-        	});        	
+        	});
+        	
+        	newScreen(0); //prints first field of targets and distractors (hidden)
     	});
     	
 
@@ -90,8 +89,12 @@
     	$(document).keydown(function(e) {
     		var code = (e.keyCode ? e.keyCode : e.which);
     		if (code == 32){
-				newScreen(t); //changes page styles before function finishes running
-				t=t+1;
+				if(t!=0){$('.trial_' + (t-1)).remove()};
+				$('.trial_' + t).removeClass('hidden');
+				console.log('styles changed');
+				console.log(t);
+				t=t+1				
+				setTimeout(function(){newScreen(t)}); //changes page styles before function finishes running
      		};
    		});
 </script>
