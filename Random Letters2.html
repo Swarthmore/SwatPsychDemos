@@ -10,7 +10,7 @@
     		$('#letters').hide();
     	});
     	</script>
-       
+
        
        <script type = "text/JavaScript">
 				$(document).ready(function() {
@@ -20,8 +20,8 @@
 				    	if(field.val() > numDistractors) {
 				       		for(i=numDistractors + 1; i<= field.val();i++) {
 								$('#TypesOfDistractors').append("<div id='distractor" + i + "' class='indent distractor'>\
-																<label for='distractor" + i + "' class = 'label'> Distractor " + i + " </label>\
-																<input name='distractor" + i + "' type='text' id='distractor" + i + "' size='10'> </div>");
+																<label for='distractor" + i + "' class = 'label'> Distractor letter " + " "  + i + ":" + " </label>\
+																<input name='distractor letter" + " " + i + ":" + "' type='text' id='distractor" + i + "' size='10'> </div>");
 			        		};
 			        	}
 			        	else if(field.val() < numDistractors){
@@ -31,35 +31,72 @@
 			        		};
 			        	}
 			        });
-				});		
+				});
+
       </script>
    </head>
    <body>
 	   <div id="form">
+	   <center>
 			<h1> Parameters </h1>
+		</center>
 			<form>
-				<fieldset>
+			<fieldset>
+			
+			  <select id="dropDown">
+    			<option>Experiment 1</option>
+    			<option>Experiment 2</option>
+    			<option>Experiment ect.</option>
+  			  </select>
+  			  <br/>
+  			  <br/>
+  
 				<div id = "TypesOfDistractors">	            
 		            How many types of distractors do you want?
     		        <input name="typesDistractors" type="text" id="typesDistractors" size="10" defaultValue= "1" value='1'>
     		        	<div id = "Distractors" class="indent distractor">
-    		        		<label for='distractor1' class = 'label'> Distractor 1 </label>
+    		        		<label for='distractor1' class = 'label'> Distractor letter 1: </label>
     		        		<input name='distractor1' type='text' id='distractor1' size='10'>
-    		        	</div>
+    		    		</div>
     		    </div>
+    		    <br/>
     		    <div id= "Target">
-    		    	What is your target letter?
+					Target letter:
     		    	<input name="target" type="text" id="TargetLetter" size="10">
     		    </div>
-    		    </fieldset>
+    		    
+    		    <br/>
+    		    
+    		    <div id = "responseKeyPres">
+    		    	Set response key for 'present':
+    		    	<input name="responseKeyPres" type="text" id="responseKeyPresent" size="10">
+    		    </div>
+    		    
+    		    <div id = "responseKeyAbs">
+    		    	Set response key for 'absent':
+    		    	<input name="responseKeyAbs" type="text" id="responseKeyAbsent" size="10">
+    		    </div>
+    		    	
+    			<br/>
+    			    Demo Experiment <input type="radio" name="colorinput" value="1" /> 
+    				Full Experiment <input type="radio" name="colorinput" value="2" />
+    		
+    		</fieldset>
 			</form>
 	   </div>
-	   
+	   <center>
+	   <button id="start">Start Experiment</button>
+	   <div id="start_box"></div>
+	   </center>
+	   <script>
 
-	   
-	   
-	   
-	   
+        $("#start").click(
+        function() {
+    	   		//	experiment()
+	   			$("body").append("This will start the experiment.");
+	   			$("#start").attr("disabled", "disabled");
+	   	});
+	   </script>
 	   
 	   
 	   <div id="letters" style="width:10px; height:10px; background-color:black"></div>     
