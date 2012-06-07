@@ -17,19 +17,13 @@
     	
     	
     	var newScreen = function(t){
-    		var t1= new Date();
-			$("#letters").text("");
     		winWidth = $("#letters").width()-40;
 			winHeight = $("#letters").height()-40;
 			gridSize = 20;
-			var numberDistractors = 500;
-			var distractors = [ ["O", .33]];
-								
-			var target = "Q";
-			var percentagePresent = .5;
+			
 			var u = 0;
 			for (n=0; n<distractors.length;n++){					
-				for (i=0;i < Math.floor(numberDistractors*distractors[n][1]);i++){
+				for (i=0;i < Math.floor(trialOrder[t][0]*distractors[n][1]);i++){
 					randomPlacement();
     				$("#letters").append(	"<div id='trial_" + t + "_letter_div_" + u +"' class=\
 						    				'letters trial_" + t + "' style= 'width:12px; color:none'>"
@@ -51,31 +45,30 @@
     			}		
     		}
 			var rand = Math.random();
-    		if (rand<.5) {
-    			for (j=0;j<1;j++){
+    		console.log(trialOrder[t]);
+       			for (j=0;j<1;j++){
 					randomPlacement();
-					console.log('i got here');
-					$("#letters").append("<div id='trial_" +t+"_targ_letter_div_" + j +"' class='letters trial_" + t + "' style='width:12px; color:none'>"+ target + "</div>");
-    				$("#trial_" +t+"_targ_letter_div_"+ j).offset({ top: 10+randNum1, left: 10+randNum2});
+					if (trialOrder[t][1]) {
+						$("#letters").append(	"<div id='trial_" +t+"_targ_letter_div_" + j +"' class='\
+												letters trial_" + t + "' style='width:12px; color:\
+												none'>"+ target + "</div>");
+					}
+					else{
+						$("#letters").append(	"<div id='trial_" +t+"_targ_letter_div_" + j +"' class='\
+												letters trial_" + t + "' style='width:12px; color:\
+												none'>"+ distractors[Math.floor(Math.random()*distractors.length)][0] + "</div>");
+					}
+	   				$("#trial_" +t+"_targ_letter_div_"+ j).offset({ top: 10+randNum1, left: 10+randNum2});
 				    			
     				while($("#trial_" + t + "_targ_letter_div_"+j).overlaps($('.placed'))){
     					randomPlacement()
      					$("#trial_"+t+"_targ_letter_div_"+ j).offset({ top: 10+randNum1, left: 10+randNum2});
     				} 
     			}
-    			m++
-    		};
-			var t2= new Date();
-			var start= t1.getTime();
-			var end=t2.getTime();
-			var elapsed= (end-start)/1000
-			console.log(elapsed)
-			console.log('ready');
-			console.log(m);
-    	};
+	   	};
     	
     	$(document).ready(function(){
-    		m = 0;
+    		t=0;
     		$('body').append('<div id="letters" class="letters" style="width:2000px; height:2000px; background-color:none"></div>');
         	$('#letters').css({'height':(($(window).height())-50)+'px'});
         	$(window).resize(function(){
@@ -88,15 +81,84 @@
         	});        	
     	});
     	
+//DEFINE YOUR PARAMETERS FOR THE EXPERIMENT
+		numberDistractors = [	[4,20], //formatted as [number of distractors, number of trials]
+     							[8,20],
+     							[12,20],
+     							[16,20],
+     							[20,20],
+     							[24,20],
+     							[28,20]	
+     							];
+		distractors = [ ["O", .33], //formatted as [distractor, percentage of distractors]
+						["R", .33],
+						["Y", .33]	
+						];
+								
+		target = "Q";
+		percentagePresent = .5;
+		
+//END DEFINE PARAMETERS FOR EXPERIMENT
 
-    	var t = 0;
-    	$(document).keydown(function(e) {
+		trialOrder = [];
+		for (i=0; i<numberDistractors.length;i++){
+			for (k=0; k<numberDistractors[i][1]; k++){
+				for (n=0; n < Math.ceil(numberDistractors[i][1]/2);n++){
+					trialOrder[trialOrder.length] = [numberDistractors[i][0],true];
+					//console.log(trialOrder.length);
+				}
+				for (n=0; n<Math.ceil(numberDistractors[i][1]/2);n++){
+					trialOrder[trialOrder.length] = [numberDistractors[i][0],false];
+					//console.log(trialOrder.length);
+				}
+
+			}
+		}
+
+		var j, x, i = trialOrder.length;  //following while loop is variation on Fisher-Yates shuffle algorithm.  Shuffles trialOrder randomly.  
+		while (i) { // same as while(i != 0)
+		   j = parseInt(Math.random() * i);
+		   x = trialOrder[--i];
+		   trialOrder[i] = trialOrder[j];
+		   trialOrder[j] = x;
+		}
+    	
+    	select = true;
+		trialResults = [];
+		$(document).keydown(function(e) {
     		var code = (e.keyCode ? e.keyCode : e.which);
-    		if (code == 32){
-				newScreen(t); //changes page styles before function finishes running
+    		if (code == 32 && t<trialOrder.length && select == true ){
+				//console.log(t);
+				var t1= new Date();
+				newScreen(t); 
+				var t2= new Date();
+				var keypress= t1.getTime();
+				start=t2.getTime();
+				var elapsed= (start-keypress)/1000;
+				console.log(elapsed);
+				select = false;
+			}
+    		if (code == 70 && t<trialOrder.length && select == false){
+				var t3 = new Date();
+	    		end=t3.getTime();
+				console.log(t);
+				trialResults[t]= [t,trialOrder[t][0],trialOrder[t][1], true, (end-start)/1000];
+				$("#letters").text("");
+				console.log(trialResults[t]);
+				select = true;
 				t=t+1;
-     		};
-   		});
+			}
+			else if (code == 74 && t<trialOrder.length && select == false) {
+				var t3 = new Date();
+	    		end=t3.getTime();
+				console.log(t);
+				trialResults[t] = [t,trialOrder[t][0],trialOrder[t][1], false, (end-start)/1000];
+				$("#letters").text("");
+				console.log(trialResults[t]);
+				select = true;
+				t=t+1;
+			}
+     	});
 </script>
    </head>
    
