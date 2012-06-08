@@ -6,13 +6,25 @@
      </script>
      <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael.js">
      </script>
+     <style media="screen">
+       #holder {
+	       position: absolute;
+	       top: 0%;
+	       left: 50%;
+	       height: 926px;
+	       margin: 0 0 0 -305px;
+	       width: 610px;
+       }
+     </style> 
    </head>
 
    <body>
-     <div id="title"></div>
-     <div id="instruction"></div>
-     <div id="time"></div>
-     <div id="canvas"></div>
+     <div id="holder">
+       <div id="title"></div>
+       <div id="instruction"></div>
+       <div id="time"></div>
+       <div id="canvas"></div>
+     </div>
 
      <script>
 
@@ -72,24 +84,25 @@
 
        	   // list of colors we are going to use
        	   var center_index = Math.floor(Math.random()*shown_pop);
-       	   var true_color = colorlist[center_index];
-       	   var name = true_color.name;
+       	   var true_colorKV = colorlist[center_index];
+       	   true_name = true_colorKV.name;
+       	   true_color = true_colorKV.color;
        
-       	   var false_color = colorlist_full[center_index];
-       	   var color = false_color.color;
- 
-
- 
+       	   var false_colorKV = colorlist_full[center_index];
+       	   var false_color = false_colorKV.color;
+  
 		   // clear the canvas first
        	   canvas.clear();
 
        	   // create the Raphael object
-           text = canvas.text(x_cent, y_cent, name);
+           text = canvas.text(x_cent, y_cent, true_name);
        	   text.attr("font-size", 40)
-       	       .attr("fill", color)
+       	       .attr("fill", false_color)
        		   .attr("font-weight", 900)
        		   .attr("font-family", "Courier New");
 
+           // use an array to hold the circles
+           circle_array = new Array();
 
 	       // draw all the circles around the center circle
            for (var i=0; i<shown_pop; i++){
@@ -101,7 +114,7 @@
                var y = dist*Math.cos(angle);
 
 			   // draw it and give it different colors
-               circle = canvas.circle(x + x_cent, y + y_cent, radius);
+               circle_array[i] = canvas.circle(x + x_cent, y + y_cent, radius);
                var n = colorlist.length;
 			   var index = Math.floor(Math.random()*n);
 			   var colorobj = colorlist.splice(index,1);
@@ -109,12 +122,18 @@
                // this is the annoying part: splice returns an array
                var colorobj = colorobj[0]; 
                var circ_color = colorobj.color;
-               circle.attr("fill", circ_color);
-               circle.attr("stroke", "#000");
+               circle_array[i].attr("fill", circ_color)
+                              .attr("stroke", "#000");
 
-		       circle.mouseover(
+               // attach mouseover event to it
+		       circle_array[i].mouseover(
 		           function() {
 		       		   if (started == 1){
+                           circ_fill = this.attr("fill");
+
+                           if (circ_fill == true_color){
+		                       alert("Correct!");
+                           }
     		               d = new Date();
         		           stop_time = d.getTime();
 	       				   elapsed = stop_time - start_time;
@@ -125,14 +144,20 @@
 	    	   	   }
 		       );
            }
+           
+           // start counting
+           d = new Date();
+           start_time = d.getTime();
+       	   started = 1;
+
        }
 
        function drawtime(){
 		   var time_text = time_canvas.text(pic_width/2, text_height/2, elapsed + " ms");
        	   time_text.attr("font-size", 40)
-       	       .attr("fill", "#000000")
-       		   .attr("font-weight", 900)
-       		   .attr("font-family", "Courier New");
+       	            .attr("fill", "#000000")
+       		        .attr("font-weight", 900)
+       		        .attr("font-family", "Courier New");
        }
 
        function init(){
@@ -143,11 +168,10 @@
        		    .attr("font-weight", 900)
        		    .attr("font-family", "Courier New");
 
+           started = -1;
+
 	       start.click(
     	       function() {
-        	       d = new Date();
-            	   start_time = d.getTime();
-       		  	   started = 1;
                    drawcircle();
 	           }
 	       );
@@ -182,9 +206,6 @@
 
        // set the parameters for time pic
        time_canvas = Raphael("time", pic_width, text_height);
-
-       // two flags
-       started = -1;
 
      </script>
 
