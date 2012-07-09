@@ -1,0 +1,494 @@
+
+<!doctype html>
+<html>
+    
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+        <script src="jquery.overlaps.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script src="/jquery.fileDownload.js"></script>
+        <style type="text/css">
+            .hidden {
+                display:none;
+            }
+            div.centered {
+                /*set the div in the center of the screen*/
+                position:absolute;
+                top:35%;
+                left:35%;
+                width:350px;
+            }
+            #TypesOfDistractors {
+                padding: 10px 0 0 0;
+            }
+            .form{
+                width:425px;
+            }
+            .distractor{
+                margin-top: 5px;
+            }
+            fieldset{
+                width: 350px;
+                margin: 0px auto;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                border-radius: 10px;
+            }
+            #begin{
+                margin: 10px 0;
+                
+            }
+            #letters:{
+                height: 100%;
+                width: 100%;
+                padding: 200px;
+            }
+            .fields{
+                display: block;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+                padding: 5px;
+                width: 90%;
+            }
+        </style>
+        <script type="text/JavaScript">
+            google.load('visualization', '1', {
+                packages: ["corechart", 'table']
+            });
+            var t = 0;
+
+            function randomPlacement() {
+                randNum1 = Math.floor(Math.random() * winHeight);
+                randNum2 = Math.floor(Math.random() * winWidth);
+                ySector = Math.floor(gridSize * (10 + randNum1) / winHeight);
+                xSector = Math.floor(gridSize * (10 + randNum2) / winWidth);
+            };
+
+            function newScreen(t) {
+                winWidth = $("#letters").width() - 40;
+                winHeight = $("#letters").height() - 40;
+                gridSize = 20;
+
+                var u = 0;
+                for (n = 0; n < distractors.length; n++) {
+                    for (i = 0; i < Math.floor(trialOrder[t][0] * distractors[n][1]); i++) {
+                        randomPlacement();
+                        $("#letters").append("<div id='trial_" + t + "_letter_div_" + u + "' class=\
+                        'letters trial_" + t + "'  style= 'width:12px; color:none'>" + distractors[n][0] + "</div>"); //adds letter
+                        $("#trial_" + t + "_letter_div_" + u).offset({
+                            top: 10 + randNum1,
+                            left: 10 + randNum2
+                        }); //offsets letter to random position
+                        while ($("#trial_" + t + "_letter_div_" + u).overlaps($(".trial_" + t + ".sector" + xSector + "_" + ySector))) {
+                            randomPlacement();
+                            $("#trial_" + t + "_letter_div_" + u).offset({
+                                top: 10 + randNum1,
+                                left: 10 + randNum2
+                            });
+
+                        }
+                        $("#trial_" + t + "_letter_div_" + u).addClass("placed");
+
+                        for (k = 0; k <= 2; k++) {
+                            for (j = 0; j <= 2; j++) {
+                                $("#trial_" + t + "_letter_div_" + u).addClass("sector" + (xSector + k - 1) + "_" + (ySector + j - 1));
+                            }
+                        }
+                        u = u + 1;
+                    }
+                }
+                var rand = Math.random();
+                console.log(trialOrder[t]);
+                for (j = 0; j < 1; j++) {
+                    randomPlacement();
+                    if (trialOrder[t][1]) {
+                        $("#letters").append("<div id='trial_" + t + "_targ_letter_div_" + j + "' class='\
+												letters trial_" + t + "' style='width:12px; color:\
+												none'>" + target + "</div>");
+                    } else {
+                        $("#letters").append("<div id='trial_" + t + "_targ_letter_div_" + j + "' class='\
+												letters trial_" + t + "' style='width:12px; color:\
+												none'>" + distractors[Math.floor(Math.random() * distractors.length)][0] + "</div>");
+                    }
+                    $("#trial_" + t + "_targ_letter_div_" + j).offset({
+                        top: 10 + randNum1,
+                        left: 10 + randNum2
+                    });
+
+                    while ($("#trial_" + t + "_targ_letter_div_" + j).overlaps($('.placed'))) {
+                        randomPlacement()
+                        $("#trial_" + t + "_targ_letter_div_" + j).offset({
+                            top: 10 + randNum1,
+                            left: 10 + randNum2
+                        });
+                    }
+                }
+            };
+
+            // Now that we have finished collecting the data, we will analyze it and present it as a chart    
+            function drawChart(data1, data2, id, analysis) {
+                console.log('drawing chart');
+                var dataTable = new google.visualization.DataTable();
+
+                //declare columns
+                dataTable.addColumn('number', 'Number of Distractors');
+                dataTable.addColumn('number', 'Average Time Present');
+                dataTable.addColumn('number', 'Average Time Absent');
+                dataTable.addColumn('number', 'Best Fit Present');
+                dataTable.addColumn('number', 'Best Fit Absent');
+                dataTable.addColumn('number', 'Error Rate (%)');
+                //Add data
+                for (key in (presentMeans || absentMeans)) {
+                    dataTable.addRow([
+                    parseFloat(key), parseFloat(data1[key]['time']), parseFloat(data2[key]['time']), parseFloat(analysis.regression.present.a + analysis.regression.present.b * key), parseFloat(analysis.regression.absent.a + analysis.regression.absent.b * key), parseFloat(analysis.errors[key].rate)]);
+                }
+                //Extend Regression Lines to Edges of Graph
+                dataTable.addRow([
+                0, null, null, parseFloat(analysis.regression.present.a), parseFloat(analysis.regression.absent.a), null]);
+                dataTable.addRow([
+                30, null, null, parseFloat(analysis.regression.present.a + analysis.regression.present.b * 30), parseFloat(analysis.regression.absent.a + analysis.regression.absent.b * 30), null]);
+                var tableView = new google.visualization.DataView(dataTable);
+                tableView.setColumns([0, 1, 2, 5])
+                tableView.setRows(0, 6)
+                var options = {
+                    title: 'Time vs. Number of Distractors',
+                    width: 800,
+                    height: 600,
+                    hAxis: {
+                        title: 'Number of Distractors',
+                        gridlines: {
+                            count: numberDistractors.length
+                        }
+                    },
+                    vAxis: {
+                        title: 'Average Time (s)'
+                    },
+                    series: {
+                        2: {
+                            color: 'blue',
+                            visibleInLegend: false,
+                            pointSize: 0,
+                            lineWidth: 2
+                        },
+                        3: {
+                            color: 'red',
+                            visibleInLegend: false,
+                            pointSize: 0,
+                            lineWidth: 2
+                        },
+                        4: {
+                            color: 'none',
+                            visibleInLegend: false,
+                            pointSize: 0,
+                            lineWidth: 0
+                        }
+                    }
+                };
+                var chart = new google.visualization.ScatterChart(document.getElementById(id));
+                chart.draw(dataTable, options);
+                var table = new google.visualization.Table(document.getElementById('table_div'));
+                var formatter = new google.visualization.NumberFormat({
+                    fractionDigits: 2
+                })
+                formatter.format(dataTable, 1)
+                formatter.format(dataTable, 2)
+                formatter.format(dataTable, 3)
+                table.draw(tableView, {
+                    allowHtml: true,
+                    showRowNumber: false,
+                    width: 600
+                });
+            }
+
+            function dataAnalysis() {
+                console.log('running analysis');
+                resultsPresent = [];
+                resultsAbsent = [];
+                presentMeans = {};
+                absentMeans = {};
+                for (m = 0; m < trialResults.length; m++) {
+                    if (trialResults[m][2]) {
+                        resultsPresent[resultsPresent.length] = [trialResults[m][1], trialResults[m][3], trialResults[m][4]]
+                    } else {
+                        resultsAbsent[resultsAbsent.length] = [trialResults[m][1], trialResults[m][3], trialResults[m][4]]
+                    }
+                }
+                for (i = 0; i < numberDistractors.length; i++) {
+                    presentMeans[numberDistractors[i][0]] = {
+                        'time': 0,
+                        'number': 0
+                    };
+                    absentMeans[numberDistractors[i][0]] = {
+                        'time': 0,
+                        'number': 0
+                    };
+                }
+                for (m = 0; m < resultsPresent.length; m++) {
+                    if (resultsPresent[m][1]) {
+                        presentMeans[resultsPresent[m][0]]['time'] = (presentMeans[resultsPresent[m][0]]['time'] * presentMeans[resultsPresent[m][0]]['number'] + resultsPresent[m][2]) / (presentMeans[resultsPresent[m][0]]['number'] + 1)
+                        presentMeans[resultsPresent[m][0]]['number'] = presentMeans[resultsPresent[m][0]]['number'] + 1
+                    }
+                }
+                for (m = 0; m < resultsAbsent.length; m++) {
+                    if (!resultsAbsent[m][1]) {
+                        absentMeans[resultsAbsent[m][0]]['time'] = (absentMeans[resultsAbsent[m][0]]['time'] * absentMeans[resultsAbsent[m][0]]['number'] + resultsAbsent[m][2]) / (absentMeans[resultsAbsent[m][0]]['number'] + 1)
+                        absentMeans[resultsAbsent[m][0]]['number'] = absentMeans[resultsAbsent[m][0]]['number'] + 1
+                    }
+                }
+
+                //Print the graphs    
+                console.log('done analysis');
+
+                //Format Data to Send to Server
+                experimentData = {
+                    trials: []
+                };
+                for (k = 0; k < trialResults.length; k++) {
+                    experimentData['trials'][k] = {
+                        trialNumber: trialResults[k][0],
+                        numberDistractors: trialResults[k][1],
+                        targetPresent: trialResults[k][2],
+                        subjectResponse: trialResults[k][3],
+                        responseTime: trialResults[k][4]
+                    };
+                }
+                experimentData['presentMeans'] = presentMeans;
+                experimentData['absentMeans'] = absentMeans;
+                experimentData['regression'] = {
+                    present: {},
+                    absent: {}
+                };                
+                //Send Data to Server
+                $.ajax({
+                    type: 'POST',
+                    url: '../cgi-bin/hello_world.py',
+                    data: {
+                        exp_data: JSON.stringify(experimentData),
+                        option: JSON.stringify('analysis')
+                    }
+                }).done(function (analysis) {
+                    $('#letters').hide()
+                    $('body').append("<div id = 'chart_div' class = 'dataReport' style = 'width:400; height:300'></div>");
+                    //                      $('body').append("<div id = 'regression_div' class = 'dataReport' style = 'width:400; height:300; float:right'></div>");
+                    $('body').append("<div id = 'table_div' class = 'dataReport' style = 'width:400; height:300'></div>");
+                    $('body').append("<input type='button' class = 'dataReport' id = 'restart' value = 'Try Again' />");
+                    $('body').append("<input type='button' class = dataReport' id = 'download' value = 'Download Data'/>");
+                    drawChart(presentMeans, absentMeans, 'chart_div', analysis);
+
+                    //Send Data to Server for Download as a CSV file        
+                    $('#download').click(function () {
+                        console.log('clicked');
+                        $.fileDownload("../cgi-bin/hello_world.py", {
+                            httpMethod: 'POST',
+                            data: {
+                                exp_data: JSON.stringify(experimentData),
+                                option: JSON.stringify('csv')
+                            }
+                        });
+                    });
+                    $('#restart').click(function () {
+                        location.reload();
+                    });
+                });
+
+            }
+
+            $(document).ready(function () {
+                $('body').append('<div id="letters" class="letters" style="width:2000px; height:2000px; background-color:none"></div>');
+
+                $('#letters').css({
+                    'height': (($(window).height()) - 50) + 'px'
+                });
+                $(window).resize(function () {
+                    $('#letters').css({
+                        'height': (($(window).height()) - 50) + 'px'
+                    });
+                });
+
+                $('#letters').css({
+                    'width': (($(window).width()) - 50) + 'px'
+                });
+
+                $(window).resize(function () {
+                    $('#letters').css({
+                        'width': (($(window).width()) - 50) + 'px'
+                    });
+                });
+                
+                //DEFINE YOUR PARAMETERS FOR THE EXPERIMENT
+                $('#begin').click(function () {
+                    $('.form').addClass('hidden');
+                    $('#instructions').removeClass('hidden');
+                    select = true;
+                    experimentStart = true;
+                    trialsPerDistractor = $('input:radio[name=type]:checked').val();
+                    numberDistractors = [
+                        [4, trialsPerDistractor], //formatted as [number of distractors, number of trials]
+                        [8, trialsPerDistractor],
+                        [12, trialsPerDistractor],
+                        [16, trialsPerDistractor],
+                        [20, trialsPerDistractor],
+                        [24, trialsPerDistractor],
+                        [28, trialsPerDistractor]
+                    ];
+                    distractors = [];
+                    for (i = 0; i < parseInt($('.distractor').length); i++) {
+                        distractors[i] = [$('#distractor_' + (i + 1)).val(), 1 / parseInt($('.distractor').length)];
+                    }
+                    target = $('#TargetLetter').val();
+                    percentagePresent = .5;
+
+                    //END DEFINE PARAMETERS FOR EXPERIMENT
+                    trialOrder = [];
+                    for (i = 0; i < numberDistractors.length; i++) {
+                        for (n = 0; n < Math.ceil(numberDistractors[i][1] * percentagePresent); n++) {
+                            trialOrder[trialOrder.length] = [numberDistractors[i][0], true];
+                            //console.log(trialOrder.length);
+                        }
+                        for (n = 0; n < Math.ceil(numberDistractors[i][1] / 2); n++) {
+                            trialOrder[trialOrder.length] = [numberDistractors[i][0], false];
+                            //console.log(trialOrder.length);
+                        }
+                    }
+
+                    var j, x, i = trialOrder.length; //following while loop is variation on Fisher-Yates shuffle algorithm.  Shuffles trialOrder randomly.  
+                    while (i) { // same as while(i != 0)
+                        j = parseInt(Math.random() * i);
+                        x = trialOrder[--i];
+                        trialOrder[i] = trialOrder[j];
+                        trialOrder[j] = x;
+                    }
+
+                    trialResults = [];
+                });
+            });
+
+            $(document).keydown(function (e) {
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if (typeof experimentStart != 'undefined') { //CHECKS TO MAKE SURE EXPERIMENT HAS BEEN STARTED
+                    if (code == 32 && t < trialOrder.length && select) {
+                        //console.log(t);
+                        var t1 = new Date();
+                        if (!$('#instructions').hasClass('hidden')) {
+                            $('#instructions').addClass('hidden');
+                        }
+                        newScreen(t);
+                        var t2 = new Date();
+                        var keypress = t1.getTime();
+                        start = t2.getTime();
+                        var elapsed = (start - keypress) / 1000;
+                        console.log(elapsed);
+                        select = false;
+                    }
+                    if (code == 70 && t < trialOrder.length && !select) {
+                        var t3 = new Date();
+                        end = t3.getTime();
+                        console.log(t);
+                        trialResults[t] = [t, trialOrder[t][0], trialOrder[t][1], true, (end - start) / 1000];
+                        $("#letters").text("");
+                        console.log(trialResults[t]);
+                        select = true;
+                        if (t < trialOrder.length - 1) {
+                            t = t + 1;
+                        } else { //this is the end of the experiment
+                            delete experimentStart;
+                            dataAnalysis();
+                        }
+
+                    } else if (code == 74 && t < trialOrder.length && !select) {
+                        var t3 = new Date();
+                        end = t3.getTime();
+                        console.log(t);
+                        trialResults[t] = [t, trialOrder[t][0], trialOrder[t][1], false, (end - start) / 1000];
+                        $("#letters").text("");
+                        console.log(trialResults[t]);
+                        select = true;
+                        if (t < trialOrder.length - 1) {
+                            t = t + 1;
+                        } else { //this is the end of the experiment
+                            delete experimentStart;
+                            dataAnalysis();
+                        }
+                    } else if (code == 27) {
+                        t = trialOrder.length;
+                        select = true;
+                        $("#letters").text("");
+                        dataAnalysis();
+                    }
+                }
+            });
+
+            $(document).ready(function () {
+                $('#typesDistractors').change(function () {
+                    var field = $(this);
+                    var numDistractors = $(".distractor").length;
+                    var greaterThanZero = (Math.round(field.val()) == field.val() && field.val() > 0);
+                    if (field.val() > numDistractors && greaterThanZero) {
+                        for (i = numDistractors + 1; i <= field.val(); i++) {
+                            $('#TypesOfDistractors').append("<div id='distractor" + i + "' class='indent distractor hidden'>                                                           <label for='distractor" + i + "' class = 'label'> Distractor " + i + " </label>                                                            <input name='distractor" + i + "' type='text' id='distractor_" + i + "' class='fields' size='10'> </div>");
+                            $('#distractor' + i).slideDown();
+                        }
+
+                    } else if (field.val() < numDistractors && greaterThanZero) {
+                        for (i = numDistractors; i > field.val(); i = i - 1) {
+                            $('#distractor' + i).slideUp();
+                            $('#distractor' + i).remove();
+                            console.log(i);
+                        }
+                    }
+                });
+            });
+        </script>
+    </head>
+    
+    <body>
+        <div class='form'>
+            <center>
+                <h1>Parameters</h1>
+            </center>
+            <form id="form">
+                <fieldset>
+                    <select id="dropDown">
+                        <option>Experiment 1</option>
+                        <option>Experiment 2</option>
+                        <option>Experiment ect.</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <div id="TypesOfDistractors">How many types of distractors do you want?
+                        <input name="typesDistractors"
+                        type="text" id="typesDistractors" class='fields' size="10" defaultValue="1" value='1'>
+                        <div id="Distractors" class="indent">
+                            <div id="distractor1" class="distractor indent">
+                                <label for='distractor1' class='label'>Distractor 1:</label>
+                                <input name='distractor1' type='text' class='fields' id='distractor_1' value='O'>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div id="Target">Target letter:
+                        <input name="target" type="text" id="TargetLetter" class='fields' size="10"
+                        value='Q'>
+                    </div>
+                    <br/>
+                    <label for="demo">Demo</label>
+                    <input type="radio" name="type" id='demo' value=4 checked='checked'
+                    />
+                    <label for="Full Experiment">Full Experiment</label>
+                    <input type="radio" name="type" id='full_experiment'
+                    value=20 />
+                </fieldset>
+                <center>
+                    <input type="button" id="begin" value="Start Experiment" />
+                </center>
+            </form>
+        </div>
+        <div id='instructions' class='centered hidden'>
+            <h1>Press the space bar to start each trial. If you see the target, press
+                the "F" key. If you do not see the target, press the "J" key. Don't worry
+                if you make a mistake.</h1>
+        </div>
+    </body>
+
+</html>

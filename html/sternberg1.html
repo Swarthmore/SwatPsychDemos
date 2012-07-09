@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <title>Sternberg Vision</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- Le styles -->
+        
+        <link href="/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
+        
+        <style>
+            body {
+                padding-top: 60px;
+                /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+            form {
+                width: 30%;
+            }
+            .slider {
+                margin-top: 10px;
+            }
+            #experiment{
+                width:600px;
+                height:600px;
+                border: solid;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                border-radius: 10px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                margin-top:-300px;
+                margin-left: -300px;
+            }
+            .listDisplay{
+                position: fixed;
+                top: 50%;
+                text-align: center;
+                font-size: 500%;
+                margin-top: -.5em;
+                width:600px;
+            }
+        </style>
+        
+        <link href="/bootstrap/docs/assets/css/bootstrap-responsive.css"
+        rel="stylesheet">
+       
+       <link type="text/css" href="/jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
+        
+        <link rel="shortcut icon" href="/bootstrap/docs/assets/ico/favicon.ico">
+        
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/bootstrap/docs/assets/ico/apple-touch-icon-144-precomposed.png">
+        
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/bootstrap/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+        
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/bootstrap/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+        
+        <link rel="apple-touch-icon-precomposed" href="/bootstrap/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+        
+        <script src="/bootstrap/docs/assets/js/jquery.js"></script>      
+        
+        <script src='/jquery-ui/js/jquery-ui-1.8.21.custom.min.js'></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-transition.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-alert.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-modal.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-scrollspy.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-tab.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-tooltip.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-popover.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-button.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-collapse.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
+        
+        <script src="/bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
+
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+        <script src="/jquery.fileDownload.js"></script>
+        
+        <script>
+            //Load Google's Visualizer Package for Scatterplots
+            google.load('visualization', '1', {
+                packages: ["corechart", 'table']
+            });
+            
+        //Sets all variables for a new experiment
+            function varSet(){
+                
+                //Store Important variables in global object
+                global = {
+                    listElements:{
+                        //The elts to be shown in the list:
+                        display:[
+                            ['zero',0],
+                            ['one',1],
+                            ['two',2],
+                            ['three',3],
+                            ['four',4],
+                            ['five',5],
+                            ['six',6],
+                            ['seven',7],
+                            ['eight',8],
+                            ['nine',9]
+                            ],
+                        //The elts to be shown in the test:
+                    },
+                    //Time Parameters -- current values are default.
+                    timeParameters:{
+                        display: 500, //Time between list elts
+                        recall: 1000, //Time before test is shown
+                    },
+                    trials: [], //empty array to be populated with the trial order
+                    trialNumber: 120,  //total number of trials; current value is default
+                };
+                
+                keyPress={
+                    digits:{
+                        0:{code: [48,96], name: 'zero'},
+                        1:{code: [49,97], name: 'one'},
+                        2:{code: [50,98], name: 'two'},
+                        3:{code: [51,99], name:'three'},
+                        4:{code: [52,100], name: 'four'},
+                        5:{code: [53,101], name: 'five'},
+                        6:{code: [54,102], name: 'six'},
+                        7:{code: [55,103], name: 'seven'},
+                        8:{code: [56,104], name: 'eight'},
+                        9:{code: [57,105], name: 'nine'}
+                    },
+                    commands:{
+                        backspace:[8],
+                        enter:[13]
+                    }
+                }
+                
+                //trial counter
+                t=0; 
+                
+                //boolean to determine if keydown is listening for a recall list
+                recall=false;
+
+            };
+            
+        //following while loop is variation on Fisher-Yates shuffle algorithm.  Shuffles trialOrder randomly.
+            function shuffleArray(array){                     
+                var j, x, i = array.length; 
+                
+                //clones array so we aren't changing the original
+                array = array.slice(0); 
+                
+                //Runs through each array entry and randomly switches it with another.
+                while (i) { // same as while(i != 0)
+                    j = parseInt(Math.random() * i);
+                    x = array[--i];
+                    array[i] = array[j];
+                    array[j] = x;
+                }
+                return array; //Note: returns the cloned array.  Doesn't alter original.  
+            }
+            
+            
+        //Sets up special functionality for the form
+            function formInitializer(){
+                
+                //Initialize listLength Slider
+                $('#slider').slider({
+                    value: 3,
+                    min:3,
+                    max:9,
+                    step:1,
+                    animate:true,
+                    slide: function(event,ui){
+                        //Resets associated field value when slider is changed:
+                        $('#listLength').val(ui.value);
+                        //Trigger change function for listLength when slider is moved.  (See change function below)
+                        $('#listLength').trigger('change');
+                    }
+                });
+                
+                //Dynamically adjust form based on input value for listLength:
+                $('#listLength').change(function(){
+                    listElements = global.listElements; //creates local pointer to global object
+                    
+                    //if input is inside accepted range:
+                    if (this.value <= 9 && this.value >=3){
+                        
+                        //Adjust Slider
+                        $('#slider').slider( "value", this.value);
+                        
+                        //Remove Error Message if it exists attached to elt's grandparent in the DOM
+                        if ($(this).parent().parent().hasClass('error')){
+                            $(this).parent().parent().removeClass('error');
+                            $(this).siblings('.help-inline').remove();
+                        }                  
+                        
+                        //Updates Global Object
+                        global['listLength'] = $('.listElt').length
+                        
+                        //If they increased the number of fields:
+                        if (global.listLength < $('#listLength').val()){
+                            
+                            //Loop through and add the extra fields:
+                            for (i=global.listLength; i<$('#listLength').val();i++){
+                                global['listLength']++;
+                                $('#listElts').append(
+                                "<div class='control-group listElt'> \
+                                <label class='control-label'> List Element " + (i+1) + " </label> \
+                                <div class='controls'>\
+                                <input type='text' id='listElt_" + (i+1) + "' value='" + listElements.display[i][0] +"'>\
+                                </div> </div>");
+                            }                        
+                        } 
+                        //If they decreased the number of fields:
+                        else if (global.listLength > $('#listLength').val()){
+                            
+                            //Loop through and remove the extra fields:
+                            for (i=global.listLength; i>$('#listLength').val();i=i-1){
+                                $('.listElt:last').remove();
+                            }
+                        }                        
+                    } 
+                    
+                    //If input is not in accepted range, add error message.  Do not update global object. 
+                    else if (!$(this).parent().parent().hasClass('error')){
+                        $(this).parent().parent().addClass('error');
+                        $(this).parent().append("<span class='help-inline'> Please submit a value between 3 and 9 </span>");
+                    }
+                    
+                    //If any of the list elements are changed, update the global object with the new value
+                    $('.listElt').find(':input').change(function(){
+                        listElements.display[($(this).attr('id').slice(-1)-1)][0] = $(this).val();
+                    
+                        listElements.display[($(this).attr('id').slice(-1)-1)][1] = $(this).val();
+
+                    });
+                    
+                });
+                
+                //Set initial value of listLength field to the default slider value:
+                $('#listLength').val($('#slider').slider('value'));
+                
+                //Run the change function we just set up
+                $('#listLength').trigger('change');
+                
+                
+                //Initialize trialSlider
+                $('#trialSlider').slider({
+                    value: 120,
+                    min:24,
+                    max:360,
+                    step:12,
+                    animate:true,
+                    slide: function(event,ui){
+                        //Resets associated field value when slider is changed:
+                        $('#trials').val(ui.value);
+                        
+                        //Trigger change function to update global object:
+                        $('#trials').trigger('change');
+
+                    }
+                });
+                
+                //Change function updates global object.
+                $('#trials').change(function(){
+                    global['trialNumber'] = this.value;
+                });
+
+                //Sets initial value and updates global object.  
+                $('#trials').val($('#trialSlider').slider('value'));
+                $('#trials').trigger('change');
+
+                
+                //Sets up change functions to update global object for the other field elements.  
+                $('#display').val(global.timeParameters.display).change(function(){
+                    global.timeParameters['display'] = $(this).val();
+                });
+                
+                $('#recall').val(global.timeParameters.recall).change(function(){
+                    global.timeParameters['recall'] = $(this).val();                    
+                });
+            }
+
+        //Function to Present the Lists -- will be called recursively in the keydown function.  
+            function presentLetters(){
+                console.log(t);
+                
+                //reveal the experiment box -- should be replaced with a jQuery modal...
+                $('#experiment').removeClass('hidden');
+                
+                var i=0; //define counter variable for list length
+                
+                //Sets a function to run every n seconds to display the list elts
+                var timer = setInterval(function(){
+                    $('.listDisplay').remove(); //clears display
+                                        
+                    //if list is not done yet:
+                    if (i<global.trials[t].list.length){
+                    
+                        //display list elt
+                        $('#experiment').append('<div class="listDisplay">'+ global.trials[t].list[i][0] + '</div>'); 
+                        i++;
+                    } 
+                    //if the list is done:
+                    else {
+                        clearInterval(timer); //stop the interval loop
+                        $('.listDisplay').remove(); //clear the experiment box
+                            $('#experiment').append('<div class="listDisplay"><center>Now think...</center></div>') //screen to get ready
+                        
+                        //set time delay for the probe elt
+                        setTimeout(function(){
+                            $('.listDisplay').remove(); //clear experiment box
+                            
+                            //display the probe
+                            $('#experiment').append('<div class="listDisplay"><center>Did the list contain ' + global.trials[t].test[1] + '?</center></div>') 
+                            
+                            //record start time
+                            var t1 = new Date();
+                            start = t1.getTime();
+                            //tells keydown function that experiment is waiting for response
+                            select=false; 
+                        }, global.timeParameters.recall);
+                    }
+                },global.timeParameters.display);
+            }
+            
+        //General Keydown Function -- used across all functions.  
+            function initializeKeyDown(){    
+                $(document).keydown(function (e) {
+                    
+                    //sets keycode according to the downpress
+                    var code = (e.keyCode ? e.keyCode : e.which);
+                    
+                    //checks that experiment has started
+                    if (typeof select != 'undefined'){ 
+                        
+                        //'select==false' checks that experiment is waiting for 'f' or 'j' input
+                        if ((code == 70 || code == 74) && select==false) { 
+                            var t2 = new Date();
+                            var end = t2.getTime();
+                            global.trials[t]['time']=(end-start)/1000;
+                            console.log(global.trials[t].time);
+                            
+                            //records if they said true:
+                            if (code==70){global.trials[t]['response']=true;} 
+
+                            //records if they said false:
+                            if (code==74){global.trials[t]['response']=false;}
+                            
+                            //sets ups recall list for this trial:
+                            global.trials[t]['recall']=[];
+                            
+                            //clears experiment box
+                            $('#experiment').text('');
+                            
+                            recall = true; //sets experiment to listen for subject recall of list
+                            select = true; //sets experiment not to accept 'j' or 'f' keypress
+                            
+                            //prompt a recall
+                            $('#experiment').append('<div class="listDisplay"> The list was: <p id="subjectRecall"> </p> </div>')
+                            
+                        } else if (code==32 && select==true && recall==false){ 
+                            select=false;
+                            presentLetters(t);
+                        }
+                    }
+                    
+                    //Handler for subject recall of the list
+                    if (recall==true){ 
+                        for (key in Object.keys(keyPress.digits)){
+                            if ($.inArray(code,keyPress.digits[key].code) != -1){
+                                if (global.trials[t].recall.length == 0){
+                                    $('#subjectRecall').append(key);
+                                } else {
+                                    $('#subjectRecall').append(', ' + key);
+                                }
+                                global.trials[t].recall.push(global.listElements.display[key]);
+                            }
+                        }
+                        if (code == 8){
+                                e.preventDefault();
+                                $('#subjectRecall').text(     
+                                    $('#subjectRecall').text().slice(0,-3)
+                                );
+                                global.trials[t].recall.pop();
+                        }
+                    }
+
+                    //if they press enter:
+                    if (code==13 && recall==true){
+                        
+                        $('#experiment').text('');
+                        
+                        recall=false; //turn off recall mode
+                        
+                        //determines whether correct or not -- uses JSON.stringify to check array equality.  
+                        global.trials[t]['correctRecall'] = (JSON.stringify(global.trials[t].list) == JSON.stringify(global.trials[t].recall));
+                        
+                                                
+                        //iterates counter to the next trial
+                        t++;
+                        
+                        //if we aren't done the trials yet:
+                        if (t<global.trialNumber){ 
+                            $('#experiment').append('<div id="ready" class="listDisplay">Ready?</div>');
+                            select=true;
+                        } 
+                
+                        //if we are done the trials:
+                        else {
+                            $(this).unbind('keydown') //turn off keypress listner
+                            dataAnalysis(t); //run the data analysis
+                        }
+                    }
+                    
+                    //Escape key ends experiment
+                    if (code == 27) {
+                        $(this).unbind('keydown');
+                        global.trials = global.trials.slice(0,t);
+                        dataAnalysis(t);
+                    }
+                });
+            }
+            
+            function runExperiment(){
+                var trials = global.trials
+                var order = trials
+                //Generate Trial Order
+                for (i=1;i<=6;i++){ //for list lengths 1 to 6
+                    for (j=0; j<global.trialNumber/12; j++){ //for the appropriate number of trials
+                        
+                        //create one trial where probe is not present
+                        var shuffle = shuffleArray( global.listElements.display).slice(0) //shuffle list elts array and create clone.  
+                        order.push(
+                            {list: shuffle.slice(0,i), //take the first i elts from the shuffled list.  
+                            test: shuffle[Math.floor(Math.random()*(shuffle.length-i))+i], //randomly select probe from outside the list
+                            testPresent: false
+                            });
+                        
+                        //create one trial where probe is present
+                        shuffle = shuffleArray( global.listElements.display).slice(0)
+                        order.push(
+                            {list: shuffle.slice(0,i), //take the first i elts from the shuffled list
+                            test: shuffle[Math.floor(Math.random()*(i))], //randomly select probe from inside the list
+                            testPresent: true
+                            });
+                    }
+                }
+
+                //shuffle trial order and store clone as actual trial order.  
+                global.trials = shuffleArray(order).slice(0); 
+                
+                //number the trials
+                for (i=1;i<=global.trials.length;i++){
+                    global.trials[i-1]['trialNumber'] = i;
+                }
+                
+                //initialize keydown listener and start presenting the experiment
+                initializeKeyDown();
+                presentLetters(t);
+
+            };
+            
+                function dataAnalysis(t){
+                console.log('data Analysis');
+                //Send Data to Server
+
+                /*$.fileDownload("../cgi-bin/sternberg1.py", {
+                    httpMethod: 'POST',
+                    data: {
+                        exp_data: JSON.stringify(global),
+                        option: JSON.stringify('csv')
+                    }
+                }); */
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '../cgi-bin/sternberg1.py',
+                    data: {
+                        exp_data: JSON.stringify(global),
+                        option: JSON.stringify('analyis')
+                    }
+                }).done(function (analysis) {
+                    $('#experiment').hide()
+
+                    $('body').append("<div id = 'chart_div' class = 'span4 offset4 dataReport' style = 'width:400; height:300'></div>");
+
+                    $('body').append("<div id = 'table_div' class = 'span4 offset4 dataReport' style = 'width:400; height:300'></div>");
+
+                    $('body').append("<input type='button' class = 'btn-primary dataReport' id = 'restart' value = 'Try Again' />");
+
+                    $('body').append("<input type='button' class = 'btn-primary dataReport' id = 'download' value = 'Download Data'/>");
+//                  drawChart(presentMeans, absentMeans, 'chart_div', analysis);
+
+                    //Send Data to Server for Download as a CSV file        
+                    $('#download').click(function () {
+                        $.fileDownload("../cgi-bin/sternberg1.py", {
+                            httpMethod: 'POST',
+                            data: {
+                                exp_data: JSON.stringify(global),
+                                option: JSON.stringify('csv')
+                            }
+                        });
+                    });
+                    $('#restart').click(function () {
+                        location.reload();
+                    });
+                }); 
+            } 
+            
+            $('document').ready(function(){
+                varSet();
+                formInitializer();
+                
+                $('#start').click(function(){
+                    $('form').parent().parent().hide();
+                    runExperiment();
+                });
+            });
+        </script>
+    
+    </head>
+    
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+                    <a class="brand" href="#">Sternberg Vision Experiment</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li class="active">
+                                <a href="#">Home</a>
+                            </li>
+                            <li>
+                                <a href="#about">About</a>
+                            </li>
+                            <li>
+                                <a href="#contact">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+        <div class="span4  offset4">
+            <form class='form-horizontal'>
+                <legend>Parameters</legend>
+                <fieldset>
+<!--            <div class='controls'>    
+                        <div class='btn-group' data-toggle='buttons-radio'>
+                            <input type='button' class='btn btn-primary active' value='Demo Version'>
+                            <input type='button' class='btn btn-primary' value='Full Experiment'>
+                        </div>
+                    </div> <br> -->
+                    
+                    <div class='control-group'>
+                        <label class='control-label'> Number of Trials </label>
+                        <div class='controls'>
+                            <input type='text' id='trials' input-large' disabled>
+                            <div id='trialSlider' class='slider'></div>
+                        </div>
+                    </div>
+
+
+                     <div class='control-group'>
+                        <label class='control-label'> Display Time </label>
+                        <div class='controls'>
+                            <input type='text' id='display' class='input-large'>
+                        </div>
+                    </div>
+                    <div class='control-group'>
+                        <label class='control-label'> Recall Time </label>
+                        <div class='controls'>
+                            <input type='text' id='recall' class='input-large'>
+                        </div>
+                    </div>
+
+                    <div class='control-group'>
+                        <label class='control-label'> List Length </label>
+                        <div class='controls'>
+                            <input type='text' id='listLength'>
+                            <div id='slider' class='slider'></div>
+                        </div>
+                    </div>
+                    <div id='listElts'></div>
+                    <div class='controls'>
+                        <input id='start' class='btn btn-primary' type='button' value='Start Experiment'>
+                    </div>
+                    
+                </fieldset>
+            </form>
+        </div>
+        </div>
+    <div class='row'>
+        <div id='experiment' class='hidden'>
+        </div>
+    </div>
+    </body>
+
+</html>
