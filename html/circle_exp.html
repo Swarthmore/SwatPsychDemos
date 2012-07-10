@@ -180,7 +180,7 @@
 		}
 
 	function ExportDataToCSV(data){
-		$.fileDownload("../cgi-bin/blah", {
+		$.fileDownload("../cgi-bin/circ_exp.py", {
 			httpMethod: "POST",
 			data: {
 				exp_data: JSON.stringify(data),
