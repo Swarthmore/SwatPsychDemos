@@ -73,6 +73,9 @@
                 padding: 5px;
                 width: 90%;
             }
+            .navbar{
+                z-index: 1001;
+            }
         </style>
         
         <link href="./bootstrap/docs/assets/css/bootstrap-responsive.css"
@@ -311,10 +314,8 @@
                     height:600,         //600 x 600 pixels
                     width: 600,
                     modal: true,        //user can't interact with screen
-                });
-                
-                //Closing the Modal ends the Experiment
-                $('#experiment').dialog({
+                    
+                    //Closing the Modal ends the Experiment
                     close: function(event, ui){
                         
                         //turn off keypress
@@ -325,9 +326,9 @@
                         
                         //Run DataAnalyis
                         dataAnalysis();
-                    }
+                    },
                 });
-            }
+            }            
         //Generates a Random Placement of distractor
             function randomPlacement() {
                 randNum1 = Math.floor(Math.random() * 580);
@@ -508,8 +509,8 @@
                     type: 'POST',
                     url: '../cgi-bin/exptest11.py',
                     data: {
-                        exp_data: JSON.stringify(experimentData),
-                        option: JSON.stringify('global')
+                        exp_data: JSON.stringify(global),
+                        option: JSON.stringify('analysis')
                     }
                 }).done(function (analysis) {
                     
