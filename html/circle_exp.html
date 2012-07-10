@@ -6,6 +6,8 @@
      </script>
      <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael.js">
      </script>
+     <script src="./jquery.fileDownload.js"></script>
+
      <style media="screen">
        #holder {
               position: absolute;
@@ -40,7 +42,7 @@
         .attr("fill", "#000")
         .attr("font-weight", 900)
         .attr("font-family", "Courier New");
-       }
+    }
 
 	function colorKV(name, value){
         colorobj = new Object();
@@ -85,6 +87,16 @@
             return sublist;
         }
     }
+
+	function ExportDataToCSV(data){
+		$.fileDownload("../cgi-bin/circ_exp.py", {
+			httpMethod: "POST",
+			data:{
+				exp_data: JSON.stringify(data),
+				option: JSON.stringify('csv')
+            }
+		});
+	}
 
 	function drawcircle(){
 		var colorlist_full = [colorKV("gray","#808080"),
@@ -166,9 +178,10 @@
                                             "correct?": check};
                     console.log(exportdata);
                     trialnum = trialnum + 1;
-                    if (trialnum >= 5){
-                       alert("Finished!!!");
-                       ExportDataToCSV(exportdata);
+                    if (trialnum >= 2){
+                    	alert("Finished!!!");
+						canvas.clear();
+                       	ExportDataToCSV(exportdata);
 					}
 					init();
 				}
@@ -178,16 +191,8 @@
             start_time = d.getTime();
             started = 1;
 		}
+    }
 
-	function ExportDataToCSV(data){
-		$.fileDownload("../cgi-bin/circ_exp.py", {
-			httpMethod: "POST",
-			data: {
-				exp_data: JSON.stringify(data),
-				option: JSON.stringify("csv")
-            }
-		});
-	}
     
 	function drawtime(){
 	    var time_text = time_canvas.text(pic_width/2, text_height/2, elapsed + " ms");
@@ -209,11 +214,12 @@
 			drawcircle();
 		});
 	}
+
 	</script>
 
 
 	<script>
-
+ 
 		// this is the main function
        	total_pop = 9;
        	shown_pop = 6;
