@@ -30,41 +30,41 @@
 
        function drawTandI(){
            Ttext = title_canvas.text(pic_width/2, text_height/2, "Reaction Time Test");
-          Ttext.attr("font-size", 40)
-              .attr("fill", "#000")
-          .attr("font-weight", 900)
-          .attr("font-family", "Courier New");
+           Ttext.attr("font-size", 40)
+           .attr("fill", "#000")
+           .attr("font-weight", 900)
+           .attr("font-family", "Courier New");
 
            Itext = instruction_canvas.text(pic_width/2, text_height/2, "Instruction: \n Click the word in the center \n and then bring your cursor over the circle \n that has the color indicated by the word.");
-          Itext.attr("font-size", 20)
-              .attr("fill", "#000")
-          .attr("font-weight", 900)
-          .attr("font-family", "Courier New");
+           Itext.attr("font-size", 20)
+       		.attr("fill", "#000")
+                .attr("font-weight", 900)
+                .attr("font-family", "Courier New");
 
        }
 
        function colorKV(name, value){
-          colorobj = new Object();
+           colorobj = new Object();
            colorobj.name = name;
-          colorobj.color = value;
+           colorobj.color = value;
            return colorobj;
-          }
+       }
 
        function getsubcolors(shown_pop, colorlist_full){
-          var n = colorlist_full.length;
+           var n = colorlist_full.length;
            var start = Math.floor(Math.random()*n);
-          var end = start + shown_pop;
+           var end = start + shown_pop;
 
-          if (end > n){
-              var new_end = end % n;
-          var sublist = colorlist_full.slice(start);
-          newsublist = sublist.concat(colorlist_full.slice(0,new_end));
-          return newsublist;
-          } else {
-          var sublist = colorlist_full.slice(start,end);
-          return sublist;
-          }
-          }
+           if (end > n){
+               var new_end = end % n;
+               var sublist = colorlist_full.slice(start);
+               newsublist = sublist.concat(colorlist_full.slice(0,new_end));
+               return newsublist;
+           } else {
+               var sublist = colorlist_full.slice(start,end);
+               return sublist;
+           }
+       }
 
        function drawcircle(){
           var colorlist_full = [colorKV("gray","#808080"),
