@@ -178,12 +178,12 @@
                                             "correct?": check};
                     console.log(exportdata);
                     trialnum = trialnum + 1;
-                    if (trialnum >= 2){
-                    	alert("Finished!!!");
+					init();
+                    if (trialnum > numoftrials-1){
 						canvas.clear();
+                    	alert("Finished!!!");
                        	ExportDataToCSV(exportdata);
 					}
-					init();
 				}
 			}
 	        );
@@ -249,7 +249,11 @@
 
        	// set the parameters for time pic
        	time_canvas = Raphael("time", pic_width, text_height);
-
+		numoftrials = 100;
+		while (numoftrials > 20){
+			numoftrials = prompt("Please enter the number of trials you want to do. It has to be smaller than 20.");
+		}
+		console.log(numoftrials);
 	</script>
 
    </body>
