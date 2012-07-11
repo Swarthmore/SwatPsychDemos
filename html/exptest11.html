@@ -536,7 +536,7 @@
                         $.fileDownload("../cgi-bin/exptest11.py", {
                             httpMethod: 'POST',
                             data: {
-                                exp_data: JSON.stringify(experimentData),
+                                exp_data: JSON.stringify(global),
                                 option: JSON.stringify('csv')
                             }
                         });
@@ -548,7 +548,124 @@
                     });
                 });
             }
-        
+        //Draws in the charts and tables
+            function drawChart() {
+                
+                //make local pointers
+                present = global.analysis.present;
+                absent = global.analysis.absent;
+                regression = global.analysis.regression;
+                errors = global.analysis.errors;
+                
+                var dataTable = new google.visualization.DataTable();
+
+                //declare columns
+                dataTable.addColumn('number', 'Number of Distractors');
+                dataTable.addColumn('number', 'Average Time Present (ms)');
+                dataTable.addColumn('number', 'Average Time Absent (ms)');
+                dataTable.addColumn('number', 'Best Fit Present');
+                dataTable.addColumn('number', 'Best Fit Absent');
+                dataTable.addColumn('number', 'Error Rate (%)');
+                
+                //Add data
+                for (key in (present || absent)) {
+                    dataTable.addRow([
+                        parseFloat(key), 
+                        parseFloat(present[key].mean),
+                        parseFloat(absent[key].mean), 
+                        parseFloat(regression.present.a + regression.present.b * key), 
+                        parseFloat(regression.absent.a + regression.absent.b * key), 
+                        parseFloat(errors[key].rate)
+                    ]);
+                }
+                
+                //Extend Regression Lines to Edges of Graph
+                dataTable.addRow([
+                    0, 
+                    null, 
+                    null, 
+                    parseFloat(regression.present.a),
+                    parseFloat(regression.absent.a), null
+                ]);
+                
+                dataTable.addRow([
+                    30, 
+                    null, 
+                    null, 
+                    parseFloat(regression.present.a + regression.present.b * 30), 
+                    parseFloat(regression.absent.a + regression.absent.b * 30), null
+                ]);
+                
+                //create specialized instance of table
+                var tableView = new google.visualization.DataView(dataTable);
+                
+                //set columns and rows to show
+                tableView.setColumns([0, 1, 2, 5])
+                tableView.setRows(0, 6)
+                
+                //set options for graph 
+                var options = {
+                    title: 'Time vs. Number of Distractors',
+                    width: 800,
+                    height: 600,
+                    hAxis: {
+                        title: 'Number of Distractors',
+                        gridlines: {
+                            count: global.trialDistractors.length
+                        }
+                    },
+                    vAxis: {
+                        title: 'Average Time (ms)'
+                    },
+                    series: {
+                        2: {
+                            color: 'blue',
+                            visibleInLegend: false,
+                            pointSize: 0,
+                            lineWidth: 2
+                        },
+                        3: {
+                            color: 'red',
+                            visibleInLegend: false,
+                            pointSize: 0,
+                            lineWidth: 2
+                        },
+                        4: {
+                            color: 'none',
+                            visibleInLegend: false,
+                            pointSize: 0,
+                            lineWidth: 0
+                        }
+                    }
+                };
+                
+                //print chart
+                var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+                chart.draw(dataTable, options);
+                
+                //create table object
+                var table = new google.visualization.Table(document.getElementById('table_div'));
+                
+                //create formatter object for table and define options
+                var formatter = new google.visualization.NumberFormat({
+                    groupingSymbol: '',
+                })
+                var formatter2 =new google.visualization.NumberFormat({
+                    fractionDigits: 2,
+                }) 
+                
+                //format the columns
+                formatter.format(dataTable, 1)
+                formatter.format(dataTable, 2)
+                formatter2.format(dataTable, 3)
+                
+                //print table
+                table.draw(tableView, {
+                    allowHtml: true,
+                    showRowNumber: false,
+                    width: 600
+                });
+            }
         //Runs the script when document is ready:
             $(document).ready(function(){
                 varSet();
