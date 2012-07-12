@@ -82,7 +82,8 @@ for distractor in analysis['present'] or analysis['absent']:
         analysis['absent'][distractor]['mean'] = 0
     
     if (presentNumber + absentNumber + errors) != 0:
-        analysis['errors'][distractor]['rate'] = errors/(presentNumber + absentNumber + errors)
+        analysis['errors'][distractor]['rate'] = float(errors)/(presentNumber + absentNumber + errors)
+    else:
         analysis['errors'][distractor]['rate'] = 0
 
 ## SETUP FOR REGRESSION ANALYSIS -- need to put the data into numpy arrays

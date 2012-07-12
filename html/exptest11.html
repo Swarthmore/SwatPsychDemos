@@ -16,8 +16,8 @@
                 padding-top: 60px;
                 /* 60px to make the container go all the way to the bottom of the topbar */
             }
-            form {
-                width: 40%;
+            formset {
+                width: 100%;
             }
             .slider {
                 margin-top: 10px;
@@ -76,10 +76,26 @@
             .navbar{
                 z-index: 1001;
             }
+            #analysis{
+                width:800px;
+                position: fixed;
+                left: 50%;
+                margin-left: -400px;
+            }
+            #table_div{
+                width: 600px;
+                margin:0px auto;
+            }
+            #buttons{
+                width:200px;
+                margin: 0px auto;
+            }
+            @media (max-width:
+            
         </style>
         
-        <link href="./bootstrap/docs/assets/css/bootstrap-responsive.css"
-        rel="stylesheet">
+        <!-- <link href="./bootstrap/docs/assets/css/bootstrap-responsive.css"
+        rel="stylesheet"> -->
        
        <link type="text/css" href="./jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
         
@@ -519,13 +535,11 @@
                     
                     
                     //creates divs for charts and analyisis
-                    $('body').append("<div id = 'chart_div' class = 'dataReport' style = 'width:400; height:300'></div>");
+                    $('#analysis').append("<div id = 'chart_div' class = 'dataReport' style = 'width:400; height:300'></div>");
                     
-                    $('body').append("<div id = 'table_div' class = 'dataReport' style = 'width:400; height:300'></div>");
+                    $('#analysis').append("<div id = 'table_div' class = 'dataReport' style = 'width:400; height:300'></div>");
                     
-                    $('body').append("<input type='button' class = 'dataReport' id = 'restart' value = 'Try Again' />");
-                    
-                    $('body').append("<input type='button' class = dataReport' id = 'download' value = 'Download Data'/>");
+                    $('#analysis').append("<div id='buttons'> <input type='button' class = 'btn dataReport' id = 'restart' value = 'Try Again' /> <input type='button' class = 'btn dataReport' id = 'download' value = 'Download Data'/> <div>");
                     
                     //draws in chart with data
                     drawChart();
@@ -649,6 +663,7 @@
                 //create formatter object for table and define options
                 var formatter = new google.visualization.NumberFormat({
                     groupingSymbol: '',
+                    fractionDigits:0,
                 })
                 var formatter2 =new google.visualization.NumberFormat({
                     fractionDigits: 2,
@@ -657,7 +672,7 @@
                 //format the columns
                 formatter.format(dataTable, 1)
                 formatter.format(dataTable, 2)
-                formatter2.format(dataTable, 3)
+                formatter2.format(dataTable, 5)
                 
                 //print table
                 table.draw(tableView, {
@@ -711,45 +726,53 @@
             </div>
         </div>
         <div class='row'>
-        <div class="span4  offset4">
-            <form class='form-horizontal'>
-                <legend>Parameters</legend>
-                <fieldset>
-                
-                <div class='controls'>    
-                    <div class='btn-group' id='expType' data-toggle='buttons-radio'>
-                        <input type='button' class='btn active' value='Demo'>
-                        <input type='button' class='btn' value='Full Experiment'>
-                    </div>
-                </div>
-                    <br>
-                    <div class='control-group'>
-                        <label class='control-label'> How many types of distractors? </label>
-                        <div class='controls'>
-                            <input type='text' id='distractors' input-large>
-                            <div id='slider' class='slider'></div>
+            
+            <div class="span5 offset4">
+                <form class='form-horizontal'>
+                    <legend>Parameters</legend>
+                    <fieldset>
+                    
+                    <div class='controls'>    
+                        <div class='btn-group' id='expType' data-toggle='buttons-radio'>
+                            <input type='button' class='btn active' value='Demo'>
+                            <input type='button' class='btn' value='Full Experiment'>
                         </div>
                     </div>
-                    
-                    <div id='distractorElts'>
-                    </div>
-
-                    <div class='control-group'>
-                        <label class='control-label'> Target </label>
-                        <div class='controls'>
-                            <input type='text' id='target' input-large>
+                        <br>
+                        <div class='control-group'>
+                            <label class='control-label'> How many types of distractors? </label>
+                            <div class='controls'>
+                                <input type='text' id='distractors'>
+                                <div id='slider' class='slider'></div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class='controls'>
-                        <input id='start' class='btn btn-primary' type='button' value='Start Experiment'>
-                    </div>
-                    
-                </fieldset>
-            </form>
-        </div>
+                        
+                        <div id='distractorElts'>
+                        </div>
+    
+                        <div class='control-group'>
+                            <label class='control-label'> Target </label>
+                            <div class='controls'>
+                                <input type='text' id='target'>
+                            </div>
+                        </div>
+                        
+                        <div class='controls'>
+                            <input id='start' class='btn btn-primary' type='button' value='Start Experiment'>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        
+            <!-- <div class='span4 offset1'>              
+                <p> How does the brain find something in the visual world that it is seeking? Triesman and Gelade (XXX) did an elegant experiment designed to show that it was easy to search for distinct features, but much harder to search for the absence of a feature.  For example, searching for a Q among O's is easy, but searching for an O among Q's is much harder.  In this version of the experiment, you can choose to simply replicate this basic finding, or, if you wish, you can design your own version of the experiment by choosing any characters you wish as target and distracter(s).  Does search become harder when you have more different types of distractors? </p>
+                <p> To practice the task and see how it works, click "Start Experiment."  By default you should press "F" when the target is present and "J" when the target is not present. Try to go as quickly as you can without making more than a couple mistakes.  Press the space key when you are ready to move on to the next trial.</p>
+                <p> You can set the two response keys to whatever you want to use. </p>
+            </div> -->
+        
         </div>
     <div id='experiment'></div>
+    <div id='analysis'> </div>
     </body>
 
 </html>
