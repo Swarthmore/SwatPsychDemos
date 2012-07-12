@@ -165,13 +165,12 @@
                 margin: 0px auto;
             }
             .module_type1, .module_type2, .module_type3 {
-                float: left;
-                margin: 0 0 15px 0;
+                margin: 0 10px 15px 10px;
                 display: inline-block;
                 background-color: 
                 white;
                 clear: both;
-                padding: 0;
+                padding: 0 0 10px 0;
                 border: 1px solid 
                 #DDD;
                 -webkit-box-shadow: 1px 1px 7px 
@@ -179,9 +178,37 @@
                 -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
                 box-shadow: 1px 1px 7px 
                 rgba(153, 153, 153, 0.2);
-            }            
+            }
+            .module_type1 {
+                width: auto;
+            }
+            .module_title {
+                margin: 0px;
+                padding: 3px 0 3px 9px;
+                border-top: 1px solid 
+                #555;
+                border-bottom: 1px solid 
+                #DDD;
+                background: url("bootstrap/img/topnav_stretch.gif") repeat-x left top 
+                #101010;
+                overflow: hidden;
+            }
+            .module_title h2 {
+                margin: 1px 0 3px 0;
+                padding: 0;
+                color: 
+                #FDFDFD;
+                font-family: "Times New Roman",Times,serif;
+                font-size: 2em;
+                font-style: normal;
+                font-variant: normal;
+                font-weight: normal;
+                letter-spacing: 0.4px;
+                line-height: 1.15em;
+                text-shadow: 1px 1px 
+                black;
+            }
         </style>      
-       <link type="text/css" href="./jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
         
         <link rel="shortcut icon" href="/bootstrap/docs/assets/ico/favicon.ico">
         
@@ -219,6 +246,19 @@
         
         <script src="./bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
         <script src="./jquery.fileDownload.js"></script>  
+        
+        <script>
+            function initializeTabs(){
+                $('#myTab a').click(function(e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+            }
+            
+            $(document).ready(function(){
+                initializeTabs();
+            });
+        </script>
     </head>
     <body>
     <div class='body_outer_container'>
@@ -231,17 +271,44 @@
             </hgroup>
         </header>
         <div class='body_content'>    
-            <div class='module_type1'>
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et nibh nec sem volutpat malesuada. Morbi eleifend est eget mi varius imperdiet. Fusce pellentesque orci vitae augue lobortis quis adipiscing velit luctus. Phasellus nibh mi, tempor ac aliquam quis, aliquet bibendum nunc. Donec et quam lorem, a consequat dolor. Phasellus facilisis semper viverra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas erat tortor, congue eget gravida et, dapibus vitae leo. Nulla sagittis vulputate nunc, placerat pulvinar lectus blandit sit amet. Sed venenatis metus non eros ultricies sit amet imperdiet lacus venenatis. Cras aliquam justo ut neque gravida sed bibendum eros mollis. Maecenas eu lectus sapien, id commodo mauris. Suspendisse potenti. Vivamus est purus, imperdiet vitae cursus sit amet, facilisis et dolor. </p>
-    
-                <p> Phasellus non turpis in mi hendrerit pellentesque a id arcu. Suspendisse adipiscing nibh at lectus auctor nec ultricies nisl viverra. Aliquam et suscipit quam. Cras sem arcu, semper ut pretium a, viverra gravida purus. Integer porta rutrum leo eget ornare. Sed in sem non arcu convallis consectetur. Pellentesque lobortis elit eget tortor viverra eu porta lacus vehicula. Morbi est libero, sodales vel posuere vel, dapibus eu enim. Nullam tristique dolor eleifend nulla ultricies non tempus mi facilisis. Fusce vulputate tempor pharetra. Donec suscipit, arcu quis sodales aliquet, lacus lectus lacinia diam, ac vestibulum sapien justo sit amet sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem tortor, porta vel blandit sit amet, aliquam porta ligula. Morbi auctor ultricies enim vel iaculis.</p>
-    
-                <p> Mauris mattis neque vitae metus rutrum vitae pulvinar velit hendrerit. Duis a dui nisi, ut posuere turpis. Aenean odio velit, ultricies tempor sodales nec, scelerisque nec orci. Duis velit mi, viverra ac porttitor ac, tempus sit amet justo. Duis dolor nisl, consectetur a accumsan non, adipiscing sed justo. Etiam consequat egestas purus, in consectetur sapien hendrerit vitae. Phasellus dignissim, massa vel placerat laoreet, lacus orci laoreet dui, eget auctor arcu urna id lectus.</p>
-    
-                <p> Vestibulum sem leo, blandit et pretium sit amet, elementum a ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris eu malesuada quam. Integer elementum, dui ut vulputate rutrum, magna libero scelerisque urna, euismod elementum mi elit sit amet lorem. Nunc vitae diam lacus. Sed sit amet ipsum pulvinar urna lacinia tempus at sit amet dui. Etiam faucibus dictum pharetra. In hac habitasse platea dictumst. Suspendisse semper congue nisi, sit amet lacinia ante suscipit luctus. In hac habitasse platea dictumst. </p>
-    
-                <p> Aenean non ipsum in felis euismod aliquet non non odio. Integer egestas leo sed odio viverra ac bibendum ante eleifend. Vivamus auctor lacus eget lacus posuere id molestie nisl adipiscing. Suspendisse vestibulum aliquet justo, vel interdum nibh porttitor vel. Proin a ante est. Nulla facilisi. Aliquam ullamcorper, mauris ut aliquam sagittis, nulla justo ullamcorper purus, sed ullamcorper ligula metus non orci. Fusce ultricies nunc eu turpis rutrum ac dapibus nibh lobortis. Integer ornare sodales lorem quis pharetra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis condimentum eleifend arcu nec eleifend. Morbi fringilla congue lacus quis ultrices. Aliquam ut justo eget ante tempus porttitor. Proin magna orci, ultricies eget varius eu, commodo eget felis. Maecenas sed purus diam, a molestie purus.  </p>
+        <div class='row'>        
+            <div class='module_type1 span2'>
+                <div class='tabbable tabs-left'>
+                    <ul class='nav nav-tabs' id='myTab'>
+                        <li> <a href='#home'>Home</a> </li>
+                        <li> <a href='#visionSearch'> Vision Search </a> </li>
+                    </ul>
+                </div>
             </div>
+            <div class='module_type1'>              
+                <div class='module_title'>
+                    <h2>
+                    Swarthmore Cognitive Psychology Demos
+                    </h2>
+                </div>
+                <div class='tab-content'>
+                    <div class='tab-pane active' id='home'>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et nibh nec sem volutpat malesuada. Morbi eleifend est eget mi varius imperdiet. Fusce pellentesque orci vitae augue lobortis quis adipiscing velit luctus. Phasellus nibh mi, tempor ac aliquam quis, aliquet bibendum nunc. Donec et quam lorem, a consequat dolor. Phasellus facilisis semper viverra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas erat tortor, congue eget gravida et, dapibus vitae leo. Nulla sagittis vulputate nunc, placerat pulvinar lectus blandit sit amet. Sed venenatis metus non eros ultricies sit amet imperdiet lacus venenatis. Cras aliquam justo ut neque gravida sed bibendum eros mollis. Maecenas eu lectus sapien, id commodo mauris. Suspendisse potenti. Vivamus est purus, imperdiet vitae cursus sit amet, facilisis et dolor. </p>
+        
+                    <p> Phasellus non turpis in mi hendrerit pellentesque a id arcu. Suspendisse adipiscing nibh at lectus auctor nec ultricies nisl viverra. Aliquam et suscipit quam. Cras sem arcu, semper ut pretium a, viverra gravida purus. Integer porta rutrum leo eget ornare. Sed in sem non arcu convallis consectetur. Pellentesque lobortis elit eget tortor viverra eu porta lacus vehicula. Morbi est libero, sodales vel posuere vel, dapibus eu enim. Nullam tristique dolor eleifend nulla ultricies non tempus mi facilisis. Fusce vulputate tempor pharetra. Donec suscipit, arcu quis sodales aliquet, lacus lectus lacinia diam, ac vestibulum sapien justo sit amet sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem tortor, porta vel blandit sit amet, aliquam porta ligula. Morbi auctor ultricies enim vel iaculis.</p>
+        
+                    <p> Mauris mattis neque vitae metus rutrum vitae pulvinar velit hendrerit. Duis a dui nisi, ut posuere turpis. Aenean odio velit, ultricies tempor sodales nec, scelerisque nec orci. Duis velit mi, viverra ac porttitor ac, tempus sit amet justo. Duis dolor nisl, consectetur a accumsan non, adipiscing sed justo. Etiam consequat egestas purus, in consectetur sapien hendrerit vitae. Phasellus dignissim, massa vel placerat laoreet, lacus orci laoreet dui, eget auctor arcu urna id lectus.</p>
+        
+                    <p> Vestibulum sem leo, blandit et pretium sit amet, elementum a ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris eu malesuada quam. Integer elementum, dui ut vulputate rutrum, magna libero scelerisque urna, euismod elementum mi elit sit amet lorem. Nunc vitae diam lacus. Sed sit amet ipsum pulvinar urna lacinia tempus at sit amet dui. Etiam faucibus dictum pharetra. In hac habitasse platea dictumst. Suspendisse semper congue nisi, sit amet lacinia ante suscipit luctus. In hac habitasse platea dictumst. </p>
+        
+                    <p> Aenean non ipsum in felis euismod aliquet non non odio. Integer egestas leo sed odio viverra ac bibendum ante eleifend. Vivamus auctor lacus eget lacus posuere id molestie nisl adipiscing. Suspendisse vestibulum aliquet justo, vel interdum nibh porttitor vel. Proin a ante est. Nulla facilisi. Aliquam ullamcorper, mauris ut aliquam sagittis, nulla justo ullamcorper purus, sed ullamcorper ligula metus non orci. Fusce ultricies nunc eu turpis rutrum ac dapibus nibh lobortis. Integer ornare sodales lorem quis pharetra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis condimentum eleifend arcu nec eleifend. Morbi fringilla congue lacus quis ultrices. Aliquam ut justo eget ante tempus porttitor. Proin magna orci, ultricies eget varius eu, commodo eget felis. Maecenas sed purus diam, a molestie purus.  </p>
+                    </div>
+                    
+                    <div class='tab-pane' id='visionSearch'>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam consequat felis a dolor vestibulum nec elementum justo imperdiet. Integer fringilla dolor vehicula eros commodo tincidunt. Quisque tempus, est tempus scelerisque ornare, lorem erat consequat erat, vitae euismod tellus nisl vitae tellus. Ut luctus arcu eu nisl tincidunt vehicula. Nullam risus mi, sagittis eu molestie sed, cursus quis justo. Proin ut ligula felis, ac blandit enim. Duis dignissim iaculis augue id gravida. Nullam a lorem eget risus cursus tincidunt vel vel massa. In hac habitasse platea dictumst. Phasellus dictum semper dapibus. Duis elit massa, tempus nec eleifend ut, luctus nec est. Sed eu purus erat. Nullam placerat erat quis metus bibendum interdum. Nulla eget feugiat mauris. Maecenas quis justo leo. Vestibulum mollis sagittis velit, quis ornare lectus elementum eu. </p>
+                    <p> Sed pharetra ante id metus viverra eu vulputate ante vehicula. Sed vestibulum lacinia congue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed congue aliquam urna, nec tempor justo ultrices ut. Sed consectetur vestibulum mauris, a pretium eros suscipit vel. Phasellus scelerisque ullamcorper nulla, eget porttitor nisi pulvinar nec. Donec eget nulla lorem, vel varius elit. Mauris fermentum lobortis quam venenatis pulvinar. Fusce vitae semper quam. Curabitur ut metus ante, nec mollis leo. Maecenas non eros quis enim molestie aliquam quis et sapien. Integer porttitor sem eget leo vulputate adipiscing. Vivamus porta diam ut turpis tempus egestas. </p>
+                    <p> Pellentesque condimentum dapibus magna, nec fermentum sem egestas sed. Nullam vulputate erat at augue lobortis viverra. Curabitur dapibus lacus eu velit venenatis varius. Mauris tristique, nibh at molestie ultricies, lorem diam ultricies nunc, eget congue mi urna ac velit. In rutrum porta velit. Donec semper nulla eget justo sodales hendrerit. Praesent consequat, arcu sed vulputate congue, magna ligula rhoncus dui, id tincidunt arcu purus in augue. Vivamus congue justo a lectus lacinia at vulputate quam euismod. </p>
+                    <p> Nunc gravida egestas odio vel luctus. Fusce malesuada, lorem ut bibendum laoreet, lacus felis imperdiet risus, venenatis auctor neque ligula eget enim. Proin iaculis augue eu est commodo ultricies. Sed porttitor tincidunt nisi non aliquam. Aliquam vestibulum nibh dui. Mauris nec arcu at urna tempor volutpat id ac dolor. Curabitur dignissim augue vel mi cursus condimentum. Vestibulum pulvinar fringilla erat quis vestibulum. Cras dignissim felis at urna tempor ut malesuada tellus tristique. Nam imperdiet pulvinar interdum. Vivamus pellentesque, odio eu blandit lacinia, augue est ultrices nibh, sit amet iaculis nisl ligula et leo. Nam suscipit velit turpis, id semper enim. Nulla tortor lectus, hendrerit quis tincidunt id, porta in nisi. Fusce congue volutpat orci, eget posuere justo consequat id. Vestibulum id orci risus. </p>
+                    <p> Maecenas massa mauris, fermentum et accumsan id, dignissim id velit. Nam pellentesque elementum lacus, quis fringilla enim auctor sed. Aliquam justo quam, posuere et luctus ac, rutrum in quam. Nullam at felis libero. Cras aliquet, velit eu aliquet vehicula, ante arcu tempor nibh, non lobortis est nisi et sem. Sed viverra blandit ultricies. Aenean accumsan nulla eget risus sagittis dictum. Quisque porttitor sapien id orci condimentum pellentesque. Fusce condimentum ultrices augue non posuere. Sed at tellus orci. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
         </div>
     </div>
