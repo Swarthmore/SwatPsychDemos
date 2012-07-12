@@ -2,12 +2,6 @@
 <html>
    <head>
      <title>Reaction Time Cicrle Test</title>
-     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js">
-     </script>
-     <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael.js">
-     </script>
-     <script src="./jquery.fileDownload.js"></script>
-
      <style media="screen">
        #holder {
               position: absolute;
@@ -18,17 +12,17 @@
               width: 610px;
        }
      </style> 
-   </head>
-
-   <body>
      <div id="holder">
        <div id="title"></div>
        <div id="instruction"></div>
        <div id="time"></div>
        <div id="canvas"></div>
      </div>
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+     <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael.js"></script>
+     <script src="./jquery.fileDownload.js"></script>
 
-     <script>
+    <script>
 
 	function drawTandI(){
         Ttext = title_canvas.text(pic_width/2, text_height/2, "Reaction Time Test");
@@ -216,12 +210,7 @@
 		});
 	}
 
-	</script>
-
-
-	<script>
- 
-		// this is the main function
+        // this is the main function
        	total_pop = 9;
        	shown_pop = 6;
 
@@ -255,7 +244,7 @@
 			numoftrials = prompt("Please enter the number of trials you want to do. It has to be smaller than 20.");
 		}
 		console.log(numoftrials);
-	</script>
+    </script>
 
    </body>
 </html>
