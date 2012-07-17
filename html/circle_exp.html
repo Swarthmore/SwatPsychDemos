@@ -113,6 +113,7 @@
         true_color = true_colorKV.color;
        
         var false_colorKV = colorlist_full[center_index];
+	false_name = false_colorKV.name;
         false_color = false_colorKV.color;
   
         // clear the canvas first
@@ -167,8 +168,8 @@
                     // this is zero indexing so it is annoying
                     exportdata[trialnum] = {"trial number": trialnum + 1, 
                                             "time": elapsed,
-                                            "printed": false_color,
-                                            "true color": true_color,
+                                            "printed": false_name,
+                                            "true color": true_name,
                                             "correct?": check};
                     console.log(exportdata);
                     trialnum = trialnum + 1;

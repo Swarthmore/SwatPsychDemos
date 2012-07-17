@@ -82,7 +82,8 @@ for distractor in analysis['present'] or analysis['absent']:
         analysis['absent'][distractor]['mean'] = 0
     
     if (presentNumber + absentNumber + errors) != 0:
-        analysis['errors'][distractor]['rate'] = errors/(presentNumber + absentNumber + errors)
+        analysis['errors'][distractor]['rate'] = float(errors)/(presentNumber + absentNumber + errors)
+    else:
         analysis['errors'][distractor]['rate'] = 0
 
 ## SETUP FOR REGRESSION ANALYSIS -- need to put the data into numpy arrays
@@ -121,6 +122,10 @@ analysis['regression']['absent']['r2'] = absent[2]**2
 analysis['regression']['absent']['p'] = absent[3]
 analysis['regression']['absent']['err'] = absent[4]
 
+for key in analysis['regression']:
+    for entry in analysis['regression'][key]:
+        analysis['regression'][key][entry] = round(analysis['regression'][key][entry], 3)
+
 ## OUTPUT OF DATA ##
 
 ## PLAIN ANALYSIS MODE
@@ -133,39 +138,36 @@ if option == 'csv':
 	print "Content-Type:application/csv"
 	print "Content-Disposition:attachment;filename=dataResults.csv\n"
 	print 'Trial Results:'
-	print 'Trial Number', ",", 'Number of Distractors',",", 'Target Present?',",","Subject's Response",",", 'Response Time',","
+	print 'Trial Number', ",", 'Number of Distractors',",", 'Target Present?',",","Subject's Response",",", 'Response Time (ms)',","
 	for trial, results  in enumerate(data['trials'], start=0):
-		print ('Trial ' + str(trial) + ',' + str(results['numberDistractors'])
-						+ ',' + str(results['targetPresent']) + ',' + str(results['subjectResponse']) + ',' + str(results['responseTime']))
+		print (str(trial) + ',' + str(results['distractors']) + ',' + str(results['targetPresent']) + ',' + str(results['subjectResponse']) + ',' + str(results['time']))
 	print
 	print 'Average Response Times'
-	print (	'Number of Distractors' + ',' + 'Target Present' + ',' + 'Number of Trials Present' + ',' +
-					'Target Absent' + ',' + 'Number of Trials Absent' + ',' + 'Number of Errors' + ',' + 
-					'Error Rate (%)')
+	print (	'Number of Distractors' + ',' + 'Target Present (ms)' + ',' + 'Number of Trials Present' + ',' + 'Target Absent (ms)' + ',' + 'Number of Trials Absent' + ',' + 'Number of Errors' + ',' + 'Error Rate (%)')
 	
-	for key in data['presentMeans']:
+	for key in analysis['present'] or analysis['absent'] :
 		#pdb.set_trace()
 		print (	str(key) + ',' + 
-				str(data['presentMeans'][key]['time']) + ',' + 
-				str(data['presentMeans'][key]['number']) + ',' +
-				str(data['absentMeans'][key]['time']) + ',' +
-				str(data['absentMeans'][key]['number']) + ',' +
-				str(errors[int(key)]['number']) + ',' +
-				str(errors[int(key)]['rate']) )
+				str(analysis['present'][key]['mean']) + ',' + 
+				str(analysis['present'][key]['number']) + ',' +
+				str(analysis['absent'][key]['mean']) + ',' +
+				str(analysis['absent'][key]['number']) + ',' +
+				str(analysis['errors'][key]['number']) + ',' +
+				str(analysis['errors'][key]['rate']) )
 	print
 
 	
 	print 'Least Squres Regression: (y = a + bx)'
 	print ' ' + ',' + 'a' + ',' + 'b' + ',', 'R^2'+ ',' + 'p' + ',' + 'SE'
 	print ('Present' + ',' + 
-			str(data['regression']['present']['a']) + ',' +
-			str(data['regression']['present']['b']) + ',' +
-			str(data['regression']['present']['r2']) + ',' +
-			str(data['regression']['present']['p']) + ',' +
-			str(data['regression']['present']['err'])) 
+			str(analysis['regression']['present']['a']) + ',' +
+			str(analysis['regression']['present']['b']) + ',' +
+			str(analysis['regression']['present']['r2']) + ',' +
+			str(analysis['regression']['present']['p']) + ',' +
+			str(analysis['regression']['present']['err'])) 
 	print ('Absent' + ',' + 
-			str(data['regression']['absent']['a']) + ',' +
-			str(data['regression']['absent']['b']) + ',' +
-			str(data['regression']['absent']['r2']) + ',' +
-			str(data['regression']['absent']['p']) + ',' +
-			str(data['regression']['absent']['err']))
+			str(analysis['regression']['absent']['a']) + ',' +
+			str(analysis['regression']['absent']['b']) + ',' +
+			str(analysis['regression']['absent']['r2']) + ',' +
+			str(analysis['regression']['absent']['p']) + ',' +
+			str(analysis['regression']['absent']['err']))

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <title>Search Patterns</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- Le styles -->
+        
+        <link href="./bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
+        
+        <style>
+            body {
+                color: 
+                black;
+                background: url("bootstrap/img/bg_body1.jpg") repeat
+                #EBE5D8;
+                font: normal 81.3%/1.538em Helvetica, Arial, sans-serif;
+            }
+            .header {
+                width: 960px;
+                height: 130px;
+                margin: 0px auto;
+                padding: 0;
+                position: relative;
+                background: url("bootstrap/img/hdr_swarthmore4.jpg") no-repeat left top 
+                #631919;
+            }
+            .body_outer_container {
+                width: 980px;
+                margin: 0 auto 20px auto;
+                padding: 0 0 10px 0;
+                background-color: 
+                white;
+                box-shadow: 0px 0px 10px 
+                rgba(0, 0, 0, 0.3);
+                -webkit-box-shadow: 0px 0px 10px 
+                rgba(0, 0, 0, 0.3);
+                -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+            }
+            .body_inner_container {
+                width: 960px;
+                margin: 0px auto;
+                padding: 0px;
+            }
+            .header h1 {
+                position: absolute;
+                bottom: 5px;
+                left: 20px;
+                font-family: 'FilosofiaReg', Georgia, Times, Times New Roman, Times-roman, Serif;
+                font-size: 4.0em;
+                font-weight: normal;
+                letter-spacing: -0.1px;
+                color: 
+                white;
+                text-shadow: 1px 1px 
+                black;
+            }
+            .header h1 a, .header h1 a:hover{
+                color: white !important;
+                text-decoration:none;
+            }
+            h1 {
+                display: block;
+                font-size: 2em;
+                -webkit-margin-before: 0.67em;
+                -webkit-margin-after: 0.67em;
+                -webkit-margin-start: 0px;
+                -webkit-margin-end: 0px;
+                font-weight: bold;
+            }            
+            .header_title {
+                position: relative;
+                width: 730px;
+                height: 130px;
+                overflow: hidden;
+            }
+            .body_content {
+                width: 960px;
+                margin: 5px auto;
+                padding: 0px;
+                padding-top: 10px;
+                font: 0.75em Helvetica, Arial, sans-serif;
+                color: 
+                #333;
+                line-height: 18px;
+                background: url("bootstrap/img/bg_container1.jpg") repeat scroll left top 
+                #F9F5ED;
+            }
+            
+            formset {
+                width: 100%;
+            }
+            .slider {
+                margin-top: 10px;
+            }
+            #instructions {
+                position: relative;
+                top: 100px;
+                left: 80px;
+                text-align: center;
+                font-size: 300%;
+                margin-top: -.5em;
+                width:400px;
+                
+            }
+            div.centered {
+                /*set the div in the center of the screen*/
+                position:absolute;
+                top:35%;
+                left:35%;
+                width:350px;
+            }
+            #TypesOfDistractors {
+                padding: 10px 0 0 0;
+            }
+            .form{
+                width:425px;
+            }
+            .distractor{
+                position:relative;
+                margin-top: 5px;
+            }
+            fieldset{
+                width: 350px;
+                margin: 0px auto;
+                -webkit-border-radius: 10px;
+                -moz-border-radius: 10px;
+                border-radius: 10px;
+            }
+            #begin{
+                margin: 10px 0;
+                
+            }
+            #letters:{
+                height: 100%;
+                width: 100%;
+                padding: 200px;
+            }
+            .fields{
+                display: block;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+                padding: 5px;
+                width: 90%;
+            }
+            .navbar{
+                z-index: 1001;
+            }
+            #analysis{
+                width:800px;
+                position: fixed;
+                left: 50%;
+                margin-left: -400px;
+            }
+            #table_div{
+                width: 600px;
+                margin:0px auto;
+            }
+            #buttons{
+                width:200px;
+                margin: 0px auto;
+            }
+            .module_type1, .module_type2, .module_type3 {
+                margin: 0 9px 15px 9px;
+                display: inline-block;
+                background-color: 
+                white;
+                padding: 0 0 10px 0;
+                border: 1px solid 
+                #DDD;
+                -webkit-box-shadow: 1px 1px 7px 
+                rgba(153, 153, 153, 0.2);
+                -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+                box-shadow: 1px 1px 7px 
+                rgba(153, 153, 153, 0.2);
+            }
+            .module_title {
+                margin: 0px;
+                padding: 3px 0 3px 9px;
+                border-top: 1px solid 
+                #555;
+                border-bottom: 1px solid 
+                #DDD;
+                background: url("bootstrap/img/topnav_stretch.gif") repeat-x left top 
+                #101010;
+                overflow: hidden;
+            }
+            .module_title h2 {
+                margin: 1px 0 3px 0;
+                padding: 0;
+                color: 
+                #FDFDFD;
+                font-family: "Times New Roman",Times,serif;
+                font-size: 2em;
+                font-style: normal;
+                font-variant: normal;
+                font-weight: normal;
+                letter-spacing: 0.4px;
+                line-height: 1.15em;
+                text-shadow: 1px 1px 
+                black;
+            }
+            .tab-content{
+                padding: 10px 0 0 0;
+            }
+            .module_content img {
+                margin: 0 6px 6px 0;
+                padding: 4px;
+                background-color: 
+                white;
+                border: 1px solid 
+                #DDD;
+                clear: both;
+            }
+            .module_content {
+                margin: 0px auto;
+                padding: 12px 10px 12px 10px;
+                float: left;
+            }
+            .row{
+                margin:0 0 0 10px;
+            }
+            .secondaryPageNav {
+                margin: 0 0 15px 0;
+                border: 1px solid 
+                #DDD;
+                -webkit-box-shadow: 1px 1px 7px 
+                rgba(153, 153, 153, 0.2);
+                -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+                box-shadow: 1px 1px 7px 
+                rgba(153, 153, 153, 0.2);
+                font-family: Arial,Verdana,sans-serif;
+                font-size: 1.1em;
+                font-style: normal;
+                font-variant: normal;
+                font-weight: normal;
+                letter-spacing: 0.2px;
+            }           
+            .secondaryPageNav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                background: 
+                #EFEFEF url("bootstrap/img/prim_nav_bg3.gif") repeat-y;
+                width:100%;
+            }
+            .secondaryPageNav ul li {
+                border-bottom: 1px dotted 
+                #CCC;
+                background: 
+                #DEDEDE url("bootstrap/img/prim_nav_bg3.gif") repeat-y;
+                line-height: 1.35em;
+            }
+            .secondaryPageNav li.pageNavTitle {
+                background: 
+                #631919 url("bootstrap/img/prim_nav_bg2.gif") repeat-y;
+                border-bottom: none;
+                padding: 2px 0 3px 0;
+            }
+            .secondaryPageNav li.pageNavTitle a {
+                color: white;
+                font-family: "Times New Roman",Times,serif;
+                font-size: 1.40em;
+                font-style: normal;
+                font-variant: normal;
+                font-weight: normal;
+                letter-spacing: 0.2px;
+                line-height: 1.1em;
+                text-align: left;
+            }
+            .tabs-left > .nav-tabs > li > a {
+                margin-right: 0;
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                border-radius: 0;
+            }
+        </style>      
+        
+        <link rel="shortcut icon" href="/bootstrap/docs/assets/ico/favicon.ico">
+        
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/bootstrap/docs/assets/ico/apple-touch-icon-144-precomposed.png">
+        
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/bootstrap/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+        
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/bootstrap/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+        
+        <link rel="apple-touch-icon-precomposed" href="/bootstrap/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+        
+        <script src="./bootstrap/docs/assets/js/jquery.js"></script>      
+
+        <script src="./bootstrap/docs/assets/js/bootstrap-transition.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-alert.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-modal.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-scrollspy.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-tab.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-tooltip.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-popover.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-button.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-collapse.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
+        
+        <script src="./bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
+        <script src="./jquery.fileDownload.js"></script>  
+        
+        <script>
+            function initializeTabs(){
+                $('#myTab a').click(function(e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+            }
+            
+            $(document).ready(function(){
+                initializeTabs();
+            });
+        </script>
+    </head>
+    <body>
+    <div class='body_outer_container'>
+        <div class='body_inner_container'>    
+            <header class="header">
+                <hgroup class="header_title">
+                    <h1>
+                        <a href="/" target="_self" title="Swarthmore College">Swarthmore College</a>
+                    </h1>
+            </hgroup>
+        </header>
+        <div class='body_content'>    
+            <div class='row'>           
+            <nav class='span2 secondaryPageNav'>
+                <div class='tabbable tabs-left'>
+                    <ul class='nav nav-tabs' id='myTab'>
+                        <li class='pageNavTitle'> <a> Experiments </a></li>
+                        <li class='active'> <a href='#home'>Home</a> </li>
+                        <li> <a href='#visionSearch'> Vision Search </a> </li>
+                        <li> <a href='#sternberg'> Sternberg </a> </li>
+                        <li> <a href='#stroop'> Reverse Stroop </a> </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class='module_type1 span10'>
+                <div class='module_title'>
+                    <h2>
+                    Swarthmore Cognitive Psychology Demos
+                    </h2>
+                </div>
+                <div class='module_content'>
+                <div class='tab-content'>
+                    <div class='tab-pane active' id='home'>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et nibh nec sem volutpat malesuada. Morbi eleifend est eget mi varius imperdiet. Fusce pellentesque orci vitae augue lobortis quis adipiscing velit luctus. Phasellus nibh mi, tempor ac aliquam quis, aliquet bibendum nunc. Donec et quam lorem, a consequat dolor. Phasellus facilisis semper viverra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas erat tortor, congue eget gravida et, dapibus vitae leo. Nulla sagittis vulputate nunc, placerat pulvinar lectus blandit sit amet. Sed venenatis metus non eros ultricies sit amet imperdiet lacus venenatis. Cras aliquam justo ut neque gravida sed bibendum eros mollis. Maecenas eu lectus sapien, id commodo mauris. Suspendisse potenti. Vivamus est purus, imperdiet vitae cursus sit amet, facilisis et dolor. </p>
+
+                    <img src='bootstrap/img/about_location.jpeg' alt='About Location' style='float: right'>
+
+                    <p> Phasellus non turpis in mi hendrerit pellentesque a id arcu. Suspendisse adipiscing nibh at lectus auctor nec ultricies nisl viverra. Aliquam et suscipit quam. Cras sem arcu, semper ut pretium a, viverra gravida purus. Integer porta rutrum leo eget ornare. Sed in sem non arcu convallis consectetur. Pellentesque lobortis elit eget tortor viverra eu porta lacus vehicula. Morbi est libero, sodales vel posuere vel, dapibus eu enim. Nullam tristique dolor eleifend nulla ultricies non tempus mi facilisis. Fusce vulputate tempor pharetra. Donec suscipit, arcu quis sodales aliquet, lacus lectus lacinia diam, ac vestibulum sapien justo sit amet sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem tortor, porta vel blandit sit amet, aliquam porta ligula. Morbi auctor ultricies enim vel iaculis.</p>
+                    
+                    <p> Mauris mattis neque vitae metus rutrum vitae pulvinar velit hendrerit. Duis a dui nisi, ut posuere turpis. Aenean odio velit, ultricies tempor sodales nec, scelerisque nec orci. Duis velit mi, viverra ac porttitor ac, tempus sit amet justo. Duis dolor nisl, consectetur a accumsan non, adipiscing sed justo. Etiam consequat egestas purus, in consectetur sapien hendrerit vitae. Phasellus dignissim, massa vel placerat laoreet, lacus orci laoreet dui, eget auctor arcu urna id lectus.</p>
+        
+                    <p> Vestibulum sem leo, blandit et pretium sit amet, elementum a ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris eu malesuada quam. Integer elementum, dui ut vulputate rutrum, magna libero scelerisque urna, euismod elementum mi elit sit amet lorem. Nunc vitae diam lacus. Sed sit amet ipsum pulvinar urna lacinia tempus at sit amet dui. Etiam faucibus dictum pharetra. In hac habitasse platea dictumst. Suspendisse semper congue nisi, sit amet lacinia ante suscipit luctus. In hac habitasse platea dictumst. </p>
+        
+                    <p> Aenean non ipsum in felis euismod aliquet non non odio. Integer egestas leo sed odio viverra ac bibendum ante eleifend. Vivamus auctor lacus eget lacus posuere id molestie nisl adipiscing. Suspendisse vestibulum aliquet justo, vel interdum nibh porttitor vel. Proin a ante est. Nulla facilisi. Aliquam ullamcorper, mauris ut aliquam sagittis, nulla justo ullamcorper purus, sed ullamcorper ligula metus non orci. Fusce ultricies nunc eu turpis rutrum ac dapibus nibh lobortis. Integer ornare sodales lorem quis pharetra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis condimentum eleifend arcu nec eleifend. Morbi fringilla congue lacus quis ultrices. Aliquam ut justo eget ante tempus porttitor. Proin magna orci, ultricies eget varius eu, commodo eget felis. Maecenas sed purus diam, a molestie purus.  </p>
+                    </div>
+                    
+                    <div class='tab-pane' id='visionSearch'>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam consequat felis a dolor vestibulum nec elementum justo imperdiet. Integer fringilla dolor vehicula eros commodo tincidunt. Quisque tempus, est tempus scelerisque ornare, lorem erat consequat erat, vitae euismod tellus nisl vitae tellus. Ut luctus arcu eu nisl tincidunt vehicula. Nullam risus mi, sagittis eu molestie sed, cursus quis justo. Proin ut ligula felis, ac blandit enim. Duis dignissim iaculis augue id gravida. Nullam a lorem eget risus cursus tincidunt vel vel massa. In hac habitasse platea dictumst. Phasellus dictum semper dapibus. Duis elit massa, tempus nec eleifend ut, luctus nec est. Sed eu purus erat. Nullam placerat erat quis metus bibendum interdum. Nulla eget feugiat mauris. Maecenas quis justo leo. Vestibulum mollis sagittis velit, quis ornare lectus elementum eu. </p>
+
+                    <img src='bootstrap/img/flowers.jpg' alt='About Location' style='float: left'>
+
+                    <p> Sed pharetra ante id metus viverra eu vulputate ante vehicula. Sed vestibulum lacinia congue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed congue aliquam urna, nec tempor justo ultrices ut. Sed consectetur vestibulum mauris, a pretium eros suscipit vel. Phasellus scelerisque ullamcorper nulla, eget porttitor nisi pulvinar nec. Donec eget nulla lorem, vel varius elit. Mauris fermentum lobortis quam venenatis pulvinar. Fusce vitae semper quam. Curabitur ut metus ante, nec mollis leo. Maecenas non eros quis enim molestie aliquam quis et sapien. Integer porttitor sem eget leo vulputate adipiscing. Vivamus porta diam ut turpis tempus egestas. </p>
+                    
+                    <p> Pellentesque condimentum dapibus magna, nec fermentum sem egestas sed. Nullam vulputate erat at augue lobortis viverra. Curabitur dapibus lacus eu velit venenatis varius. Mauris tristique, nibh at molestie ultricies, lorem diam ultricies nunc, eget congue mi urna ac velit. In rutrum porta velit. Donec semper nulla eget justo sodales hendrerit. Praesent consequat, arcu sed vulputate congue, magna ligula rhoncus dui, id tincidunt arcu purus in augue. Vivamus congue justo a lectus lacinia at vulputate quam euismod. </p>
+                    <p> Nunc gravida egestas odio vel luctus. Fusce malesuada, lorem ut bibendum laoreet, lacus felis imperdiet risus, venenatis auctor neque ligula eget enim. Proin iaculis augue eu est commodo ultricies. Sed porttitor tincidunt nisi non aliquam. Aliquam vestibulum nibh dui. Mauris nec arcu at urna tempor volutpat id ac dolor. Curabitur dignissim augue vel mi cursus condimentum. Vestibulum pulvinar fringilla erat quis vestibulum. Cras dignissim felis at urna tempor ut malesuada tellus tristique. Nam imperdiet pulvinar interdum. Vivamus pellentesque, odio eu blandit lacinia, augue est ultrices nibh, sit amet iaculis nisl ligula et leo. Nam suscipit velit turpis, id semper enim. Nulla tortor lectus, hendrerit quis tincidunt id, porta in nisi. Fusce congue volutpat orci, eget posuere justo consequat id. Vestibulum id orci risus. </p>
+                    <p> Maecenas massa mauris, fermentum et accumsan id, dignissim id velit. Nam pellentesque elementum lacus, quis fringilla enim auctor sed. Aliquam justo quam, posuere et luctus ac, rutrum in quam. Nullam at felis libero. Cras aliquet, velit eu aliquet vehicula, ante arcu tempor nibh, non lobortis est nisi et sem. Sed viverra blandit ultricies. Aenean accumsan nulla eget risus sagittis dictum. Quisque porttitor sapien id orci condimentum pellentesque. Fusce condimentum ultrices augue non posuere. Sed at tellus orci. </p>
+                    </div>
+                    
+                    <div class='tab-pane' id='sternberg'>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tincidunt eleifend massa, ut blandit ligula scelerisque eget. Curabitur vitae felis nec risus semper pharetra. Aenean dolor ante, sagittis eget faucibus non, lobortis ut eros. Duis sit amet massa turpis. Fusce eu enim mauris, sed ornare enim. Donec in est non urna mattis dignissim. Integer facilisis felis nec dolor adipiscing et suscipit erat consectetur. Praesent facilisis posuere ipsum vel pretium. Mauris enim odio, hendrerit non tempor sed, bibendum eget nunc. Ut suscipit varius sapien, id fermentum ipsum tempor non. Integer venenatis molestie mi, vel varius risus tempor vitae.</p>
+                    <p> Pellentesque sit amet condimentum massa. Duis ut libero vitae lacus dignissim placerat et a sem. Curabitur augue ligula, viverra vitae dapibus id, consectetur ac elit. Curabitur sodales mollis ornare. Duis lobortis eleifend felis, id euismod turpis volutpat ac. Curabitur turpis massa, rhoncus a fringilla vel, lobortis eget risus. Sed ut turpis vitae nisl dignissim commodo. Nunc massa mauris, commodo id luctus non, blandit nec lorem. Vestibulum lobortis ullamcorper ligula, pharetra tempus mi congue vitae. Fusce rhoncus, sem sagittis facilisis condimentum, turpis est aliquam lorem, at pharetra magna elit eget lorem.</p>
+                    <p> Nam in lectus et ante facilisis scelerisque. Ut est erat, tempus quis accumsan nec, feugiat in metus. Integer gravida, sem non accumsan ultricies, elit est aliquet sapien, at posuere dui neque at felis. Integer accumsan varius massa, non ornare velit condimentum et. Pellentesque in massa augue, eget rutrum tortor. Nunc malesuada consectetur urna. Proin lobortis, sapien at lobortis lacinia, diam sem congue felis, sed aliquet nulla velit nec diam. Fusce arcu leo, dignissim a varius vel, malesuada ut ipsum. Nunc eu eros nunc, sed lacinia turpis. Fusce vel rhoncus augue. Morbi dictum sollicitudin accumsan. Donec quis mauris vel sapien euismod tempus. Fusce augue erat, consectetur eu blandit non, adipiscing eu risus.</p>
+                    <img src='bootstrap/img/admissions_difference1.jpeg' alt='About Location' style='float: right'>
+                    
+                    <p> Aliquam id mi at augue congue viverra. Nulla convallis pulvinar quam. Sed vel ante ac elit tincidunt eleifend id vel orci. Nulla facilisi. Suspendisse diam odio, aliquam et ullamcorper nec, cursus non odio. Suspendisse id lacus sem. Fusce feugiat, enim non vehicula commodo, magna est tristique ipsum, id pretium neque est vel magna. Aliquam mi nibh, rhoncus blandit suscipit sed, rutrum quis tortor. Vestibulum in orci dolor. Vestibulum tincidunt iaculis lorem et eleifend. Morbi vel nisi magna, vitae viverra diam. Donec quis lorem at eros egestas lacinia. In tincidunt posuere molestie. In et enim augue.</p>
+                    
+                    <p> Ut ullamcorper massa sit amet tellus porttitor pulvinar ac et lorem. Nullam in arcu est. Quisque orci tellus, pretium nec malesuada vel, faucibus vel sapien. Donec lacinia mi erat. Nam convallis ornare lacus sed sodales. Duis commodo libero nec diam interdum ut facilisis dolor vestibulum. Nunc nulla nisi, pharetra vel placerat at, rutrum eu dui. Curabitur laoreet metus id diam vehicula posuere. Cras vitae urna adipiscing augue sollicitudin dapibus a in tortor. Maecenas et dolor augue. Praesent quis feugiat elit. Vivamus laoreet lobortis augue, a cursus risus suscipit et. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus massa felis, rutrum ut pharetra eget, vulputate id sem. Vivamus lorem ipsum, molestie vel sodales in, sodales eget felis.</p>
+                    </div>
+                    
+                    <div class='tab-pane' id='stroop'>
+                    
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in est eget nisi dictum mattis. Aliquam elementum libero eu nunc dignissim rutrum. Fusce malesuada sagittis sollicitudin. Fusce et sapien felis. Vivamus vel metus sit amet est congue ultricies quis molestie justo. Nunc ut nibh lacus, nec ultrices nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut felis sed ante volutpat mattis nec ac nisl. Vestibulum ante nibh, sodales a egestas eget, luctus nec felis. Praesent felis neque, hendrerit et lacinia mattis, aliquet ut arcu. In cursus varius ultrices. Vivamus sagittis pharetra nisl, nec euismod sapien laoreet vel. Proin tempus condimentum sodales. Nam at dui ante.</p>
+                    
+                    <img src='bootstrap/img/studentlife_leadership2.jpeg' alt='About Location' style='float: left'>
+                    
+                    <p>Etiam nec tortor ut neque commodo vehicula eu non urna. Pellentesque aliquet tincidunt arcu, tincidunt eleifend nunc tristique et. Mauris ac mattis nisi. Praesent sed augue purus. Sed commodo metus et mi rutrum suscipit. Nulla ut tempus urna. Nam id nibh vel odio auctor vulputate. Phasellus eleifend posuere hendrerit. Aliquam at ante ligula, nec iaculis eros. Donec malesuada lacinia pharetra. Cras semper ullamcorper dolor, id rhoncus purus laoreet ac. Sed luctus massa non lorem iaculis ac pretium eros ultrices. Vestibulum aliquet sollicitudin semper. Donec eu fringilla lorem.</p>
+                    <p>Curabitur vitae libero ipsum. Aenean consequat leo vel lorem iaculis non fermentum diam eleifend. Aliquam erat volutpat. Duis elit nisi, sagittis id molestie ut, placerat quis tellus. Sed interdum nibh sed ante varius euismod. Donec tincidunt interdum tellus. Duis venenatis ultrices molestie. Sed eget purus quam, eu tempus massa. Cras enim lorem, lacinia eu ultrices in, mattis eget dui. Aliquam a ipsum vitae lectus tristique feugiat vitae et massa. Donec enim velit, ultricies eget faucibus at, malesuada scelerisque dolor. Pellentesque lacinia auctor odio, ut suscipit tellus cursus blandit.</p>
+                    <p>Pellentesque ut nibh libero, non facilisis enim. Donec suscipit dictum mauris, sagittis elementum leo viverra at. Integer cursus vulputate aliquam. Nulla elit turpis, semper eget dapibus eget, posuere non tortor. Integer accumsan mauris quis ante gravida auctor. Pellentesque et urna lacus, eget laoreet lectus. Maecenas quis justo augue. Phasellus sodales purus ac velit accumsan a mattis erat ultrices. Integer vitae vestibulum urna. Pellentesque imperdiet est at diam sagittis consequat. Cras vel magna congue purus auctor vestibulum.</p>
+                    <p>Pellentesque dapibus sagittis urna a blandit. Nunc vel dolor nibh, at accumsan diam. Maecenas consectetur tellus ut nulla bibendum sed luctus enim luctus. Aenean scelerisque tellus felis, vel hendrerit massa. Donec dignissim cursus tellus, sit amet convallis erat aliquam eget. Vestibulum eget pulvinar velit. Nulla facilisi. Cras non nibh lacus.</p>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </body>
+
+</html>
