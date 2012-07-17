@@ -1,0 +1,384 @@
+<!doctype html>
+<html>
+	<head>
+    	<title>Reaction Time Cicrle Test</title>
+		<!-- make sure that the canvas is centered -->
+    	<style media="screen">
+       		#holder {
+              	position: absolute;
+              	top: 0%;
+              	left: 50%;
+              	height: 926px;
+              	margin: 0 0 0 -305px;
+              	width: 610px;
+       		}
+     	</style> 
+	</head>
+
+	<body>	
+		<!-- simply four divs, no other distractions -->
+     	<div id="holder">
+       		<div id="title"></div>
+       		<div id="instruction"></div>
+       		<div id="time"></div>
+       		<div id="canvas"></div>
+     	</div>
+   </body>
+    
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael.js"></script>
+    <script src="./jquery.fileDownload.js"></script>
+	
+	<!-- now starts the code proper -->
+    <script>
+
+	// creates the title and the instruction 
+	function drawTandI(){
+        Ttext = title_canvas.text(pic_width/2, text_height/2, "Reaction Time Test");
+        Ttext.attr("font-size", 40)
+        	 .attr("fill", "#000")
+        	 .attr("font-weight", 900)
+       	 	 .attr("font-family", "Courier New");
+
+		Itext = instruction_canvas.text(pic_width/2, text_height/2, "Instruction: \n Click the word in the center \n and then bring your cursor over the circle \n that has the color indicated by the word.");
+        Itext.attr("font-size", 20) 
+        	 .attr("fill", "#000")
+        	 .attr("font-weight", 900)
+        	 .attr("font-family", "Courier New");
+    }
+
+	// creates the colorKV pair for use later
+	function colorKV(name, value){
+        colorobj = new Object();
+        colorobj.name = name;
+        colorobj.color = value;
+        return colorobj;
+	}
+
+	// selects subcolors 
+    function getsubcolors(pop){
+        var n = colorlist_full.length;
+        var start = Math.floor(Math.random()*n);
+        var end = start + pop;
+
+        if (end > n){
+            var new_end = end % n;
+            var sublist = colorlist_full.slice(start);
+            newsublist = sublist.concat(colorlist_full.slice(0,new_end));
+            return newsublist;
+        } else {
+            var sublist = colorlist_full.slice(start,end);
+            return sublist;
+        }
+    }
+
+	function ExportDataToCSV(data){
+		$.fileDownload("../cgi-bin/circ_exp.py", {
+			httpMethod: "POST",
+			data:{
+				exp_data: JSON.stringify(data),
+				option: JSON.stringify('csv')
+            }
+		});
+	}
+
+
+	// separate the full list into two lists
+	function subsample(num){
+		var subsample = new Array();
+		var n = subsample.length;
+
+		while (n<num){
+            var index = Math.floor(Math.random()*colorlist_full.length);
+            var color = colorlist_full.splice(index, 1);
+            subsample[n] = color;
+            var n = subsample.length;
+		}
+		return subsample;				
+	}
+
+	// draws the circles and color them
+	function drawcircle(){
+
+        // get a list of colors
+        var colorlist = getsubcolors(shown_pop, colorlist_full);
+
+        // list of colors we are going to use
+        var center_index = Math.floor(Math.random()*shown_pop);
+        var true_colorKV = colorlist[center_index];
+        true_name = true_colorKV.name;
+        true_color = true_colorKV.color;
+       
+        var false_colorKV = colorlist_full[center_index];
+        false_color = false_colorKV.color;
+  
+        // clear the canvas first
+        canvas.clear();
+
+        // create the Raphael object
+        text = canvas.text(x_cent, y_cent, true_name);
+        text.attr("font-size", 40)
+        .attr("fill", false_color)
+        .attr("font-weight", 900)
+        .attr("font-family", "Courier New");
+							
+        // use an array to hold the circles
+        circle_array = new Array();
+
+        // draw all the circles around the center circle
+		for (var i=0; i<shown_pop; i++){
+
+	        // get the position of the circle
+            var dtheta = 2*Math.PI/shown_pop;
+            var angle = dtheta*i;
+            var x = dist*Math.sin(angle);
+            var y = dist*Math.cos(angle);
+
+			// draw it and give it different colors
+            circle_array[i] = canvas.circle(x + x_cent, y + y_cent, radius);
+            var n = colorlist.length;
+	        var index = Math.floor(Math.random()*n);
+	        var colorobj = colorlist.splice(index,1);
+				         
+            // this is the annoying part: splice returns an array
+            var colorobj = colorobj[0]; 
+            var circ_color = colorobj.color;
+            circle_array[i].attr("fill", circ_color)
+                           .attr("stroke", "#000");
+
+            // attach mouseover event to it
+	        circle_array[i].mouseover(function() {
+				if (started == 1){
+                    circ_fill = this.attr("fill");
+                    if (circ_fill == true_color){
+	                    check = "True";
+                    } else {
+                        check = "False";
+                    }
+                    d = new Date();
+	                stop_time = d.getTime();
+			        elapsed = stop_time - start_time;
+		            time_canvas.clear();
+                    drawtime();
+                    // this is zero indexing so it is annoying
+                    exportdata[trialnum] = {"trial number": trialnum + 1, 
+                                            "time": elapsed,
+                                            "printed": false_color,
+                                            "true color": true_color,
+                                            "correct?": check};
+                    trialnum = trialnum + 1;
+					init();
+                    if (trialnum > numoftrials-1){
+						canvas.clear();
+                    	alert("Finished!!!");
+                       	ExportDataToCSV(exportdata);
+					}
+				}
+			}
+	        );
+			d = new Date(); 
+            start_time = d.getTime();
+            started = 1;
+		}
+    }
+
+    
+	function drawtime(){
+	    var time_text = time_canvas.text(pic_width/2, text_height/2, elapsed + " ms");
+	    time_text.attr("font-size", 40)
+	             .attr("fill", "#000000")
+                 .attr("font-weight", 900)
+                 .attr("font-family", "Courier New");
+	}
+
+	function choose3(colorlist){
+		var n = colorlist.length;
+		var three = new Array(3);
+		for (i=0, i<3, i++){
+			var index = Math.floor(Math.random()*colorlist1.length);
+			three(i) = colorlist(index);
+		}
+		return three;
+	}
+
+	function createtrials(numoftrials, colorlist1, colorlist2){
+		// ok this is crazy but it has to be done
+		// this array contains the color combinations for each trial
+		// the first element of the array is the center colorKV,
+		// and the rest 6 are the color of the circles on the side
+		// so alltrials is numoftrials x 7 2D matrix
+
+		var alltrials = new Array();
+		var senarios_vec = ["set&present", "set&absent", "nonset&present", "nonset&absent"];
+		for(i=0, i<4, i++){
+			var senario = senarios_vec(i);
+			// need to do this because we don't want to modify the original array
+			list1 = colorlist1;
+			list2 = colorlist2;
+
+			switch (senario){
+				case "set&present":
+					// color printed in is from list1
+					// and there is a circle of that color
+					// choose the name of the color from list1 fisrt
+					var center_index = Math.floor(Math.random()*list1.length);
+					var center = list1.splice(index, 1);
+					
+					// choose 2 more colors from list1
+					var new_index = Math.floor(Math.random()*list1.length);
+					var set_others = list1.splice(new_index, 2);
+					
+					// choose 3 colors from list2
+					var nonset_others = choose3(list2);
+					
+					// add them together
+					var trial_colors = center.concat(center, set_others, nonset_others);
+
+				case "set&absent":
+					// color printed in is from list1
+					// and there isn't a circle of that color
+					// choose the name of the color from list1 fisrt
+					var center_index = Math.floor(Math.random()*list1.length);
+					var center_original = list1.splice(center_index, 1);
+					var center_copy = center_original;
+
+					// sub the center color's color with one of the color from list1
+					// and remove that element so that it is absent
+					var n = Math.floor(Math.random()*list1.length);
+					var color_printed = list1.splice(n,1).color;
+					center_copy.color = color_printed;
+
+					// choose 3 colors from list1
+					list1.concat(center_original);
+					var new_index = Math.floor(Math.random()*list1.length);
+					var set_others = list1.splice(new_index, 3);
+					
+					var color_printed = set_others[0].color;
+					center.color = color_printed;
+
+					// choose 3 colors from list2
+					var nonset_others = choose3(list2);
+					
+					// add them together
+					var trial_colors = center.concat(set_others, nonset_others);
+
+				case "nonset&present":
+					// color printed in is not from the set
+					// and there is a circle of that color
+					// choose the name of the color from list1 fisrt
+					var center_index = Math.floor(Math.random()*colorlist1.length);
+					var center = colorlist1.splice(index, 1);
+					
+					// choose 3 colors from list1
+					var new_index = Math.floor(Math.random()*colorlist1.length);
+					var set_others = colorlist1.splice(new_index, 3);
+					
+					// choose 3 colors from list2
+					var nonset_others = choose3(colorlist2);
+			
+					// sub the center color's color with one of the color from list2
+					var color_printed = nonset_others[0].color;
+					center.color = color_printed;
+					
+					// add them together
+					var trial_colors = center.concat(set_others, nonset_others);
+
+				case "nonset&absent":
+					// color printed in is not from list1
+					// and there isn't a circle of that color
+					// choose the name of the color from list1 fisrt
+					var center_index = Math.floor(Math.random()*colorlist1.length);
+					var center = colorlist1.splice(index, 1);
+					
+					// choose 3 colors from list1
+					var new_index = Math.floor(Math.random()*colorlist1.length);
+					var set_others = colorlist1.splice(new_index, 3);
+
+					// sub the center color's color with one of the color from list2
+					var n = Math.floor(Math.random()*colorlist2.length);
+					var color_printed = nonset_others.splice(n, 1).color;
+					center.color = color_printed;
+					
+					// choose 3 colors from list2
+					var nonset_others = choose3(colorlist2);
+								
+					// add them together
+					var trial_colors = center.concat(set_others, nonset_others);
+
+			}
+			for(j=0, j<numoftrials/4, j++){
+				alltrials[(i+1)*j] = trial_colors; 
+			}
+		}
+		return alltrials;
+	}
+
+	function init(){
+		canvas.clear();
+		createtrials(numoftrials, colorlist1, colorlist2);
+        start = canvas.text(x_cent, y_cent, "Click to Start");
+	    start.attr("font-size", 20)
+	         .attr("fill", "#000000")
+             .attr("font-weight", 900)
+             .attr("font-family", "Courier New");
+		started = -1;
+		start.click(function() {
+			drawcircle();
+		});
+	}
+
+        // this is the main function
+		// we have a database of 9 colors and
+		// there are only 6 colors present on the peripherals
+
+       	total_pop = 9;
+       	shown_pop = 6;
+
+       	// set the parameters first
+        radius = 95;
+       	dist = 200;
+        pic_height = dist*2 + radius*2 + 20;
+       	pic_width = pic_height;
+       	text_height = 100;
+
+       	// get the position of the center
+       	x_cent = pic_width/2;
+       	y_cent = pic_height/2;
+
+		// this is our color database
+		colorlist_full = [colorKV("gray","#808080"),
+                          colorKV("red","#FF0000"), 
+                          colorKV("yellow","#FFFF00"), 
+                          colorKV("orange","#FFA500"),
+                          colorKV("green","#008000"), 
+                          colorKV("blue","#0000FF"),
+                          colorKV("brown","#8B4513"), 
+                          colorKV("pink","#FF1493"),
+                          colorKV("purple","#800080")];
+
+		// gives two lists of colors to work with
+		var colorlist1 = subsample(4);
+		var colorlist2 = subsample(5);
+
+		// create the Raphael canvases for drawing
+	   	title_canvas = Raphael("title", pic_width, text_height);
+       	instruction_canvas = Raphael("instruction", pic_width, text_height); 
+       	time_canvas = Raphael("time", pic_width, text_height);
+       	canvas = Raphael("canvas", pic_width, pic_height);
+
+		// put down instructions first
+       	drawTandI();
+
+		numoftrials = 100;
+		while (numoftrials > 20){
+			numoftrials = prompt("Please enter the number of trials you want to do. It has to be smaller than 20.");
+		}
+
+       	// and initialize the experiment
+       	init();
+       	trialnum = 0;
+       	exportdata = [];
+
+    </script>
+
+</html>
