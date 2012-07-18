@@ -47,6 +47,15 @@
         	 .attr("font-family", "Courier New");
     }
 
+	// creates the time
+	function drawtime(){
+	    var time_text = time_canvas.text(pic_width/2, text_height/2, elapsed + " ms");
+	    time_text.attr("font-size", 40)
+	             .attr("fill", "#000000")
+                 .attr("font-weight", 900)
+                 .attr("font-family", "Courier New");
+	}
+
 	// creates the colorKV pair for use later
 	function colorKV(name, value){
         colorobj = new Object();
@@ -54,23 +63,6 @@
         colorobj.color = value;
         return colorobj;
 	}
-
-	// selects subcolors 
-    function getsubcolors(pop){
-        var n = colorlist_full.length;
-        var start = Math.floor(Math.random()*n);
-        var end = start + pop;
-
-        if (end > n){
-            var new_end = end % n;
-            var sublist = colorlist_full.slice(start);
-            newsublist = sublist.concat(colorlist_full.slice(0,new_end));
-            return newsublist;
-        } else {
-            var sublist = colorlist_full.slice(start,end);
-            return sublist;
-        }
-    }
 
 	function ExportDataToCSV(data){
 		$.fileDownload("../cgi-bin/circ_exp.py", {
@@ -90,7 +82,7 @@
 
 		while (n<num){
             var index = Math.floor(Math.random()*colorlist_full.length);
-            var color = colorlist_full.splice(index, 1);
+            var color = colorlist_full.splice(index, 1)[0];
             subsample[n] = color;
             var n = subsample.length;
 		}
@@ -98,29 +90,21 @@
 	}
 
 	// draws the circles and color them
-	function drawcircle(){
-
-        // get a list of colors
-        var colorlist = getsubcolors(shown_pop, colorlist_full);
-
-        // list of colors we are going to use
-        var center_index = Math.floor(Math.random()*shown_pop);
-        var true_colorKV = colorlist[center_index];
-        true_name = true_colorKV.name;
-        true_color = true_colorKV.color;
-       
-        var false_colorKV = colorlist_full[center_index];
-        false_color = false_colorKV.color;
-  
-        // clear the canvas first
-        canvas.clear();
-
+	function drawcircle(trial){
+		console.log("trial", trial);
+		var centerKV = trial.splice(0,1);
+		console.log("here", centerKV);
+		var centerKV = centerKV[0];
+		console.log("text obj", centerKV);
+        var name = centerKV.name;
+        var color = centerKV.color;
+         
         // create the Raphael object
-        text = canvas.text(x_cent, y_cent, true_name);
+        text = canvas.text(x_cent, y_cent, name);
         text.attr("font-size", 40)
-        .attr("fill", false_color)
-        .attr("font-weight", 900)
-        .attr("font-family", "Courier New");
+        	.attr("fill", color)
+			.attr("font-weight", 900)
+			.attr("font-family", "Courier New");
 							
         // use an array to hold the circles
         circle_array = new Array();
@@ -136,9 +120,9 @@
 
 			// draw it and give it different colors
             circle_array[i] = canvas.circle(x + x_cent, y + y_cent, radius);
-            var n = colorlist.length;
+            var n = trial.length;
 	        var index = Math.floor(Math.random()*n);
-	        var colorobj = colorlist.splice(index,1);
+	        var colorobj = trial.splice(index,1);
 				         
             // this is the annoying part: splice returns an array
             var colorobj = colorobj[0]; 
@@ -150,7 +134,7 @@
 	        circle_array[i].mouseover(function() {
 				if (started == 1){
                     circ_fill = this.attr("fill");
-                    if (circ_fill == true_color){
+                    if (circ_fill == color){
 	                    check = "True";
                     } else {
                         check = "False";
@@ -163,8 +147,8 @@
                     // this is zero indexing so it is annoying
                     exportdata[trialnum] = {"trial number": trialnum + 1, 
                                             "time": elapsed,
-                                            "printed": false_color,
-                                            "true color": true_color,
+                                            "printed": name,
+                                            "true color": color,
                                             "correct?": check};
                     trialnum = trialnum + 1;
 					init();
@@ -183,20 +167,12 @@
     }
 
     
-	function drawtime(){
-	    var time_text = time_canvas.text(pic_width/2, text_height/2, elapsed + " ms");
-	    time_text.attr("font-size", 40)
-	             .attr("fill", "#000000")
-                 .attr("font-weight", 900)
-                 .attr("font-family", "Courier New");
-	}
-
 	function choose3(colorlist){
 		var n = colorlist.length;
 		var three = new Array(3);
-		for (i=0, i<3, i++){
+		for (i=0; i<3; i++){
 			var index = Math.floor(Math.random()*colorlist1.length);
-			three(i) = colorlist(index);
+			three[i] = colorlist[index];
 		}
 		return three;
 	}
@@ -209,20 +185,25 @@
 		// so alltrials is numoftrials x 7 2D matrix
 
 		var alltrials = new Array();
-		var senarios_vec = ["set&present", "set&absent", "nonset&present", "nonset&absent"];
-		for(i=0, i<4, i++){
-			var senario = senarios_vec(i);
+		var senarios_vec = ["set_present", "set_absent", "nonset_present", "nonset_absent"];
+		for(i=0; i<4; i++){
+			var senario = senarios_vec[i];
+			console.log(i);
+			console.log("senario is", senario);
+			console.log("list1", colorlist1);
+			console.log("list2", colorlist2);
+
 			// need to do this because we don't want to modify the original array
 			list1 = colorlist1;
 			list2 = colorlist2;
 
 			switch (senario){
-				case "set&present":
-					// color printed in is from list1
+				case "set_present":{
+					// color printed from list1
 					// and there is a circle of that color
 					// choose the name of the color from list1 fisrt
 					var center_index = Math.floor(Math.random()*list1.length);
-					var center = list1.splice(index, 1);
+					var center = list1.splice(center_index, 1);
 					
 					// choose 2 more colors from list1
 					var new_index = Math.floor(Math.random()*list1.length);
@@ -233,9 +214,11 @@
 					
 					// add them together
 					var trial_colors = center.concat(center, set_others, nonset_others);
+					break;
+				}
 
-				case "set&absent":
-					// color printed in is from list1
+				case "set_absent":{
+					// color printed from list1
 					// and there isn't a circle of that color
 					// choose the name of the color from list1 fisrt
 					var center_index = Math.floor(Math.random()*list1.length);
@@ -249,25 +232,28 @@
 					center_copy.color = color_printed;
 
 					// choose 3 colors from list1
+					// need to put the center color back
 					list1.concat(center_original);
+					console.log(list1);
 					var new_index = Math.floor(Math.random()*list1.length);
 					var set_others = list1.splice(new_index, 3);
-					
-					var color_printed = set_others[0].color;
-					center.color = color_printed;
+					console.log("set others", set_others);
 
 					// choose 3 colors from list2
 					var nonset_others = choose3(list2);
 					
 					// add them together
 					var trial_colors = center.concat(set_others, nonset_others);
+					console.log("FUCK");
+					break;
+				}
 
-				case "nonset&present":
+				case "nonset_present":{
 					// color printed in is not from the set
 					// and there is a circle of that color
 					// choose the name of the color from list1 fisrt
 					var center_index = Math.floor(Math.random()*colorlist1.length);
-					var center = colorlist1.splice(index, 1);
+					var center = colorlist1.splice(center_index, 1);
 					
 					// choose 3 colors from list1
 					var new_index = Math.floor(Math.random()*colorlist1.length);
@@ -282,13 +268,15 @@
 					
 					// add them together
 					var trial_colors = center.concat(set_others, nonset_others);
+					break;
+				}
 
-				case "nonset&absent":
+				case "nonset_absent":{
 					// color printed in is not from list1
 					// and there isn't a circle of that color
 					// choose the name of the color from list1 fisrt
 					var center_index = Math.floor(Math.random()*colorlist1.length);
-					var center = colorlist1.splice(index, 1);
+					var center = colorlist1.splice(center_index, 1);
 					
 					// choose 3 colors from list1
 					var new_index = Math.floor(Math.random()*colorlist1.length);
@@ -304,18 +292,18 @@
 								
 					// add them together
 					var trial_colors = center.concat(set_others, nonset_others);
-
+					break;
+				}
 			}
-			for(j=0, j<numoftrials/4, j++){
-				alltrials[(i+1)*j] = trial_colors; 
-			}
+			//for(j=0; j<numoftrials/4; j++){
+			//	alltrials[(i+1)*j] = trial_colors; 
+			//}
+		console.log("SUCK");
 		}
 		return alltrials;
 	}
 
 	function init(){
-		canvas.clear();
-		createtrials(numoftrials, colorlist1, colorlist2);
         start = canvas.text(x_cent, y_cent, "Click to Start");
 	    start.attr("font-size", 20)
 	         .attr("fill", "#000000")
@@ -323,7 +311,9 @@
              .attr("font-family", "Courier New");
 		started = -1;
 		start.click(function() {
-			drawcircle();
+			canvas.clear();
+			var trial = alltrials.splice(0,1)[0];
+			drawcircle(trial);
 		});
 	}
 
@@ -369,11 +359,14 @@
 		// put down instructions first
        	drawTandI();
 
-		numoftrials = 100;
+		numoftrials = 16;
 		while (numoftrials > 20){
 			numoftrials = prompt("Please enter the number of trials you want to do. It has to be smaller than 20.");
 		}
 
+		// create trials
+		alltrials = createtrials(numoftrials, colorlist1, colorlist2);
+		console.log("all trials are", alltrials);
        	// and initialize the experiment
        	init();
        	trialnum = 0;
