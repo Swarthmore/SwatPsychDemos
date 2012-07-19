@@ -1,0 +1,408 @@
+/* 
+SEED Project Psych Experiments
+Stylesheet
+
+Author: Jacob Adenbaum, Swarthmore College Class of 2014
+*/
+
+formset {
+    width: 100%;
+}
+.slider {
+    margin-top: 10px;
+}
+#instructions {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-left:-200px;
+    margin-top: -216px;
+    text-align: center;
+    font-size: 300%;
+    width:400px;
+    line-height:1em;
+    
+}
+div.centered {
+    /*set the div in the center of the screen*/
+    position:absolute;
+    top:35%;
+    left:35%;
+    width:350px;
+}
+#TypesOfDistractors {
+    padding: 10px 0 0 0;
+}
+.form{
+    width:425px;
+}
+.distractor{
+    position:relative;
+    margin-top: 5px;
+}
+fieldset{
+    width: 350px;
+    margin: 0px auto;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+#begin{
+    margin: 10px 0;
+    
+}
+#letters:{
+    height: 100%;
+    width: 100%;
+    padding: 200px;
+}
+.fields{
+    display: block;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 5px;
+    width: 90%;
+}
+.navbar{
+    z-index: 1001;
+}
+#table_div{
+    width: 600px;
+    margin:0px auto;
+}
+#buttons{
+    width:200px;
+    margin: 0px auto;
+}
+body {
+    color: 
+    black;
+    background: url("bootstrap/img/bg_body1.jpg") repeat
+    #EBE5D8;
+    font: normal 100%/1.538em Helvetica, Arial, sans-serif;
+}
+.header {
+    width: 960px;
+    height: 130px;
+    margin: 0px auto;
+    padding: 0;
+    position: relative;
+    background: url("bootstrap/img/hdr_swarthmore4.jpg") no-repeat left top 
+    #631919;
+}
+.body_outer_container {
+    width: 980px;
+    margin: 0 auto 20px auto;
+    padding: 0 0 10px 0;
+    background-color: 
+    white;
+    box-shadow: 0px 0px 10px 
+    rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 0px 10px 
+    rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+}
+.body_inner_container {
+    width: 960px;
+    margin: 0px auto;
+    padding: 0px;
+}
+.header h1 {
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
+    font-family: 'FilosofiaReg', Georgia, Times, Times New Roman, Times-roman, Serif;
+    font-size: 4.0em;
+    font-weight: normal;
+    letter-spacing: -0.1px;
+    color: 
+    white;
+    text-shadow: 1px 1px 
+    black;
+}
+.header h1 a, .header h1 a:hover{
+    color: white !important;
+    text-decoration:none;
+}
+h1 {
+    display: block;
+    font-size: 2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}            
+.header_title {
+    position: relative;
+    width: 730px;
+    height: 130px;
+    overflow: hidden;
+}
+.body_content {
+    width: 960px;
+    margin: 5px auto;
+    padding: 0px;
+    padding-top: 10px;
+    font: 0.75em Helvetica, Arial, sans-serif;
+    color: 
+    #333;
+    line-height: 18px;
+    background: url("bootstrap/img/bg_container1.jpg") repeat scroll left top 
+    #F9F5ED;
+}
+
+formset {
+    width: 100%;
+}
+.slider {
+    margin-top: 10px;
+}
+div.centered {
+    /*set the div in the center of the screen*/
+    position:absolute;
+    top:35%;
+    left:35%;
+    width:350px;
+}
+#TypesOfDistractors {
+    padding: 10px 0 0 0;
+}
+.form{
+    width:425px;
+}
+.distractor{
+    position:relative;
+    margin-top: 5px;
+}
+fieldset{
+    width: 350px;
+    margin: 0px auto;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+#begin{
+    margin: 10px 0;
+    
+}
+#letters:{
+    height: 100%;
+    width: 100%;
+    padding: 200px;
+}
+.fields{
+    display: block;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 5px;
+    width: 90%;
+}
+.navbar{
+    z-index: 1001;
+}
+#table_div{
+    width: 600px;
+    margin:0px auto;
+}
+#buttons{
+    width:200px;
+    margin: 0px auto;
+}
+.module_type1, .module_type2, .module_type3 {
+    margin: 0 9px 15px 9px;
+    display: inline-block;
+    background-color: 
+    white;
+    padding: 0 0 10px 0;
+    border: 1px solid 
+    #DDD;
+    -webkit-box-shadow: 1px 1px 7px 
+    rgba(153, 153, 153, 0.2);
+    -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    box-shadow: 1px 1px 7px 
+    rgba(153, 153, 153, 0.2);
+}
+.module_title {
+    margin: 0px;
+    padding: 3px 0 3px 9px;
+    border-top: 1px solid 
+    #555;
+    border-bottom: 1px solid 
+    #DDD;
+    background: url("bootstrap/img/topnav_stretch.gif") repeat-x left top 
+    #101010;
+    overflow: hidden;
+}
+.module_title h2 {
+    margin: 1px 0 3px 0;
+    padding: 0;
+    color: 
+    #FDFDFD;
+    font-family: "Times New Roman",Times,serif;
+    font-size: 2em;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    letter-spacing: 0.4px;
+    line-height: 1.15em;
+    text-shadow: 1px 1px 
+    black;
+}
+.tab-content{
+    padding: 10px 0 0 0;
+}
+.module_content img {
+    margin: 0 6px 6px 0;
+    padding: 4px;
+    background-color: 
+    white;
+    border: 1px solid 
+    #DDD;
+    clear: both;
+}
+.module_content {
+    margin: 0px auto;
+    padding: 12px 10px 12px 10px;
+    float: left;
+}
+.row{
+    margin:0 0 0 10px;
+}
+.secondaryPageNav {
+    margin: 0 0 15px 0;
+    border: 1px solid 
+    #DDD;
+    -webkit-box-shadow: 1px 1px 7px 
+    rgba(153, 153, 153, 0.2);
+    -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    box-shadow: 1px 1px 7px 
+    rgba(153, 153, 153, 0.2);
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 1.1em;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    letter-spacing: 0.2px;
+}           
+.secondaryPageNav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: 
+    #EFEFEF url("bootstrap/img/prim_nav_bg3.gif") repeat-y;
+    width:100%;
+}
+.secondaryPageNav ul li {
+    border-bottom: 1px dotted 
+    #CCC;
+    background: 
+    #DEDEDE url("bootstrap/img/prim_nav_bg3.gif") repeat-y;
+    line-height: 1.35em;
+}
+.secondaryPageNav li.pageNavTitle {
+    background: 
+    #631919 url("bootstrap/img/prim_nav_bg2.gif") repeat-y;
+    border-bottom: none;
+    padding: 2px 0 3px 0;
+}
+.secondaryPageNav li.pageNavTitle a {
+    color: white;
+    font-family: "Times New Roman",Times,serif;
+    font-size: 1.40em;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    letter-spacing: 0.2px;
+    line-height: 1.1em;
+    text-align: left;
+}
+.tabs-left > .nav-tabs > li > a {
+    margin-right: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.tryit{
+    display:block;
+    margin:0 auto;
+    width:80px !important; 
+}
+.form-horizontal{
+    width: 45%;
+    display: block;
+    margin: 0 auto;
+}
+.module-content{
+    width: 100%;
+}
+#experiment{
+    width:600px;
+    height:600px;
+    background: white;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
+    top: 50%;
+    left:50%;
+    margin: -300px 0 0 -300px;
+    position:absolute;
+    border:solid;
+}
+#experiment_footer{
+    width:600px;
+    height:20px;
+    background: white;
+    -webkit-border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    border-radius:0 0 10px 10px;
+    top: 50%;
+    left: 50%;
+    margin: 300px 0 0 -300px;
+    position:fixed;
+    border:solid;
+}
+.instructions{
+    float:left;
+    padding: 0 10px;
+}
+.counter{
+    float:right;
+    padding: 0 10px;
+}
+.pageNavTitle_elt {
+    text-decoration: none;
+    background-color: #631919;
+    border-color: transparent;
+    margin-right: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: 1px solid transparent;
+    padding-right: 12px;
+    padding-left: 12px;
+    display: block;
+}
+.pageNavTitle_elt:hover{
+    text-decoration:none;
+}
+.pageNavTitle {
+    float: none;
+    line-height: 1.35em;
+    margin-bottom:-1px;
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.listDisplay{
+    position: fixed;
+    top: 50%;
+    text-align: center;
+    font-size: 500%;
+    margin-top: -.5em;
+    width:600px;
+    line-height:1em;
+}
