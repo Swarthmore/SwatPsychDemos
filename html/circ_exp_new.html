@@ -93,7 +93,10 @@
 		var centerKV = centerKV[0];
         var name = centerKV.name;
         var color = centerKV.color;
-         
+        
+		// shuffle the array
+		var trial = shuffle(trial);
+
         // create the Raphael object
         text = canvas.text(x_cent, y_cent, name);
         text.attr("font-size", 40)
@@ -186,37 +189,32 @@
 				list1 = shuffle(list1);
 				var center = list1.splice(0,1);
 				list2 = shuffle(list2);			
-	            list2.splice(0,2);
+				list2.splice(0,2);
 
                 switch (senario){
                     case "set_present":
-                        //sub the color
-						var swap = Math.floor(Math.random()*3);
-                        var color_printed = list1[swap].color
+                        var color_printed = list1[0].color
+						list1[1].color = color_printed;
+                        list1[0].color = center[0].color
                         center[0].color = color_printed;
                         break;
 
                     case "set_absent":
-                        // sub the center color's color with one of the color from list1
-                        // and remove that element so that it is absent
-						var swap = Math.floor(Math.random()*3);
-                        var color_printed = list1[swap].color;
-                        list1[swap].color = center[0].color;
+                        var color_printed = list1[0].color;
+                        list1[0].color = center[0].color;
                         center[0].color = color_printed;
                         break;
 
                     case "nonset_present":
-                        // sub the center color's color with one of the color from list2
-						var swap = Math.floor(Math.random()*3);
-                        var color_printed = list2[swap].color;
+                        var color_printed = list2[0].color;
+						list2[1].color = color_printed;
+                        list2[0].color = center[0].color
                         center[0].color = color_printed;
-                        break;				
+                        break;
 
                     case "nonset_absent":
-                        // swap the color
-						var swap = Math.floor(Math.random()*3);
-                        var color_printed = list2[swap].color;
-                        list2[swap].color = center[0].color;
+                        var color_printed = list2[0].color;
+                        list1[0].color = center[0].color;
                         center[0].color = color_printed;
                         break;
                 }
@@ -227,6 +225,7 @@
 				counter = counter+1; 
 			}
 		}
+		alltrials = shuffle(alltrials);
 		return alltrials;
 	}
 
@@ -287,15 +286,15 @@
 		// put down instructions first
        	drawTandI();
 
-		var numoftrials = 16;
-		while (numoftrials > 20){
-			numoftrials = prompt("Please enter the number of trials you want to do. It has to be smaller than 20.");
+		var numoftrials = 5;
+		while (numoftrials % 4 != 0){
+			numoftrials = prompt("Please enter the number of trials. It has to be multiples of 4.");
 		}
 
 		// create trials
 		alltrials = createtrials(numoftrials, colorlist1, colorlist2);
        	// and initialize the experiment
-       	init(alltrials);
+       	init();
        	trialnum = 0;
        	exportdata = [];
 
