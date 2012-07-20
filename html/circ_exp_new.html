@@ -87,7 +87,6 @@
 		});
 	}
 
-
 	// draws the circles and color them
 	function drawcircle(trial){
 		var centerKV = trial.splice(0,1);
@@ -116,12 +115,7 @@
 
 			// draw it and give it different colors
             circle_array[i] = canvas.circle(x + x_cent, y + y_cent, radius);
-//          var n = trial.length;
-//	        var index = Math.floor(Math.random()*n);
-console.log("trial", trial);
 	        var colorobj = trial.pop();
-console.log("i", i);
-console.log("colorobj", colorobj);
             var circ_color = colorobj.color;
             circle_array[i].attr("fill", circ_color)
                            .attr("stroke", "#000");
@@ -163,14 +157,12 @@ console.log("colorobj", colorobj);
 		}
     }
 
- 	function choose3(colorlist){
-		var n = colorlist.length;
-		var three = new Array(3);
-		for (var i=0; i<3; i++){
-			var index = Math.floor(Math.random()*colorlist.length);
-			three[i] = colorlist[index];
+	function clonecolorarray(list){
+		var clone = new Array();
+		for (var i=0; i<list.length; i++){
+			clone[i] = colorKV(list[i].name, list[i].color);
 		}
-		return three;
+		return clone;
 	}
 
 	function createtrials(numoftrials, colorlist1, colorlist2){
@@ -185,21 +177,16 @@ console.log("colorobj", colorobj);
 
 		for(var i=0; i<4; i++){
 			var senario = senarios_vec[i];
-			console.log(numoftrials/4);
 			for(var j=0; j<numoftrials/4; j++){
 
                 // need to do this because we don't want to modify the original array
-                var list1 = colorlist1.slice(0);
-                var list2 = colorlist2.slice(0);
+                var list1 = clonecolorarray(colorlist1);
+                var list2 = clonecolorarray(colorlist2);
 
 				list1 = shuffle(list1);
 				var center = list1.splice(0,1);
 				list2 = shuffle(list2);			
 	            list2.splice(0,2);
- 
-				console.log("center", center);
-				console.log("list1", list1);
-				console.log("list2", list2);
 
                 switch (senario){
                     case "set_present":
@@ -208,20 +195,14 @@ console.log("colorobj", colorobj);
                         var color_printed = list1[swap].color
                         center[0].color = color_printed;
                         break;
- 
+
                     case "set_absent":
                         // sub the center color's color with one of the color from list1
                         // and remove that element so that it is absent
-						console.log("center", center);
-						console.log("list1", list1);
 						var swap = Math.floor(Math.random()*3);
-						console.log("center orig color", center[0].color);
                         var color_printed = list1[swap].color;
-						console.log("to be prined in", color_printed);
                         list1[swap].color = center[0].color;
                         center[0].color = color_printed;
-						console.log("center now has", center[0].color);
-						console.log("list1[swap] now has", list1[swap].color);
                         break;
 
                     case "nonset_present":
@@ -242,11 +223,9 @@ console.log("colorobj", colorobj);
 
                 // add them together
                 var trial_colors = center.concat(list1, list2);
-//				console.log("trial", trial_colors);
 				alltrials[counter] = trial_colors;
 				counter = counter+1; 
 			}
-
 		}
 		return alltrials;
 	}
