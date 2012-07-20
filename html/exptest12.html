@@ -11,86 +11,7 @@
         
         <link href="./bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
         
-        <style>
-            body {
-                padding-top: 60px;
-                /* 60px to make the container go all the way to the bottom of the topbar */
-            }
-            formset {
-                width: 100%;
-            }
-            .slider {
-                margin-top: 10px;
-            }
-            #instructions {
-                position: relative;
-                top: 100px;
-                left: 80px;
-                text-align: center;
-                font-size: 300%;
-                margin-top: -.5em;
-                width:400px;
-                
-            }
-            div.centered {
-                /*set the div in the center of the screen*/
-                position:absolute;
-                top:35%;
-                left:35%;
-                width:350px;
-            }
-            #TypesOfDistractors {
-                padding: 10px 0 0 0;
-            }
-            .form{
-                width:425px;
-            }
-            .distractor{
-                position:relative;
-                margin-top: 5px;
-            }
-            fieldset{
-                width: 350px;
-                margin: 0px auto;
-                -webkit-border-radius: 10px;
-                -moz-border-radius: 10px;
-                border-radius: 10px;
-            }
-            #begin{
-                margin: 10px 0;
-                
-            }
-            #letters:{
-                height: 100%;
-                width: 100%;
-                padding: 200px;
-            }
-            .fields{
-                display: block;
-                -webkit-border-radius: 3px;
-                -moz-border-radius: 3px;
-                border-radius: 3px;
-                padding: 5px;
-                width: 90%;
-            }
-            .navbar{
-                z-index: 1001;
-            }
-            #analysis{
-                width:800px;
-                position: fixed;
-                left: 50%;
-                margin-left: -400px;
-            }
-            #table_div{
-                width: 600px;
-                margin:0px auto;
-            }
-            #buttons{
-                width:200px;
-                margin: 0px auto;
-            }          
-        </style>
+        <link href='stylesheet.css' rel='stylesheet'>
         
         <!-- <link href="./bootstrap/docs/assets/css/bootstrap-responsive.css"
         rel="stylesheet"> -->
@@ -279,9 +200,13 @@
                 
                 //Create Click function for Start Experiment Button
                 $('#start').click(function(){
-                    $('form').parent().parent().hide();
+                    $('form').hide();
                     generateTrials();
                     initializeModal();
+        
+                    //updates trial counter
+                    $('.counter').text( t + '/' + global.trials.length );
+                    
                     runExperiment();
                 });
             }
@@ -321,36 +246,76 @@
                 global.trials = shuffleArray(trials);
             }
         
-        //Initialize the Experiment Modal
+        //Initialize the Experiment Modal -- not a real jQuery modal
             function initializeModal(){
-                $( "#experiment" ).dialog({
-                    resizable: false,   //modal can't be dragged
-                    height:600,         //600 x 600 pixels
-                    width: 600,
-                    modal: true,        //user can't interact with screen
-                    
-                    //Closing the Modal ends the Experiment
-                    close: function(event, ui){
-                        
-                        //turn off keypress
-                        $(document).unbind('keydown');
-                        
-                        //throw out trials that haven't been run
-                        global.trials = global.trials.slice(0,t); 
-                        
-                        //Run DataAnalyis
-                        dataAnalysis();
-                    },
-                });
-            }            
+                $('.body_outer_container').hide();
+                $('.experiment').show();
+            }
+        
+        //Close the experiment modal
+            function closeModal(){
+                
+                //remove modal
+                $('.experiment').hide();
+                
+                //turn off keypress
+                $(document).unbind('keydown');
+                
+                //show main page
+                $('.body_outer_container').show();
+                
+                //throw out trials that haven't been run
+                global.trials = global.trials.slice(0,t); 
+                
+                //Run DataAnalyis
+                dataAnalysis();
+            }
+            
         //Generates a Random Placement of distractor
             function randomPlacement() {
-                randNum1 = Math.floor(Math.random() * 580);
-                randNum2 = Math.floor(Math.random() * 550);
+                randNum1 = Math.floor(Math.random() * 560) + 10;
+                randNum2 = Math.floor(Math.random() * 530) + 10;
             };
 
-            function newScreen() {
+            function letterPlacement(letter, number){
+            
+                //generates new placement
+                randomPlacement();
+    
+                //adds letter
+                $("#experiment").append("<div id='trial_" + t + "_letter_div_" + number + "' class='letters trial_" + t + "'  style= 'width:12px; color:none'>" + letter + "</div>"); 
                 
+                //positions letter
+                $("#trial_" + t + "_letter_div_" + number).position({
+                    of: $('#experiment'),
+                    my: 'left top',
+                    at: 'left top',
+                    offset: randNum1 + ' ' + randNum2
+                }); 
+                
+                //Checks that the letter doesn't overlap anything
+                while ($("#trial_" + t + "_letter_div_" + number).overlaps('.placed')) {
+                    
+                    //if it does, then reposition the letter
+                    randomPlacement();
+                    $("#trial_" + t + "_letter_div_" + number).position({
+                        of: $('#experiment'),
+                        my: 'left top',
+                        at: 'left top',
+                        offset: randNum1 + ' ' + randNum2
+                    }); 
+                }
+                
+                //once placed, make sure nothing gets placed over it.  
+                $("#trial_" + t + "_letter_div_" + number).addClass("placed");
+            }
+            
+            function newScreen() {
+            
+            //hides instructions dialog
+                if (!$('#instructions').hasClass('hide')) {
+                    $('#instructions').addClass('hide');
+                }
                 console.log('trial: ' + t);
                 console.log('target present? ' + global.trials[t].targetPresent);
                 console.log('distractors: ' + global.trials[t].distractors);
@@ -358,43 +323,39 @@
                 //counter for how many letters have been placed
                 var u = 0;
                 
+                var ratio = global.trials[t].distractors/global.numberDistractors;
+                
                 for (var n = 0; n < global.numberDistractors; n++) {
-                    for (var i = 0; i < Math.floor(global.trials[t].distractors/global.numberDistractors); i++) {
+                    for (var i = 0; i < Math.floor(ratio); i++) {
                         
-                        //generates new placement
-                        randomPlacement();
-
-                        //adds letter
-                        $("#experiment").append("<div id='trial_" + t + "_letter_div_" + u + "' class='letters trial_" + t + "'  style= 'width:12px; color:none'>" + global.distractors[n] + "</div>"); 
-                        
-                        //positions letter
-                        $("#trial_" + t + "_letter_div_" + u).position({
-                            of: $('#experiment'),
-                            my: 'left top',
-                            at: 'left top',
-                            offset: randNum1 + ' ' + randNum2
-                        }); 
-                        
-                        //Checks that the letter doesn't overlap anything
-                        while ($("#trial_" + t + "_letter_div_" + u).overlaps('.placed')) {
-                            
-                            //if it does, then reposition the letter
-                            randomPlacement();
-                            $("#trial_" + t + "_letter_div_" + u).position({
-                                of: $('#experiment'),
-                                my: 'left top',
-                                at: 'left top',
-                                offset: randNum1 + ' ' + randNum2
-                            }); 
-                        }
-                        
-                        //once placed, make sure nothing gets placed over it.  
-                        $("#trial_" + t + "_letter_div_" + u).addClass("placed");
+                        letterPlacement(global.distractors[n], u)
                         
                         //increase counter.  
                         u = u + 1;
                     }
                 }
+                
+                //places some extra letters to account for rounding earlier
+                
+                if (Math.floor(ratio) != ratio) {
+                    
+                    //determine how many extra letters are necessary
+                    var extras = (ratio - Math.floor(ratio)) * global.numberDistractors;
+                    
+                    //loop through and place extras
+                    for (var i=0; i < extras; i++){
+                        
+                        //randomly select index
+                        var n = Math.floor(Math.random() * global.numberDistractors)
+                        
+                        //place letter
+                        letterPlacement(global.distractors[n], u)
+                        
+                        //increase counter
+                        u++;
+                    }
+                }
+                
                 var rand = Math.random();
             
             //places target letter    
@@ -425,8 +386,10 @@
                         my: 'left top',
                         at: 'left top',
                         offset: randNum1 + ' ' + randNum2
-                    }); 
+                    })
+                    .addClass('placed'); 
                 }
+                console.log('placed: ' + $('.placed').length)
             };
             
         //Prints Instructions
@@ -446,11 +409,6 @@
                             //pulls down keypress time
                             var t1 = new Date();
                             var keypress = t1.getTime();
-                            
-                            //hides instructions dialog
-                            if (!$('#instructions').hasClass('hidden')) {
-                                $('#instructions').addClass('hidden');
-                            }
                             
                             //prints a new screen
                             newScreen(t);
@@ -489,17 +447,12 @@
                             //iterates trial counter
                             if (t < global.trials.length - 1) {
                                 t = t + 1;
+                                //updates trial counter
+                                $('.counter').text( t + '/' + global.trials.length );
                             } 
                             //if this is the end of the experiment
                             else { 
-                                
-                                //experiment is off
-                                experimentStart = undefined;
-                                
-                                //close the modal
-                                $( '#experiment' ).dialog('close');
-                                
-                                //closing the modal will run dataAnalysis();   
+                                closeModal();
                             }
     
                         } 
@@ -509,7 +462,7 @@
                             experimentStart = undefined;
                             
                             //close the modal
-                            $( '#experiment' ).dialog('close');
+                            closeModal();
                         }
                     }
                 });
@@ -530,14 +483,6 @@
                     
                     //stores JSON data from server in global object
                     global['analysis'] = analysis
-                    
-                    
-                    //creates divs for charts and analyisis
-                    $('#analysis').append("<div id = 'chart_div' class = 'dataReport' style = 'width:400; height:300'></div>");
-                    
-                    $('#analysis').append("<div id = 'table_div' class = 'dataReport' style = 'width:400; height:300'></div>");
-                    
-                    $('#analysis').append("<div id='buttons'> <input type='button' class = 'btn dataReport' id = 'restart' value = 'Try Again' /> <input type='button' class = 'btn dataReport' id = 'download' value = 'Download Data'/> <div>");
                     
                     //draws in chart with data
                     drawChart();
@@ -618,7 +563,7 @@
                 //set options for graph 
                 var options = {
                     title: 'Time vs. Number of Distractors',
-                    width: 800,
+                    width: 700,
                     height: 600,
                     hAxis: {
                         title: 'Number of Distractors',
@@ -676,8 +621,10 @@
                 table.draw(tableView, {
                     allowHtml: true,
                     showRowNumber: false,
-                    width: 600
+                    width: 650,
                 });
+                
+                $('#analysis').show();
             }
         //Runs the script when document is ready:
             $(document).ready(function(){
@@ -697,36 +644,38 @@
           </script>
     </head>
     <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-                    <a class="brand" href="#"> Patterns of Searching </a>
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            <li class="active">
-                                <a href="#">Home</a>
-                            </li>
-                            <li>
-                                <a href="#about">About</a>
-                            </li>
-                            <li>
-                                <a href="#contact">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!--/.nav-collapse -->
+    <div class='body_outer_container'>
+        <div class='body_inner_container'>    
+            <header class="header">
+                <hgroup class="header_title">
+                    <h1>
+                        <a href="/" target="_self" title="Swarthmore College">Swarthmore College</a>
+                    </h1>
+            </hgroup>
+        </header>
+        <div class='body_content'>    
+            <div class='row'>           
+                <script>
+                    $.ajax({
+                        url: 'navbar.html',
+                        context: $('.row:first')
+                    }).done(function(data){
+                        $(this).prepend(data);
+                        $('#myTab a[href="home.html'+window.location.hash +'"]')
+                            .parent() 
+                            .addClass('active')
+                            .children()
+                            .attr('href', window.location);
+                    });
+                </script>
+            <div class='module_type1 span10'>
+                <div class='module_title'>
+                    <h2>
+                    Parallel and Serial Search Patterns
+                    </h2>
                 </div>
-            </div>
-        </div>
-        <div class='row'>
-            
-            <div class="span5 offset4">
-                <form class='form-horizontal'>
+                <div class='module_content'>
+                    <form class='form-horizontal'>
                     <legend>Parameters</legend>
                     <fieldset>
                     
@@ -760,17 +709,39 @@
                         </div>
                     </fieldset>
                 </form>
+            <div id='analysis' class='hide'> 
+                <p> Your results have been saved into a file called "dataResults". It contains information about each trial including the response latency of your responses. You can download it as a ".csv" file by clicking the download data button below.</p>
+                
+                <div id = 'chart_div' class = 'dataReport' style = 'width:400; height:300'></div>
+
+                <p> The most important variable that is normally used to measure the ease (or "efficiency") of visual search is the amount of time added to search for each additional distractor.  In the present experiment, the number of items on the screen on each trial varied between 4 and 28.  Normally, response times will be longer as more items are added, but the amount of response time per item (the slope of the regression line) is a good measure of search efficiency. </p>
+
+                <div id = 'table_div' class = 'dataReport' style = 'width:400; height:300'></div>                
+
+                <p> Questions to ponder:
+                <ol> 
+                    <li> Is the slope different for "present" trials and "absent" trials? </li>
+                    <li> What is the ratio of the "absent" slope to the "present" slopes? </li> 
+                    <li> Often the ratio is about 2 to 1. Why might this be? </li>
+                </ol> </p>
+                <div id='buttons'> 
+                    <input type='button' class = 'btn dataReport' id = 'restart' value = 'Try Again' /> 
+                    <input type='button' class = 'btn dataReport' id = 'download' value = 'Download Data'/> <div>
             </div>
-        
-            <!-- <div class='span4 offset1'>              
-                <p> How does the brain find something in the visual world that it is seeking? Triesman and Gelade (XXX) did an elegant experiment designed to show that it was easy to search for distinct features, but much harder to search for the absence of a feature.  For example, searching for a Q among O's is easy, but searching for an O among Q's is much harder.  In this version of the experiment, you can choose to simply replicate this basic finding, or, if you wish, you can design your own version of the experiment by choosing any characters you wish as target and distracter(s).  Does search become harder when you have more different types of distractors? </p>
-                <p> To practice the task and see how it works, click "Start Experiment."  By default you should press "F" when the target is present and "J" when the target is not present. Try to go as quickly as you can without making more than a couple mistakes.  Press the space key when you are ready to move on to the next trial.</p>
-                <p> You can set the two response keys to whatever you want to use. </p>
-            </div> -->
-        
+                
+            </div>
         </div>
-    <div id='experiment'></div>
-    <div id='analysis'> </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div id='experiment' class='experiment hide'> </div>
+    <div id='experiment_footer' class='experiment hide'> 
+            <div class='instructions'> "F" = Present "J" = Not Present </div>
+            <div class='counter'> </div>
+    </div>
     </body>
 
 </html>
