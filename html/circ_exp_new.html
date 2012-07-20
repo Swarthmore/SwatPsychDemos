@@ -89,11 +89,12 @@
 
 	// draws the circles and color them
 	function drawcircle(trial){
+		var truecenter = trial.pop();
 		var centerKV = trial.splice(0,1);
 		var centerKV = centerKV[0];
         var name = centerKV.name;
         var color = centerKV.color;
-        
+
 		// shuffle the array
 		var trial = shuffle(trial);
 
@@ -127,7 +128,7 @@
 	        circle_array[i].mouseover(function() {
 				if (started == 1){
                     circ_fill = this.attr("fill");
-                    if (circ_fill == color){
+                    if (circ_fill == truecenter){
 	                    check = "True";
                     } else {
                         check = "False";
@@ -148,7 +149,6 @@
 					init();
                     if (trialnum > numoftrials-1){
 						canvas.clear();
-                    	alert("Finished!!!");
                        	ExportDataToCSV(exportdata);
 					}
 				}
@@ -188,6 +188,8 @@
 
 				list1 = shuffle(list1);
 				var center = list1.splice(0,1);
+				var truecenter = center[0].color;
+
 				list2 = shuffle(list2);			
 				list2.splice(0,2);
 
@@ -195,7 +197,7 @@
                     case "set_present":
                         var color_printed = list1[0].color
 						list1[1].color = color_printed;
-                        list1[0].color = center[0].color
+                        list1[0].color = center[0].color;
                         center[0].color = color_printed;
                         break;
 
@@ -221,6 +223,7 @@
 
                 // add them together
                 var trial_colors = center.concat(list1, list2);
+				trial_colors.push(truecenter);
 				alltrials[counter] = trial_colors;
 				counter = counter+1; 
 			}
