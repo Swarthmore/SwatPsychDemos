@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+    	<title>Reaction Time Circle Test</title>
+		<!-- make sure that the canvas is centered -->
+    	<style media="screen">
+       		#holder {
+              	position: absolute;
+              	top: 0%;
+              	left: 50%;
+              	height: 926px;
+              	margin: 0 0 0 -305px;
+              	width: 610px;
+       		}
+     	</style> 
+	</head>
+
+	<body>	
+        <div class='body_outer_container'>
+            <div class='body_inner_container'>    
+                <header class="header">
+                    <hgroup class="header_title">
+                        <h1>
+                            <a href="/" target="_self" title="Swarthmore College">Swarthmore College</a>
+                        </h1>
+                	</hgroup>
+				</header>
+           		<div class='body_content'>    
+                <div class='row'>
+					<!--
+					<nav class="span2 secondaryPageNav">
+						<div class="tabbable tabs-left">
+							<ul>
+								<li class="pageNavTitle">
+									<a class="pageNavTitle_elt"> Experiments </a>
+								</li>
+							</ul>
+							<ul id="myTab" class="nav nav-tabs">
+                                <li><a href="home.html#home">Home</a></li>
+                                <li><a href="home.html#visionSearch"> Vision Search </a></li>
+                                <li><a href="home.html#sternberg"> Sternberg </a></li>
+                                <li><a href="home.html#stroop"> Reverse Stroop </a></li>
+							</ul>
+						</div>
+					</nav>
+					-->           
+                    <script>
+                        $.ajax({
+                            url: 'navbar.html',
+                            context: $('.row:first')
+                        }).done(function(data){
+                            $(this).prepend(data);
+                            $('#myTab a[href="home.html'+window.location.hash +'"]')
+                                .parent() 
+                                .addClass('active')
+                                .children()
+                                .attr('href', window.location);
+                        });
+                    </script>
+                	<div class='module_type1 span10'>
+                    	<div class='module_title'>
+                        <h2>
+                        Sternberg Vision Experiment
+                        </h2>
+                    	</div>
+                    	<div class='module_content'>
+                            <form class='form-horizontal'>
+                            <legend>Parameters</legend>
+                            <fieldset>                  
+                            <div class='control-group'>
+                                <label class='control-label'> Number of Trials </label>
+                                <div class='controls'>
+                                    <input type='text' id='trialnum' class='input-large'>
+                                </div>
+                            </div>
+
+                            <div id='listElts'></div>
+                            <div class='controls'>
+                                <input id='start' class='btn btn-primary' type='button' value='Start Experiment'>
+                            </div>
+                        	</fieldset>
+                			</form>
+						</div>
+		</div>
+
+		<!-- simply four divs, no other distractions -->
+     	<div id="holder">
+       		<div id="title"></div>
+       		<div id="instruction"></div>
+       		<div id="time"></div>
+       		<div id="canvas"></div>
+     	</div>
+   </body>
+    
+    <link href="/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="/jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
+    <link rel="shortcut icon" href="/bootstrap/docs/assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/bootstrap/docs/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/bootstrap/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/bootstrap/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/bootstrap/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+    <link href="stylesheet.css" rel="stylesheet">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="https://raw.github.com/DmitryBaranovskiy/raphael/master/raphael.js"></script>
+    <script src="./jquery.fileDownload.js"></script>
+    <script src="/bootstrap/docs/assets/js/jquery.js"></script>      
+    <script src="/jquery-ui/js/jquery-ui-1.8.21.custom.min.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-transition.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-alert.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-modal.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-tab.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-popover.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-button.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-collapse.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
+    <script src="/bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
+	
+	<!-- now starts the code proper -->
+    <script>
+    function shuffle(array) {
+        var tmp, current, top = array.length;
+
+        if(top) while(--top) {
+            current = Math.floor(Math.random() * (top + 1));
+            tmp = array[current];
+            array[current] = array[top];
+            array[top] = tmp;
+        }
+
+        return array;
+    }
+
+	// creates the title and the instruction 
+	function drawTandI(){
+        Ttext = title_canvas.text(pic_width/2, text_height/2, "Reaction Time Test");
+        Ttext.attr("font-size", 40)
+        	 .attr("fill", "#000")
+        	 .attr("font-weight", 900)
+       	 	 .attr("font-family", "Courier New");
+
+		Itext = instruction_canvas.text(pic_width/2, text_height/2, "Instruction: \n Click the word in the center \n and then bring your cursor over the circle \n that has the color indicated by the word.");
+        Itext.attr("font-size", 20) 
+        	 .attr("fill", "#000")
+        	 .attr("font-weight", 900)
+        	 .attr("font-family", "Courier New");
+    }
+
+	// creates the time
+	function drawtime(){
+	    var time_text = time_canvas.text(pic_width/2, text_height/2, elapsed + " ms");
+	    time_text.attr("font-size", 40)
+	             .attr("fill", "#000000")
+                 .attr("font-weight", 900)
+                 .attr("font-family", "Courier New");
+	}
+
+	// creates the colorKV pair for use later
+	function colorKV(name, value){
+        colorobj = new Object();
+        colorobj.name = name;
+        colorobj.color = value;
+        return colorobj;
+	}
+
+	function ExportDataToCSV(data){
+		$.fileDownload("../cgi-bin/circ_exp.py", {
+			httpMethod: "POST",
+			data:{
+				exp_data: JSON.stringify(data),
+				option: JSON.stringify('csv')
+            }
+		});
+	}
+
+	// draws the circles and color them
+	function drawcircle(trial){
+		var truecenter = trial.pop();
+		var centerKV = trial.splice(0,1);
+		var centerKV = centerKV[0];
+        var name = centerKV.name;
+        var color = centerKV.color;
+
+		// shuffle the array
+		var trial = shuffle(trial);
+
+        // create the Raphael object
+        text = canvas.text(x_cent, y_cent, name);
+        text.attr("font-size", 40)
+        	.attr("fill", color)
+			.attr("font-weight", 900)
+			.attr("font-family", "Courier New");
+							
+        // use an array to hold the circles
+        circle_array = new Array();
+
+        // draw all the circles around the center circle
+		for (var i=0; i<shown_pop; i++){
+
+	        // get the position of the circle
+            var dtheta = 2*Math.PI/shown_pop;
+            var angle = dtheta*i;
+            var x = dist*Math.sin(angle);
+            var y = dist*Math.cos(angle);
+
+			// draw it and give it different colors
+            circle_array[i] = canvas.circle(x + x_cent, y + y_cent, radius);
+	        var colorobj = trial.pop();
+            var circ_color = colorobj.color;
+            circle_array[i].attr("fill", circ_color)
+                           .attr("stroke", "#000");
+
+            // attach mouseover event to it
+	        circle_array[i].mouseover(function() {
+				if (started == 1){
+                    circ_fill = this.attr("fill");
+                    if (circ_fill == truecenter){
+	                    check = "True";
+                    } else {
+                        check = "False";
+                    }
+                    d = new Date();
+	                stop_time = d.getTime();
+			        elapsed = stop_time - start_time;
+		            time_canvas.clear();
+					canvas.clear();
+                    drawtime();
+  
+                    exportdata[trialnum] = {"trial number": trialnum + 1, 
+                                            "time": elapsed,
+                                            "printed": name,
+                                            "true color": color,
+                                            "correct?": check};
+                    trialnum = trialnum + 1;
+					init();
+                    if (trialnum > numoftrials-1){
+						canvas.clear();
+                       	ExportDataToCSV(exportdata);
+					}
+				}
+			}
+	        );
+			d = new Date(); 
+            start_time = d.getTime();
+            started = 1;
+		}
+    }
+
+	function clonecolorarray(list){
+		var clone = new Array();
+		for (var i=0; i<list.length; i++){
+			clone[i] = colorKV(list[i].name, list[i].color);
+		}
+		return clone;
+	}
+
+	function createtrials(numoftrials, colorlist1, colorlist2){
+		// ok this is crazy but it has to be done
+		// this array contains the color combinations for each trial
+		// the first element of the array is the center colorKV,
+		// and the rest 6 are the color of the circles on the side
+		// so alltrials is numoftrials x 7 2D matrix
+		var counter = 0;
+		var alltrials = new Array();
+		var senarios_vec = ["set_present", "set_absent", "nonset_present", "nonset_absent"];
+
+		for(var i=0; i<4; i++){
+			var senario = senarios_vec[i];
+			for(var j=0; j<numoftrials/4; j++){
+
+                // need to do this because we don't want to modify the original array
+                var list1 = clonecolorarray(colorlist1);
+                var list2 = clonecolorarray(colorlist2);
+
+				list1 = shuffle(list1);
+				var center = list1.splice(0,1);
+				var truecenter = center[0].color;
+
+				list2 = shuffle(list2);			
+				list2.splice(0,2);
+
+                switch (senario){
+                    case "set_present":
+                        var color_printed = list1[0].color
+						list1[1].color = color_printed;
+                        list1[0].color = center[0].color;
+                        center[0].color = color_printed;
+                        break;
+
+                    case "set_absent":
+                        var color_printed = list1[0].color;
+                        list1[0].color = center[0].color;
+                        center[0].color = color_printed;
+                        break;
+
+                    case "nonset_present":
+                        var color_printed = list2[0].color;
+						list2[1].color = color_printed;
+                        list2[0].color = center[0].color
+                        center[0].color = color_printed;
+                        break;
+
+                    case "nonset_absent":
+                        var color_printed = list2[0].color;
+                        list1[0].color = center[0].color;
+                        center[0].color = color_printed;
+                        break;
+                }
+
+                // add them together
+                var trial_colors = center.concat(list1, list2);
+				trial_colors.push(truecenter);
+				alltrials[counter] = trial_colors;
+				counter = counter+1; 
+			}
+		}
+		alltrials = shuffle(alltrials);
+		return alltrials;
+	}
+
+	function init(){
+        start = canvas.text(x_cent, y_cent, "Click to Start");
+	    start.attr("font-size", 20)
+	         .attr("fill", "#000000")
+             .attr("font-weight", 900)
+             .attr("font-family", "Courier New");
+		started = -1;
+		start.click(function() {
+			canvas.clear();
+			var trial = alltrials.splice(0,1)[0];
+			drawcircle(trial);
+		});
+	}
+
+        // this is the main function
+		// we have a database of 9 colors and
+		// there are only 6 colors present on the peripherals
+
+       	total_pop = 9;
+       	shown_pop = 6;
+
+       	// set the parameters first
+        radius = 95;
+       	dist = 200;
+        pic_height = dist*2 + radius*2 + 20;
+       	pic_width = pic_height;
+       	text_height = 100;
+
+       	// get the position of the center
+       	x_cent = pic_width/2;
+       	y_cent = pic_height/2;
+
+		// this is our color database
+		colorlist_full = [colorKV("gray","#808080"),
+                          colorKV("red","#FF0000"), 
+                          colorKV("yellow","#FFFF00"), 
+                          colorKV("orange","#FFA500"),
+                          colorKV("green","#008000"), 
+                          colorKV("blue","#0000FF"),
+                          colorKV("brown","#8B4513"), 
+                          colorKV("pink","#FF1493"),
+                          colorKV("purple","#800080")];
+
+		// gives two lists of colors to work with
+		colorlist_full = shuffle(colorlist_full);
+		colorlist1 = colorlist_full.splice(0,4);
+		colorlist2 = colorlist_full;
+
+		// create the Raphael canvases for drawing
+	   	title_canvas = Raphael("title", pic_width, text_height);
+       	instruction_canvas = Raphael("instruction", pic_width, text_height); 
+       	time_canvas = Raphael("time", pic_width, text_height);
+       	canvas = Raphael("canvas", pic_width, pic_height);
+
+		// put down instructions first
+       	drawTandI();
+
+		var numoftrials = 5;
+		while (numoftrials % 4 != 0){
+			numoftrials = prompt("Please enter the number of trials. It has to be multiples of 4.");
+		}
+
+		// create trials
+		alltrials = createtrials(numoftrials, colorlist1, colorlist2);
+       	// and initialize the experiment
+       	init();
+       	trialnum = 0;
+       	exportdata = [];
+
+    </script>
+
+</html>
