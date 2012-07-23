@@ -201,7 +201,7 @@
                     else {
                         clearInterval(timer); //stop the interval loop
                         $('.listDisplay').remove(); //clear the experiment box
-                            $('#experiment').append('<div class="listDisplay"><center> + </center></div>') //screen to get ready
+                            $('#experiment').append('<div class="listDisplay cross"><center> + </center></div>') //screen to get ready
                         
                         //set time delay for the probe elt
                         setTimeout(function(){
@@ -263,16 +263,18 @@
                     
                     //Handler for subject recall of the list
                     if (recall==true){ 
-                        for (key in Object.keys(keyPress.digits)){
-                            if ($.inArray(code,keyPress.digits[key].code) != -1){
-                                if (global.trials[t].recall.length == 0){
-                                    $('#subjectRecall').append(key);
-                                } else {
-                                    $('#subjectRecall').append(', ' + key);
-                                }
+                        $.each(keyPress.digits, function(key, value){
+                            if ($.inArray(code, value.code) != -1){
+                                if ($.inArray(global.listElements.display[key], global.trials[t].recall) == -1 && global.trials[t].recall.length < 6){                                
+                                    if (global.trials[t].recall.length == 0){
+                                        $('#subjectRecall').append(key);
+                                    } else {
+                                        $('#subjectRecall').append(', ' + key);
+                                    }
                                 global.trials[t].recall.push(global.listElements.display[key]);
+                                }
                             }
-                        }
+                        });
                         if (code == 8){
                                 e.preventDefault();
                                 $('#subjectRecall').text(     
@@ -283,7 +285,7 @@
                     }
 
                     //if they press enter:
-                    if (code==13 && recall==true){
+                    if (code==13 && recall==true && global.trials[t].recall.length >= 1){
                         
                         $('#experiment').text('');
                         
@@ -312,7 +314,9 @@
                     //Escape key ends experiment
                     if (code == 27) {
                         $(this).unbind('keydown');
-                        clearInterval(timer); //stop the interval loop
+                        if (typeof timer !== 'undefined'){
+                            clearInterval(timer); //stop the interval loop
+                        }
                         global.trials = global.trials.slice(0,t);
                         dataAnalysis(t);
                     }
@@ -385,8 +389,6 @@
                     //show analysis
                     $('#analysis').show();
                     
-                    drawChart();
-
                     //Send Data to Server for Download as a CSV file        
                     $('#download').click(function () {
                         $.fileDownload("../cgi-bin/sternberg3.py", {
@@ -400,6 +402,8 @@
                     $('#restart').click(function () {
                         location.reload();
                     });
+                    
+                    drawChart();
                 }); 
             } 
             //Draws in the charts and tables
@@ -415,8 +419,8 @@
 
                 //declare columns
                 dataTable.addColumn('number', 'List Length');
-                dataTable.addColumn('number', 'Average Time Present (ms)');
-                dataTable.addColumn('number', 'Average Time Absent (ms)');
+                dataTable.addColumn('number', 'Average Latency Present (ms)');
+                dataTable.addColumn('number', 'Average Latency Absent (ms)');
                 dataTable.addColumn('number', 'Best Fit Present');
                 dataTable.addColumn('number', 'Best Fit Absent');
                 dataTable.addColumn('number', 'Response Error Rate (%)');
@@ -596,13 +600,13 @@
     
     
                          <div class='control-group'>
-                            <label class='control-label'> Display Time </label>
+                            <label class='control-label'> Display Time (ms) </label>
                             <div class='controls'>
                                 <input type='text' id='display' class='input-large'>
                             </div>
                         </div>
                         <div class='control-group'>
-                            <label class='control-label'> Recall Time </label>
+                            <label class='control-label'> Recall Time (ms) </label>
                             <div class='controls'>
                                 <input type='text' id='recall' class='input-large'>
                             </div>
@@ -638,6 +642,25 @@
                     </div>
                 </div>
                 
+                <div id='analysis_error' class='hide'> 
+                    <p> We are sorry, but it seems that an error has occured while processing your data.  We are unable to plot your results for you at the present time.  The raw data from your experiment can most likely be retrieved by clicking the "Download Data" button below.  It has been saved into a file called "dataResults", which contains information about each trial including the response latency of your responses. </p>
+
+                    <p> Sternberg (1966) found that for each additional item in the list, people took about 40 additional ms to respond. Sternberg suggested that this showed that the search was a serial search through memory, rather than a parallel search of all the items at once.  However, this speed is much faster than you can say the items in your head, so the search is probably unconscious. </p>
+
+                    <p> Surprisingly, however, Sternberg also observed that the rate for saying "present" was no faster than the rate for saying absent.  Sternberg argued that this meant the search involved comparisons to ALL the items in the list (exhaustive search) rather than only until the matching item was found (self-terminating search). </p>                         
+                   
+                    <p> Questions to ponder: </p>
+                    <ol>
+                        <li> Is the slope different for "present" trials and "absent" trials? </li>
+                        <li> Sternberg found that the slopes were the same (and both about 40 ms per item). </li> 
+                        <li> Why might the memory scanning process be serial AND exhaustive (rather than self-terminating)? </li>
+                    </ol>
+                    <div id='buttons'>
+                        <input type='button' class = 'btn btn-primary dataReport' id = 'restart' value = 'Try Again' />
+                        <input type='button' class = 'btn btn-primary dataReport' id = 'download' value = 'Download Data'/>
+                    </div>
+                </div>
+                
                 </div>
             </div>
             </div>
@@ -646,7 +669,7 @@
     </div>
         <div id='experiment' class='experiment hide'> </div>
         <div id='experiment_footer' class='experiment hide'> 
-                <div class='instructions'> "F" = Yes "J" = No </div>
+                <div class='instructions'> "F" = Yes, "J" = No, "Space" = New Trial, "Enter" = Submit List </div>
                 <div class='counter'> </div>
         </div>
     </body>

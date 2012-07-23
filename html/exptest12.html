@@ -136,7 +136,7 @@
                     distractors = global.distractors; //creates local pointer to global object
                     
                     //if input is inside accepted range:
-                    if (this.value <= 9 && this.value >=1){
+                    if (this.value <= 9 && this.value >=1 && Math.floor(this.value) == this.value){
                         
                         //Adjust Slider
                         $('#slider').slider( "value", this.value);
@@ -175,7 +175,7 @@
                     //If input is not in accepted range, add error message.  Do not update global object. 
                     else if (!$(this).parent().parent().hasClass('error')){
                         $(this).parent().parent().addClass('error');
-                        $(this).parent().append("<span class='help-inline'> Please submit a value between 1 and 9 </span>");
+                        $(this).parent().append("<span class='help-inline'> Please submit an integer between 1 and 9 </span>");
                     }
                     
                     //If any of the list elements are changed, update the global object with the new value
@@ -340,7 +340,7 @@
                 if (Math.floor(ratio) != ratio) {
                     
                     //determine how many extra letters are necessary
-                    var extras = (ratio - Math.floor(ratio)) * global.numberDistractors;
+                    var extras = Math.round((ratio - Math.floor(ratio)) * global.numberDistractors);
                     
                     //loop through and place extras
                     for (var i=0; i < extras; i++){
@@ -386,9 +386,9 @@
                         my: 'left top',
                         at: 'left top',
                         offset: randNum1 + ' ' + randNum2
-                    })
-                    .addClass('placed'); 
+                    }); 
                 }
+                $("#trial_" + t + "_targ_letter").addClass('placed');
                 console.log('placed: ' + $('.placed').length)
             };
             
