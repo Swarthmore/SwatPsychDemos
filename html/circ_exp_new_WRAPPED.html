@@ -54,23 +54,6 @@
 				</header>
            		<div class='body_content'>    
                 <div class='row'>
-					<!--
-					<nav class="span2 secondaryPageNav">
-						<div class="tabbable tabs-left">
-							<ul>
-								<li class="pageNavTitle">
-									<a class="pageNavTitle_elt"> Experiments </a>
-								</li>
-							</ul>
-							<ul id="myTab" class="nav nav-tabs">
-                                <li><a href="home.html#home">Home</a></li>
-                                <li><a href="home.html#visionSearch"> Vision Search </a></li>
-                                <li><a href="home.html#sternberg"> Sternberg </a></li>
-                                <li><a href="home.html#stroop"> Reverse Stroop </a></li>
-							</ul>
-						</div>
-					</nav>
-					-->           
                     <script>
                         $.ajax({
                             url: 'navbar.html',
@@ -86,7 +69,7 @@
                     </script>
                 	<div class='module_type1 span10'>
                     	<div class='module_title'>
-	                        <h2>Sternberg Vision Experiment</h2>
+	                        <h2>Reverse Stroop Experiment</h2>
                     	</div>
                     	<div class='module_content'>
                             <form class='form-horizontal'>
@@ -377,10 +360,10 @@
 		// put down instructions first
        	drawTandI();
 
-		var numoftrials = 5;
-		while (numoftrials % 4 != 0){
-			numoftrials = prompt("Please enter the number of trials. It has to be multiples of 4.");
-		}
+//		var numoftrials = 5;
+//		while (numoftrials % 4 != 0){
+//			numoftrials = prompt("Please enter the number of trials. It has to be multiples of 4.");
+//		}
 
 		// create trials
 		alltrials = createtrials(numoftrials, colorlist1, colorlist2);
