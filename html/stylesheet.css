@@ -286,13 +286,14 @@ fieldset{
     padding: 10px 0 0 0;
 }
 .module_content img {
-    margin: 0 6px 6px 0;
+    margin: 0 10px 6px 10px;
     padding: 4px;
     background-color: 
     white;
     border: 1px solid 
     #DDD;
     clear: both;
+    width: 280px;
 }
 .module_type1 .module_content {
     margin: 0px auto;
