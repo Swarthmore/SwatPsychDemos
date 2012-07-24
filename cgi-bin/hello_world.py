@@ -29,7 +29,8 @@ for results in json_data['trials']:
 		else:
 			errors[results['numberDistractors']]={'number':1}
 
-for key in json_data['presentMeans'] or json_data['absentMeans']:
+for key in json_dat
+a['presentMeans'] or json_data['absentMeans']:
 	if not errors.has_key(int(key)):
 		errors[int(key)] = {'number': 0}
 	if (errors[int(key)]['number'] + json_data['presentMeans'][key]['number'] + json_data['absentMeans'][key]['number'])	== 0:

@@ -316,6 +316,8 @@
                 if (!$('#instructions').hasClass('hide')) {
                     $('#instructions').addClass('hide');
                 }
+                $('#experiment').text('');
+                
                 console.log('trial: ' + t);
                 console.log('target present? ' + global.trials[t].targetPresent);
                 console.log('distractors: ' + global.trials[t].distractors);
@@ -439,7 +441,7 @@
                             }
                             
                             //clears screen
-                            $('#experiment').text('');
+                            $('#experiment').text('').append('<div class="listDisplay cross"><center> + </center></div>');
                             
                             //subject has made selection
                             select = true;
@@ -646,7 +648,7 @@
     <body>
     <div class='body_outer_container'>
         <div class='body_inner_container'>    
-            <header class="header">
+            <header id='header'  class="header">
                 <hgroup class="header_title">
                     <h1>
                         <a href="/" target="_self" title="Swarthmore College">Swarthmore College</a>
@@ -668,7 +670,7 @@
                             .attr('href', window.location);
                     });
                 </script>
-            <div class='module_type1 span10'>
+            <div class='module_type1 span8'>
                 <div class='module_title'>
                     <h2>
                     Parallel and Serial Search Patterns

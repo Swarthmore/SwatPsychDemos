@@ -34,6 +34,11 @@
         
         <script src="./bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
         <script src="./jquery.fileDownload.js"></script>  
+
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        
         
         <link href='stylesheet.css' rel='stylesheet'>
         
@@ -46,6 +51,10 @@
                 $('#sternberg-btn').click(function(){
                     window.location = 'sternberg3.html#sternberg';
                 });
+                
+                $('#stroop-btn').click(function(){
+                    window.location = 'circ_exp_new_WRAPPED.html#stroop';
+                });
             }
             
             $(document).ready(function(){
@@ -56,7 +65,7 @@
     <body>
     <div class='body_outer_container'>
         <div class='body_inner_container'>    
-            <header class="header">
+            <header id='header' class="header">
                 <hgroup class="header_title">
                     <h1>
                         <a href="/" target="_self" title="Swarthmore College">Swarthmore College</a>
@@ -83,7 +92,7 @@
                         }
                     });
                 </script>
-            <div class='module_type1 span10'>
+            <div class='module_type1 span8'>
                 <div class='module_title'>
                     <h2>
                     Swarthmore Cognitive Psychology Demos
@@ -92,59 +101,57 @@
                 <div class='module_content'>
                 <div class='tab-content'>
                     <div class='tab-pane active' id='home'>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et nibh nec sem volutpat malesuada. Morbi eleifend est eget mi varius imperdiet. Fusce pellentesque orci vitae augue lobortis quis adipiscing velit luctus. Phasellus nibh mi, tempor ac aliquam quis, aliquet bibendum nunc. Donec et quam lorem, a consequat dolor. Phasellus facilisis semper viverra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas erat tortor, congue eget gravida et, dapibus vitae leo. Nulla sagittis vulputate nunc, placerat pulvinar lectus blandit sit amet. Sed venenatis metus non eros ultricies sit amet imperdiet lacus venenatis. Cras aliquam justo ut neque gravida sed bibendum eros mollis. Maecenas eu lectus sapien, id commodo mauris. Suspendisse potenti. Vivamus est purus, imperdiet vitae cursus sit amet, facilisis et dolor. </p>
+                    <p> Welcome to the Swarthmore College Cognitive Psychology Experiment page!</p>
 
                     <img src='bootstrap/img/about_location.jpeg' alt='About Location' style='float: right'>
 
-                    <p> Phasellus non turpis in mi hendrerit pellentesque a id arcu. Suspendisse adipiscing nibh at lectus auctor nec ultricies nisl viverra. Aliquam et suscipit quam. Cras sem arcu, semper ut pretium a, viverra gravida purus. Integer porta rutrum leo eget ornare. Sed in sem non arcu convallis consectetur. Pellentesque lobortis elit eget tortor viverra eu porta lacus vehicula. Morbi est libero, sodales vel posuere vel, dapibus eu enim. Nullam tristique dolor eleifend nulla ultricies non tempus mi facilisis. Fusce vulputate tempor pharetra. Donec suscipit, arcu quis sodales aliquet, lacus lectus lacinia diam, ac vestibulum sapien justo sit amet sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sem tortor, porta vel blandit sit amet, aliquam porta ligula. Morbi auctor ultricies enim vel iaculis.</p>
+                    <p> Cognitive Psychology, the study of human cognition by means of the quantitative analysis of behavior, is based on experimental methods. Experiencing the application of those methods is a powerful supplement to reading about them. </p>
                     
-                    <p> Mauris mattis neque vitae metus rutrum vitae pulvinar velit hendrerit. Duis a dui nisi, ut posuere turpis. Aenean odio velit, ultricies tempor sodales nec, scelerisque nec orci. Duis velit mi, viverra ac porttitor ac, tempus sit amet justo. Duis dolor nisl, consectetur a accumsan non, adipiscing sed justo. Etiam consequat egestas purus, in consectetur sapien hendrerit vitae. Phasellus dignissim, massa vel placerat laoreet, lacus orci laoreet dui, eget auctor arcu urna id lectus.</p>
+                    <p> This page was developed with the goal of making a few high quality cognitive psychology experiments available online.  Many of the experiments we have developed here could be used to collect data for a class lab, and several are modifiable (e.g., the visual search experiment) such that you could devise your own version of the experiment to test specific alternative hypotheses. </p>
         
-                    <p> Vestibulum sem leo, blandit et pretium sit amet, elementum a ligula. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris eu malesuada quam. Integer elementum, dui ut vulputate rutrum, magna libero scelerisque urna, euismod elementum mi elit sit amet lorem. Nunc vitae diam lacus. Sed sit amet ipsum pulvinar urna lacinia tempus at sit amet dui. Etiam faucibus dictum pharetra. In hac habitasse platea dictumst. Suspendisse semper congue nisi, sit amet lacinia ante suscipit luctus. In hac habitasse platea dictumst. </p>
+                    <p> Although aimed at college level, the experiments here could easily be incorporated into a high-school curriculum or (because they can be modified) be used as part of a high school science project. </p>
         
-                    <p> Aenean non ipsum in felis euismod aliquet non non odio. Integer egestas leo sed odio viverra ac bibendum ante eleifend. Vivamus auctor lacus eget lacus posuere id molestie nisl adipiscing. Suspendisse vestibulum aliquet justo, vel interdum nibh porttitor vel. Proin a ante est. Nulla facilisi. Aliquam ullamcorper, mauris ut aliquam sagittis, nulla justo ullamcorper purus, sed ullamcorper ligula metus non orci. Fusce ultricies nunc eu turpis rutrum ac dapibus nibh lobortis. Integer ornare sodales lorem quis pharetra. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis condimentum eleifend arcu nec eleifend. Morbi fringilla congue lacus quis ultrices. Aliquam ut justo eget ante tempus porttitor. Proin magna orci, ultricies eget varius eu, commodo eget felis. Maecenas sed purus diam, a molestie purus.  </p>
+                    <p> At present we have implemented the three experiments found on the left. We hope to add more as time goes forward. We have also made our javascript code available. Your comments and suggestions are welcome. Please send to Prof. Frank Durgin.  </p>
+
+                    <p> Many thanks to the development team including Doug Willen, Andrew Reuther, Jacob Adenbaum, David Nahmias and Xingda Zhai. </p>
+                    
+                    <p> Please note that these experiments work best in the Chrome, Safari, or Opera browsers. <p>
                     </div>
                     
                     <div class='tab-pane' id='visionSearch'>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam consequat felis a dolor vestibulum nec elementum justo imperdiet. Integer fringilla dolor vehicula eros commodo tincidunt. Quisque tempus, est tempus scelerisque ornare, lorem erat consequat erat, vitae euismod tellus nisl vitae tellus. Ut luctus arcu eu nisl tincidunt vehicula. Nullam risus mi, sagittis eu molestie sed, cursus quis justo. Proin ut ligula felis, ac blandit enim. Duis dignissim iaculis augue id gravida. Nullam a lorem eget risus cursus tincidunt vel vel massa. In hac habitasse platea dictumst. Phasellus dictum semper dapibus. Duis elit massa, tempus nec eleifend ut, luctus nec est. Sed eu purus erat. Nullam placerat erat quis metus bibendum interdum. Nulla eget feugiat mauris. Maecenas quis justo leo. Vestibulum mollis sagittis velit, quis ornare lectus elementum eu. </p>
+                    <img src='bootstrap/img/about_location.jpeg' alt='About Location' style='float: right'>
+                    <p> How does the brain find something in the visual world that it is seeking? Triesman and Gelade (XXX) did an elegant experiment designed to show that it was easy to search for distinct features, but much harder to search for the absence of a feature.  For example, searching for a Q among O's is easy, but searching for an O among Q's is much harder.  In this version of the experiment, you can choose to simply replicate this basic finding, or, if you wish, you can design your own version of the experiment by choosing any characters you wish as target and distracter(s).  Does search become harder when you have more different types of distractors? </p>
 
-                    <img src='bootstrap/img/flowers.jpg' alt='About Location' style='float: left'>
-
-                    <p> Sed pharetra ante id metus viverra eu vulputate ante vehicula. Sed vestibulum lacinia congue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed congue aliquam urna, nec tempor justo ultrices ut. Sed consectetur vestibulum mauris, a pretium eros suscipit vel. Phasellus scelerisque ullamcorper nulla, eget porttitor nisi pulvinar nec. Donec eget nulla lorem, vel varius elit. Mauris fermentum lobortis quam venenatis pulvinar. Fusce vitae semper quam. Curabitur ut metus ante, nec mollis leo. Maecenas non eros quis enim molestie aliquam quis et sapien. Integer porttitor sem eget leo vulputate adipiscing. Vivamus porta diam ut turpis tempus egestas. </p>
-                    
-                    <p> Pellentesque condimentum dapibus magna, nec fermentum sem egestas sed. Nullam vulputate erat at augue lobortis viverra. Curabitur dapibus lacus eu velit venenatis varius. Mauris tristique, nibh at molestie ultricies, lorem diam ultricies nunc, eget congue mi urna ac velit. In rutrum porta velit. Donec semper nulla eget justo sodales hendrerit. Praesent consequat, arcu sed vulputate congue, magna ligula rhoncus dui, id tincidunt arcu purus in augue. Vivamus congue justo a lectus lacinia at vulputate quam euismod. </p>
-                    <p> Nunc gravida egestas odio vel luctus. Fusce malesuada, lorem ut bibendum laoreet, lacus felis imperdiet risus, venenatis auctor neque ligula eget enim. Proin iaculis augue eu est commodo ultricies. Sed porttitor tincidunt nisi non aliquam. Aliquam vestibulum nibh dui. Mauris nec arcu at urna tempor volutpat id ac dolor. Curabitur dignissim augue vel mi cursus condimentum. Vestibulum pulvinar fringilla erat quis vestibulum. Cras dignissim felis at urna tempor ut malesuada tellus tristique. Nam imperdiet pulvinar interdum. Vivamus pellentesque, odio eu blandit lacinia, augue est ultrices nibh, sit amet iaculis nisl ligula et leo. Nam suscipit velit turpis, id semper enim. Nulla tortor lectus, hendrerit quis tincidunt id, porta in nisi. Fusce congue volutpat orci, eget posuere justo consequat id. Vestibulum id orci risus. </p>
-                    <p> Maecenas massa mauris, fermentum et accumsan id, dignissim id velit. Nam pellentesque elementum lacus, quis fringilla enim auctor sed. Aliquam justo quam, posuere et luctus ac, rutrum in quam. Nullam at felis libero. Cras aliquet, velit eu aliquet vehicula, ante arcu tempor nibh, non lobortis est nisi et sem. Sed viverra blandit ultricies. Aenean accumsan nulla eget risus sagittis dictum. Quisque porttitor sapien id orci condimentum pellentesque. Fusce condimentum ultrices augue non posuere. Sed at tellus orci. </p>
+                    <p> To practice the task and see how it works, click the "Try it" button below.  By default you should press "F" when the target is present and "J" when the target is not present. Press the space bar to start each new trial.  Try to go as quickly as you can without making more than a couple mistakes. </p>
                     
                         <input type='button' id='search-btn' class='btn btn-primary tryit' value='Try it!'>
-                    
                     </div>
                     
                     <div class='tab-pane' id='sternberg'>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tincidunt eleifend massa, ut blandit ligula scelerisque eget. Curabitur vitae felis nec risus semper pharetra. Aenean dolor ante, sagittis eget faucibus non, lobortis ut eros. Duis sit amet massa turpis. Fusce eu enim mauris, sed ornare enim. Donec in est non urna mattis dignissim. Integer facilisis felis nec dolor adipiscing et suscipit erat consectetur. Praesent facilisis posuere ipsum vel pretium. Mauris enim odio, hendrerit non tempor sed, bibendum eget nunc. Ut suscipit varius sapien, id fermentum ipsum tempor non. Integer venenatis molestie mi, vel varius risus tempor vitae.</p>
-                    <p> Pellentesque sit amet condimentum massa. Duis ut libero vitae lacus dignissim placerat et a sem. Curabitur augue ligula, viverra vitae dapibus id, consectetur ac elit. Curabitur sodales mollis ornare. Duis lobortis eleifend felis, id euismod turpis volutpat ac. Curabitur turpis massa, rhoncus a fringilla vel, lobortis eget risus. Sed ut turpis vitae nisl dignissim commodo. Nunc massa mauris, commodo id luctus non, blandit nec lorem. Vestibulum lobortis ullamcorper ligula, pharetra tempus mi congue vitae. Fusce rhoncus, sem sagittis facilisis condimentum, turpis est aliquam lorem, at pharetra magna elit eget lorem.</p>
-                    <p> Nam in lectus et ante facilisis scelerisque. Ut est erat, tempus quis accumsan nec, feugiat in metus. Integer gravida, sem non accumsan ultricies, elit est aliquet sapien, at posuere dui neque at felis. Integer accumsan varius massa, non ornare velit condimentum et. Pellentesque in massa augue, eget rutrum tortor. Nunc malesuada consectetur urna. Proin lobortis, sapien at lobortis lacinia, diam sem congue felis, sed aliquet nulla velit nec diam. Fusce arcu leo, dignissim a varius vel, malesuada ut ipsum. Nunc eu eros nunc, sed lacinia turpis. Fusce vel rhoncus augue. Morbi dictum sollicitudin accumsan. Donec quis mauris vel sapien euismod tempus. Fusce augue erat, consectetur eu blandit non, adipiscing eu risus.</p>
-                    <img src='bootstrap/img/admissions_difference1.jpeg' alt='About Location' style='float: right'>
+
+                    <p> If you are holding a list in your memory, how can you check to see if an item is on the list? </p>
+                    <p> Sternberg (1966) proposed that we could measure mental operations using an "additive factors" approach.  He gave people lists of numerals of different lengths. Then a probe digit would follow. People had to indicate whether the item was in the list or not. Does it take time to search immediate memory? </p>
                     
-                    <p> Aliquam id mi at augue congue viverra. Nulla convallis pulvinar quam. Sed vel ante ac elit tincidunt eleifend id vel orci. Nulla facilisi. Suspendisse diam odio, aliquam et ullamcorper nec, cursus non odio. Suspendisse id lacus sem. Fusce feugiat, enim non vehicula commodo, magna est tristique ipsum, id pretium neque est vel magna. Aliquam mi nibh, rhoncus blandit suscipit sed, rutrum quis tortor. Vestibulum in orci dolor. Vestibulum tincidunt iaculis lorem et eleifend. Morbi vel nisi magna, vitae viverra diam. Donec quis lorem at eros egestas lacinia. In tincidunt posuere molestie. In et enim augue.</p>
-                    
-                    <p> Ut ullamcorper massa sit amet tellus porttitor pulvinar ac et lorem. Nullam in arcu est. Quisque orci tellus, pretium nec malesuada vel, faucibus vel sapien. Donec lacinia mi erat. Nam convallis ornare lacus sed sodales. Duis commodo libero nec diam interdum ut facilisis dolor vestibulum. Nunc nulla nisi, pharetra vel placerat at, rutrum eu dui. Curabitur laoreet metus id diam vehicula posuere. Cras vitae urna adipiscing augue sollicitudin dapibus a in tortor. Maecenas et dolor augue. Praesent quis feugiat elit. Vivamus laoreet lobortis augue, a cursus risus suscipit et. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus massa felis, rutrum ut pharetra eget, vulputate id sem. Vivamus lorem ipsum, molestie vel sodales in, sodales eget felis.</p>
-                    
-                    <input type='button' id='sternberg-btn' class='btn btn-primary tryit' value='Try it!'>
+                    <p> To emulate Sternberg's auditory presentation technique, we will present number words one at a time. You will get a list to store of between 1 and 6 numbers. Then a warning signal will tell you that the probe will be presented. You should respond as quickly as you can to indicate whether the probe was in the list or not by pressing "F" if it was present and "J" if it was not. After each trial you have to type in the entire list in order to show that you stored it all.  Press return when you have finished entering the list. </p>
+                                       
+                    <p> Do the task diligently and we'll discuss the data once you're finished. </p>
 
                     
+                    <input type='button' id='sternberg-btn' class='btn btn-primary tryit' value='Try it!'>
                     </div>
                     
                     <div class='tab-pane' id='stroop'>
                     
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in est eget nisi dictum mattis. Aliquam elementum libero eu nunc dignissim rutrum. Fusce malesuada sagittis sollicitudin. Fusce et sapien felis. Vivamus vel metus sit amet est congue ultricies quis molestie justo. Nunc ut nibh lacus, nec ultrices nunc. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut felis sed ante volutpat mattis nec ac nisl. Vestibulum ante nibh, sodales a egestas eget, luctus nec felis. Praesent felis neque, hendrerit et lacinia mattis, aliquet ut arcu. In cursus varius ultrices. Vivamus sagittis pharetra nisl, nec euismod sapien laoreet vel. Proin tempus condimentum sodales. Nam at dui ante.</p>
-                    
-                    <img src='bootstrap/img/studentlife_leadership2.jpeg' alt='About Location' style='float: left'>
-                    
-                    <p>Etiam nec tortor ut neque commodo vehicula eu non urna. Pellentesque aliquet tincidunt arcu, tincidunt eleifend nunc tristique et. Mauris ac mattis nisi. Praesent sed augue purus. Sed commodo metus et mi rutrum suscipit. Nulla ut tempus urna. Nam id nibh vel odio auctor vulputate. Phasellus eleifend posuere hendrerit. Aliquam at ante ligula, nec iaculis eros. Donec malesuada lacinia pharetra. Cras semper ullamcorper dolor, id rhoncus purus laoreet ac. Sed luctus massa non lorem iaculis ac pretium eros ultrices. Vestibulum aliquet sollicitudin semper. Donec eu fringilla lorem.</p>
-                    <p>Curabitur vitae libero ipsum. Aenean consequat leo vel lorem iaculis non fermentum diam eleifend. Aliquam erat volutpat. Duis elit nisi, sagittis id molestie ut, placerat quis tellus. Sed interdum nibh sed ante varius euismod. Donec tincidunt interdum tellus. Duis venenatis ultrices molestie. Sed eget purus quam, eu tempus massa. Cras enim lorem, lacinia eu ultrices in, mattis eget dui. Aliquam a ipsum vitae lectus tristique feugiat vitae et massa. Donec enim velit, ultricies eget faucibus at, malesuada scelerisque dolor. Pellentesque lacinia auctor odio, ut suscipit tellus cursus blandit.</p>
-                    <p>Pellentesque ut nibh libero, non facilisis enim. Donec suscipit dictum mauris, sagittis elementum leo viverra at. Integer cursus vulputate aliquam. Nulla elit turpis, semper eget dapibus eget, posuere non tortor. Integer accumsan mauris quis ante gravida auctor. Pellentesque et urna lacus, eget laoreet lectus. Maecenas quis justo augue. Phasellus sodales purus ac velit accumsan a mattis erat ultrices. Integer vitae vestibulum urna. Pellentesque imperdiet est at diam sagittis consequat. Cras vel magna congue purus auctor vestibulum.</p>
-                    <p>Pellentesque dapibus sagittis urna a blandit. Nunc vel dolor nibh, at accumsan diam. Maecenas consectetur tellus ut nulla bibendum sed luctus enim luctus. Aenean scelerisque tellus felis, vel hendrerit massa. Donec dignissim cursus tellus, sit amet convallis erat aliquam eget. Vestibulum eget pulvinar velit. Nulla facilisi. Cras non nibh lacus.</p>                    
+                    <p> Stroop (1935) showed that there was large processing cost for naming the ink color of incongruently named color words. For example if the word "blue" is printed in red, trying to say "red" in response is rendered more difficult by the fact that the word "blue" is staring you in the face. In contrast, saying "blue" to such a word is easy. Many textbooks illustrate this phenomenon because it illustrates ways in which our ability to control the flow of information is limited. Short of blurring our eyes, it is hard to avoid processing the verbal information even when we know it isn't relevant.  Here we implement a variant designed to show that this phenomenon is not simply based on the precedence of verbal information. </p>
+
+                    <p> In this reverse Stroop task you have to point to a color patch corresponding to the verbal part of a Stroop word. That is, if presented with the word "blue", depicted in red light, your task is to point to the blue color patch in the surround.  Because this is a visual search task in which one is searching for a sensory color, you may find that the color in which the word is printed is now quite interfering. </p>
+
+                    <p> The present implementation of this task is designed to mimic an experiment reported by Durgin (2003) in which only four different color words ever appeared (these words were selected at random from a set of 9 colors), and the distractor color (printed color) could either belong to this set of four or not (In the Set or Not in the Set), and could also be present or absent as one of the surrounding response patches available. </p>
+
+                    <p> To do the task you simply click the mouse in the center to show the display and then move the mouse to the color named by the central word (as quickly as possible without sacrificing accuracy). </p>
+
+                    <input type='button' id='stroop-btn' class='btn btn-primary tryit' value='Try it!'>
+
                     </div>
                 </div>
                 

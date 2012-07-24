@@ -211,8 +211,8 @@ fieldset{
     width:200px;
     margin: 0px auto;
 }
-.module_type1, .module_type2, .module_type3 {
-    margin: 0 9px 15px 9px;
+.module_type1 {
+    margin: 0 3px 15px 15px;
     display: inline-block;
     background-color: 
     white;
@@ -224,6 +224,21 @@ fieldset{
     -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
     box-shadow: 1px 1px 7px 
     rgba(153, 153, 153, 0.2);
+}
+.module_type2 {
+    display: inline-block;
+    margin: 0 0 15px 0;
+    background-color: 
+    white;
+    padding: 0 0 10px 0;
+    border: 1px solid 
+    #DDD;
+    -webkit-box-shadow: 1px 1px 7px 
+    rgba(153, 153, 153, 0.2);
+    -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    box-shadow: 1px 1px 7px 
+    rgba(153, 153, 153, 0.2);
+    width:300px;
 }
 .module_title {
     margin: 0px;
@@ -251,6 +266,22 @@ fieldset{
     text-shadow: 1px 1px 
     black;
 }
+.module_title h3 {
+    margin: 1px 0 3px 0;
+    padding: 0;
+    color: 
+    #FDFDFD;
+    font-family: "Times New Roman",Times,serif;
+    font-size: 1.5em;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    letter-spacing: 0.4px;
+    line-height: 1.15em;
+    text-shadow: 1px 1px 
+    black;
+}
+
 .tab-content{
     padding: 10px 0 0 0;
 }
@@ -263,10 +294,19 @@ fieldset{
     #DDD;
     clear: both;
 }
-.module_content {
+.module_type1 .module_content {
     margin: 0px auto;
     padding: 12px 10px 12px 10px;
     float: left;
+}
+
+.module_type2 .module_content {
+    display: block;
+    margin: 0px 40px;
+    padding: 12px 10px 12px 10px;
+    float: left;
+    text-align: left;
+    width: 200px;
 }
 .row{
     margin:0 0 0 10px;
@@ -367,6 +407,8 @@ fieldset{
 .instructions{
     float:left;
     padding: 0 10px;
+    text-align: center;
+
 }
 .counter{
     float:right;
@@ -408,4 +450,20 @@ fieldset{
 }
 .cross{
     color: gray
+}
+.column-left{
+    margin-left: 0px;
+}
+#holder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 926px;
+    margin: -463px 0 0 -305px;
+    width: 610px;
+    background: white;
+    border: solid;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    border-radius:10px 10px 10px 10px;
 }
