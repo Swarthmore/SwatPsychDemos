@@ -1,3 +1,18 @@
+<!-- This experiment is designed to measure and explore the ways that the brain searches through patterns of letters.  It presents the subject with a series of screens with a target letter surrounded by distractors.  In half of the trials, the target letter will be present, and in half of the trials it will be absent.  The experiment then records the time it takes for the subject to determine whether or not the target is present.  
+
+The trials are generated systematically with a series of nested for-loops which ensure a perfectly even distribution of trials with 4, 8, 12, 16, 20, 24, and 28 distractors.  The trial order is then shuffled and run trial by trial as the results are recorded.
+
+Because the experiment gives the user the capability to have multiple types of distractors, a certain number of the distractors in some trials will be randomly selected.  However, the experiment tries to keep as even a distribution of different types of distractors as possible.
+
+The screens themselves are generated using the "overlaps" javascript plugin.  Each letter is first placed randomly. Then, the "overlaps" plugin checks whether or not that letter is overlapping any of the letters that have already been placed.  If it does, the letter is repositioned randomly again and the process repeats.  This particular methodology can be used when placing fewer than 100 letters without noticable performance issues, however for n > 100 letters, most computers will tend to exhibit performance lags of several seconds.  If you are adapting this program to have significantly more distractors, then you should divide the screen into grids and only check each letter against the adjacent squares.  
+
+The bulk of the data analysis for this experiment is being done in a python script on the server.  It crunches the data, bifurcates the data into trials where the target was present and trials where the target was absent, runs a regression analysis on each dataset, computes error rates, and passes the data back to the client side via an ajax call.  The same script is also used to output the data to a '.csv' file by means of the "filedownload" plugin.  These scripts can return errors if passed incomplete datasets.  
+
+Once the data has been passed back from the server, it is plotted in a scatterchart using the google visualizer api.  The data points for each of the two regression lines are computed based on the regression coefficients passed back by the server and then plotted.  
+
+This experiment was programmed by Jacob Adenbaum and David Nahmias under the supervision of Frank Durgin.  If you have any questions about this experiment and the way it works, please contact either Frank Durgin (fdurgin1@swarthmore.edu) or Jacob Adenbaum (jadenba1@swarthmore.edu).
+-->
+
 <!DOCTYPE html>
 <html lang="en">
     

@@ -49,7 +49,7 @@
                                     <fieldset>
                                         <legend>Parameters</legend>
                                         <div class='control-group'>
-                                            <label class='control-label'>Number of Trials</label>
+                                            <label class='control-label'>Number of Trials (multiple of 4) </label>
                                             <div class='controls'>
                                                 <input type='text' id='trialnum' class='input-large'>
                                             </div>
@@ -83,7 +83,7 @@
 
 		<!-- simply four divs, no other distractions -->
      	<div id="holder" class='hide'>
-       		<div id="title"></div>
+       		<!--<div id="title"></div> -->
        		<div id="instruction"></div>
        		<!-- <div id="time"> </div> -->
        		<div id="canvas"></div>
@@ -105,11 +105,11 @@
 
 	// creates the title and the instruction 
 	function drawTandI(){
-        Ttext = title_canvas.text(pic_width/2, text_height/2, "Reaction Time Test");
-        Ttext.attr("font-size", 40)
-        	 .attr("fill", "#000")
-        	 .attr("font-weight", 900)
-       	 	 .attr("font-family", "Courier New");
+        //Ttext = title_canvas.text(pic_width/2, text_height/2, "Reaction Time Test");
+        //Ttext.attr("font-size", 40)
+        //	 .attr("fill", "#000")
+        //	 .attr("font-weight", 900)
+       	// 	 .attr("font-family", "Courier New");
 
 		Itext = instruction_canvas.text(pic_width/2, text_height/2, "Instruction: \n Click the word in the center \n and then bring your cursor over the circle \n that has the color indicated by the word.");
         Itext.attr("font-size", 20) 
@@ -350,7 +350,7 @@
             colorlist2 = colorlist_full;
         
             // create the Raphael canvases for drawing
-            title_canvas = Raphael("title", pic_width, text_height);
+            //title_canvas = Raphael("title", pic_width, text_height);
             instruction_canvas = Raphael("instruction", pic_width, text_height); 
             //time_canvas = Raphael("time", pic_width, text_height);
             canvas = Raphael("canvas", pic_width, pic_height);

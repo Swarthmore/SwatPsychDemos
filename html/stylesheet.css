@@ -124,6 +124,7 @@ body {
 .header h1 a, .header h1 a:hover{
     color: white !important;
     text-decoration:none;
+    margin-bottom: 20px;
 }
 h1 {
     display: block;
@@ -459,8 +460,8 @@ fieldset{
     position: absolute;
     top: 50%;
     left: 50%;
-    height: 926px;
-    margin: -463px 0 0 -305px;
+    height: 750px;
+    margin: -375px 0 0 -305px;
     width: 610px;
     background: white;
     border: solid;

@@ -8,21 +8,21 @@ from scipy import stats
 import numpy as np
 
 ##Regular Web Inputs
-import cgi
-import cgitb
-cgitb.enable() #for troubleshooting
-form = cgi.FieldStorage()
-item = form.getvalue("exp_data")
-item2 = form.getvalue("option")
-Global =  json.loads(item)
-option = json.loads(item2)
+#import cgi
+#import cgitb
+#cgitb.enable() #for troubleshooting
+#form = cgi.FieldStorage()
+#item = form.getvalue("exp_data")
+#item2 = form.getvalue("option")
+#Global =  json.loads(item)
+#option = json.loads(item2)
 
 # Command Line Inputs -- use for Dev Purposes Only
-#import sys
-#import pdb
-#f = open('sternberg_test_data.txt')
-#Global = json.loads(f.read()) 
-#option = sys.argv[1]
+import sys
+import pdb
+f = open('sternberg_test_data.txt')
+Global = json.loads(f.read()) 
+option = sys.argv[1]
 
 ## Run Analysis of Data
 analysis = {'present':  {}, 
@@ -50,6 +50,16 @@ for trial in Global['trials']:
                 'recallErrors':0,
                 'responseErrors': 0,
             }
+        if str(len(trial['list'])) not in analysis['absent'].keys():
+
+            # if it hasn't, create a new entry 
+            analysis['absent'][str(len(trial['list']))]={
+                'number':0, 
+                'mean':0,
+                'recallErrors':0,
+                'responseErrors': 0,
+            }
+            
         # check if their response was correct and should be included in data
         if trial['response'] == trial['testPresent']:     
             # counter
@@ -81,6 +91,16 @@ for trial in Global['trials']:
                 'recallErrors':0,
                 'responseErrors': 0,
             }
+        if str(len(trial['list'])) not in analysis['present'].keys():
+
+            # if it hasn't, create a new entry 
+            analysis['present'][str(len(trial['list']))]={
+                'number':0, 
+                'mean':0,
+                'recallErrors':0,
+                'responseErrors': 0,
+            }
+
         # check if their response was correct and should be included in data
         if trial['response'] == trial['testPresent']:     
             # counter
@@ -130,10 +150,16 @@ for key in analysis['present'].keys() or analysis['absent'].keys():
     else:
         analysis['absent'][key]['mean'] = 0
     
-    analysis['errors'][key] = {
-        'responseErrors': (float(analysis['absent'][key]['responseErrors']) + analysis['present'][key]['responseErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors']),    
-        'recallErrors': (float(analysis['absent'][key]['recallErrors']) + analysis['present'][key]['recallErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['recallErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['recallErrors'])
-    }
+    if (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors']) != 0:
+
+        analysis['errors'][key]['responseErrors'] = (float(analysis['absent'][key]['responseErrors']) + analysis['present'][key]['responseErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors'])
+    else:
+        analysis['errors'][key]['responseErrors'] = 0
+    if (analysis['present'][key]['number'] + analysis['present'][key]['recallErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['recallErrors']) != 0:
+
+        analysis['errors'][key]['recallErrors'] = (float(analysis['absent'][key]['recallErrors']) + analysis['present'][key]['recallErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['recallErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['recallErrors'])
+    else:
+        analysis['errors'][key]['recallErrors'] = 0
     
 # create empty arrays:
 presentLengths = []
