@@ -3,7 +3,10 @@
 #This script will take a JSON from the vision experiment and return a
 #propery formatted CSV file.  
 
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 from scipy import stats
 import numpy as np
 

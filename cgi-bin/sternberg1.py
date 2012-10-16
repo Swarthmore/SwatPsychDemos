@@ -6,7 +6,10 @@
 import sys
 import cgi
 import cgitb
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 from scipy import stats
 import numpy as np
 #import pdb

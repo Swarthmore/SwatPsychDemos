@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
 def main():
-    import json
+    try:
+        import json
+    except ImportError:
+        import simplejson as json
     import time
     import subprocess
 
