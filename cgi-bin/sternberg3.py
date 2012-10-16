@@ -8,21 +8,21 @@ from scipy import stats
 import numpy as np
 
 ##Regular Web Inputs
-#import cgi
-#import cgitb
-#cgitb.enable() #for troubleshooting
-#form = cgi.FieldStorage()
-#item = form.getvalue("exp_data")
-#item2 = form.getvalue("option")
-#Global =  json.loads(item)
-#option = json.loads(item2)
+import cgi
+import cgitb
+cgitb.enable() #for troubleshooting
+form = cgi.FieldStorage()
+item = form.getvalue("exp_data")
+item2 = form.getvalue("option")
+Global =  json.loads(item)
+option = json.loads(item2)
 
 # Command Line Inputs -- use for Dev Purposes Only
-import sys
-import pdb
-f = open('sternberg_test_data.txt')
-Global = json.loads(f.read()) 
-option = sys.argv[1]
+#import sys
+#import pdb
+#f = open('sternberg_test_data.txt')
+#Global = json.loads(f.read()) 
+#option = sys.argv[1]
 
 ## Run Analysis of Data
 analysis = {'present':  {}, 

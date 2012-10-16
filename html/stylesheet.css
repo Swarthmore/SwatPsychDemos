@@ -406,6 +406,25 @@ fieldset{
     position:fixed;
     border:solid;
 }
+#right_experiment{
+    position: relative;
+    width: 250px;
+    height: 250px;
+    top: 50%;
+    margin-top: -125px;
+    margin-right: 25px;
+    float: right;
+}
+
+#left_experiment{
+    position: relative;
+    width: 250px;
+    height: 250px;
+    top: 50%;
+    margin-top: -125px;
+    margin-left: 25px;
+    float: left;
+}
 .instructions{
     float:left;
     padding: 0 10px;
@@ -450,6 +469,13 @@ fieldset{
     width:600px;
     line-height:1em;
 }
+.enterList{
+    position: fixed;
+    text-align: center;
+    font-size: 500%;
+    width:600px;
+    line-height:1em;
+}
 .cross{
     color: gray
 }
@@ -468,4 +494,18 @@ fieldset{
     -webkit-border-radius: 10px 10px 10px 10px;
     -moz-border-radius: 10px 10px 10px 10px;
     border-radius:10px 10px 10px 10px;
+}
+.wide {
+    width: 900px;
+}
+
+.letters {
+    position: absolute;
+    width: 12px;
+}
+.plot {
+    width:500px !important;
+    height:500px;
+    display:block;
+    margin: 10px auto 10px auto !important;
 }

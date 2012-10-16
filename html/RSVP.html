@@ -209,36 +209,36 @@
                 
                 keyPress={
                     digits:{
-                    	" ":{code: [32]},
-                        "a":{code: [65]},
-                        "b":{code: [66]},
-                        "c":{code: [67]},
-                        "d":{code: [68]},
-                        "e":{code: [69]},
-                        "f":{code: [70]},
-                        "g":{code: [71]},
-                        "h":{code: [72]},
-                        "i":{code: [73]},
-                        "j":{code: [74]},
-                        "k":{code: [75]},
-                        "l":{code: [76]},
-                        "m":{code: [77]},
-                        "n":{code: [78]},
-                        "o":{code: [79]},
-                        "p":{code: [80]},
-                        "q":{code: [81]},
-                        "r":{code: [82]},
-                        "s":{code: [83]},
-                        "t":{code: [84]},
-                        "u":{code: [85]},
-                        "v":{code: [86]},
-                        "w":{code: [87]},
-                        "x":{code: [88]},
-                        "y":{code: [89]},
-                        "z":{code: [90]},
-                        ",":{code: [188]},
-                        ".":{code: [190]},
-                        "'":{code: [222]}
+                    	" ":32,
+                        "a":65,
+                        "b":66,
+                        "c":67,
+                        "d":68,
+                        "e":69,
+                        "f":70,
+                        "g":71,
+                        "h":72,
+                        "i":73,
+                        "j":74,
+                        "k":75,
+                        "l":76,
+                        "m":77,
+                        "n":78,
+                        "o":79,
+                        "p":80,
+                        "q":81,
+                        "r":82,
+                        "s":83,
+                        "t":84,
+                        "u":85,
+                        "v":86,
+                        "w":87,
+                        "x":88,
+                        "y":89,
+                        "z":90,
+                        ",":188,
+                        ".":190,
+                        "'":222
                     },
                     commands:{
                         backspace:[8],
@@ -305,41 +305,49 @@
                 $('.counter').text(t+1 + '/' + global.trials.length);
                 
                 var i=0; //define counter variable for list length
-                
+                var j=0;
                 //Sets a function to run every n seconds to display the list elts
                 timer = setInterval(function(){
                     $('.listDisplay').remove(); //clears display
                                         
                     //if list is not done yet:
-                    if (i<global.trials[t].list.length){
-                    	var j=0;
-                    	if (j<global.trials[t].list[i].length){
+                    if (i<global.trials[t][0].length){
                     
-                        	//display list elt
-                        	$('#experiment').append('<div class="listDisplay">'+ global.display[t].list[i][j] + '</div>'); 
-                        	j++;
-                        }
+                        //display list elt
+                        $('#experiment').append('<div class="listDisplay">'+ global.trials[t][0][i] + '</div>');
+                        
                         i++;
                     } 
                     //if the list is done:
                     else {
                         clearInterval(timer); //stop the interval loop
                         $('.listDisplay').remove(); //clear the experiment box
-                            $('#experiment').append('<div class="listDisplay cross"><center> + </center></div>') //screen to get ready
+                            //$('#experiment').append('<div class="listDisplay cross"><center> + </center></div>') //screen to get ready
                         
                         //set time delay for the probe elt
-                        setTimeout(function(){
-                            $('.listDisplay').remove(); //clear experiment box
+                       // setTimeout(function(){
+                       //     $('.listDisplay').remove(); //clear experiment box
                             
-                            //display the probe
-                            $('#experiment').append('<div class="listDisplay"><center>' + global.trials[t].test[1] + '</center></div>') 
                             
                             //record start time
-                            var t1 = new Date();
-                            start = t1.getTime();
+                            //var t1 = new Date();
+                            //start = t1.getTime();
                             //tells keydown function that experiment is waiting for response
-                            select=true; 
-                        }, global.timeParameters.recall);
+                      //      select=false; 
+                      //  }, global.timeParameters.recall);
+                       //sets ups recall list for this trial:
+                       
+                            global.trials[t]['recall']="";
+                            console.log(global.trials);
+                            
+                            //clears experiment box
+                            $('#experiment').text('');
+                            
+                            recall = true; //sets experiment to listen for subject recall of list
+                            select = true; //sets experiment not to accept 'j' or 'f' keypress
+                            
+                            //prompt a recall
+                            $('#experiment').append('<div class="enterList"> Enter the sentence: <p id="subjectRecall"> </p> </div>')
                     }
                 },global.timeParameters.display);
             }
@@ -352,34 +360,19 @@
                     var code = (e.keyCode ? e.keyCode : e.which);
                     
                     //checks that experiment has started
-                    if (typeof select != 'undefined'){ 
+                    if (typeof select != 'undefined'){
                         
                         //'select==false' checks that experiment is waiting for 'f' or 'j' input
-                        if ((code == 70 || code == 74) && select==false) { 
-                            var t2 = new Date();
-                            var end = t2.getTime();
-                            global.trials[t]['time']=(end-start);
-                            console.log(global.trials[t].time);
+                        //if (select==false) { 
+                           // var t2 = new Date();
+                           // var end = t2.getTime();
+                           // global.trials[t]['time']=(end-start);
+                           // console.log(global.trials[t].time);
                             
-                            //records if they said true:
-                            if (code==70){global.trials[t]['response']=true;} 
-
-                            //records if they said false:
-                            if (code==74){global.trials[t]['response']=false;}
+                           //CUT FROM HERE
                             
-                            //sets ups recall list for this trial:
-                            global.trials[t]['recall']=[];
-                            
-                            //clears experiment box
-                            $('#experiment').text('');
-                            
-                            recall = true; //sets experiment to listen for subject recall of list
-                            select = true; //sets experiment not to accept 'j' or 'f' keypress
-                            
-                            //prompt a recall
-                            $('#experiment').append('<div class="listDisplay"> Enter the list: <p id="subjectRecall"> </p> </div>')
-                            
-                        } else if (code==32 && select==true && recall==false){ 
+                        //} 
+                        if (code==32 && select==true && recall==false){ 
                             select=false;
                             presentLetters(t);
                         }
@@ -388,11 +381,9 @@
                     //Handler for subject recall of the list
                     if (recall==true){
                         $.each(keyPress.digits, function(key, value){
-                            if ($.inArray(code, value.code) != -1){
-                                if ($.inArray(global.listElements.display[key], global.trials[t].recall) == -1){                                
+                            if (code == value){
 									$('#subjectRecall').append(key);
-                                global.trials[t].recall.push(global.listElements.display[key]);
-                                }
+                                global.trials[t].recall += key;
                             }
                         });
                         if (code == 8){
@@ -400,7 +391,7 @@
                                 $('#subjectRecall').text(     
                                     $('#subjectRecall').text().slice(0,-1)
                                 );
-                                global.trials[t].recall.pop();
+                                global.trials[t].recall.slice(0,-1);
                         }
                     }
 
@@ -412,7 +403,7 @@
                         recall=false; //turn off recall mode
                         
                         //determines whether correct or not -- uses JSON.stringify to check array equality.  
-                        global.trials[t]['correctRecall'] = (JSON.stringify(global.trials[t].list) == JSON.stringify(global.trials[t].recall));
+                        //global.trials[t]['correctRecall'] = (JSON.stringify(global.trials[t].list) == JSON.stringify(global.trials[t].recall));
                         
                                                 
                         //iterates counter to the next trial
@@ -438,6 +429,7 @@
                             clearInterval(timer); //stop the interval loop
                         }
                         global.trials = global.trials.slice(0,t);
+                        console.log(global.trials);
                         dataAnalysis(t);
                     }
                 });
@@ -452,10 +444,10 @@
                 global.trials = shuffleArray(currentExp).slice(0); 
                 
                global.trials = global.display[global.listName].slice(0,2).concat(global.trials);
-                
+               
                 //Generate Trial Order
                 for (i=0;i<=26;i++){
-                	var currentTrial = global.trials[i].split(" ")
+                	global.trials[i][0] = global.trials[i][0].split(" ")
                 }
                 
                 //number the trials
@@ -465,7 +457,7 @@
                 
                 //initialize keydown listener and start presenting the experiment
                 $('#experiment').append('<div id="ready" class="listDisplay">Ready?</div>');
-                
+                console.log(global.trials);
                 select=true;
                 
                 initializeKeyDown();
@@ -473,6 +465,21 @@
             
             function dataAnalysis(t){
                 console.log('data Analysis');
+                
+                
+				//stores JSON data from server in global object
+				global['analysis'] = analysis
+
+				//hide experiment
+				$('.experiment').hide()
+				
+				//show text body
+				$('.body_outer_container').show();
+				
+				//show analysis
+				$('#analysis').show();
+                    
+                
                 //Send Data to Server
                 
                 $.ajax({
@@ -484,18 +491,6 @@
                     }
                 }).done(function (analysis) {
 
-                    //stores JSON data from server in global object
-                    global['analysis'] = analysis
-
-                    //hide experiment
-                    $('.experiment').hide()
-                    
-                    //show text body
-                    $('.body_outer_container').show();
-                    
-                    //show analysis
-                    $('#analysis').show();
-                    
                     //Send Data to Server for Download as a CSV file        
                     $('#download').click(function () {
                         $.fileDownload("../cgi-bin/sternberg3.py", {
@@ -735,21 +730,14 @@
                 <div id='analysis' class='hide'> 
                     <p> Your results have been saved into a file called "dataResults". It contains information about each trial including the response latency of your responses. You can download it as a ".csv" file by clicking the download data button below.</p>
 
-                    <p> Sternberg (1966) found that for each additional item in the list, people took about 40 additional ms to respond. Sternberg suggested that this showed that the search was a serial search through memory, rather than a parallel search of all the items at once.  However, this speed is much faster than you can say the items in your head, so the search is probably unconscious. </p>
-
                     <div id = 'chart_div' class = 'dataReport'></div>
 
-                    <p> Surprisingly, however, Sternberg also observed that the rate for saying "present" was no faster than the rate for saying absent.  Sternberg argued that this meant the search involved comparisons to ALL the items in the list (exhaustive search) rather than only until the matching item was found (self-terminating search). </p>                         
+                    <p> </p>                         
 
                     <div id = 'table_div' class = 'dataReport' style = 'width:400; height:300'></div>
                     
-                    <p> Questions to ponder: </p>
-                    
-                    <ol>
-                        <li> Is the slope different for "present" trials and "absent" trials? </li>
-                        <li> Sternberg found that the slopes were the same (and both about 40 ms per item). </li> 
-                        <li> Why might the memory scanning process be serial AND exhaustive (rather than self-terminating)? </li>
-                    </ol>
+                    <p> </p>
+                
                     <div id='buttons'>
                         <input type='button' class = 'btn btn-primary dataReport' id = 'restart' value = 'Try Again' />
                         <input type='button' class = 'btn btn-primary dataReport' id = 'download' value = 'Download Data'/>
@@ -758,16 +746,6 @@
                 
                 <div id='analysis_error' class='hide'> 
                     <p> We are sorry, but it seems that an error has occured while processing your data.  We are unable to plot your results for you at the present time.  The raw data from your experiment can most likely be retrieved by clicking the "Download Data" button below.  It has been saved into a file called "dataResults", which contains information about each trial including the response latency of your responses. </p>
-
-                    <p> Sternberg (1966) found that for each additional item in the list, people took about 40 additional ms to respond. Sternberg suggested that this showed that the search was a serial search through memory, rather than a parallel search of all the items at once.  However, this speed is much faster than you can say the items in your head, so the search is probably unconscious. </p>
-
-                    <p> Surprisingly, however, Sternberg also observed that the rate for saying "present" was no faster than the rate for saying absent.  Sternberg argued that this meant the search involved comparisons to ALL the items in the list (exhaustive search) rather than only until the matching item was found (self-terminating search). </p>                         
-                   
-                    <p> Questions to ponder: </p>
-                    <ol>
-                        <li> Is the slope different for "present" trials and "absent" trials? </li>
-                        <li> Sternberg found that the slopes were the same (and both about 40 ms per item). </li> 
-                        <li> Why might the memory scanning process be serial AND exhaustive (rather than self-terminating)? </li>
                     </ol>
                     <div id='buttons'>
                         <input type='button' class = 'btn btn-primary dataReport' id = 'restart' value = 'Try Again' />
@@ -783,7 +761,7 @@
     </div>
         <div id='experiment' class='experiment hide'> </div>
         <div id='experiment_footer' class='experiment hide'> 
-                <div class='instructions'> "Space" = New Trial, "Enter" = Submit List </div>
+                <div class='instructions'> "Space" = New Trial, "Enter" = Submit Sentence </div>
                 <div class='counter'> </div>
         </div>
     </body>
