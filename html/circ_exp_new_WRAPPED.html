@@ -343,7 +343,7 @@
             y_cent = pic_height/2;
         
             // this is our color database
-            colorlist_full = [colorKV("gray","#808080"),
+            colorlist_full = colorlist_split = [colorKV("gray","#808080"),
                               colorKV("red","#FF0000"), 
                               colorKV("yellow","#FFFF00"), 
                               colorKV("orange","#FFA500"),
@@ -354,7 +354,7 @@
                               colorKV("purple","#800080")];
         
             // gives two lists of colors to work with
-            var colorlist_split = shuffle(colorlist_full);
+            colorlist_split = shuffle(colorlist_split);
             colorlist1 = colorlist_split.splice(0,4);
             colorlist2 = colorlist_split;
         
