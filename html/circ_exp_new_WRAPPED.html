@@ -201,7 +201,7 @@
                     exportdata[trialnum] = {"trial number": trialnum + 1, 
                                             "time": elapsed,
                                             "printed": name,
-                                            "true color": color,
+                                            "true color": colorRGBtoWord(color),
                                             "correct?": check};
                     trialnum = trialnum + 1;
 					init();
@@ -221,7 +221,16 @@
             started = 1;
 		}
     }
-
+	
+	function colorRGBtoWord(RGBvalue){
+		for (var i = 0; i < colorlist_full.length; i++){
+			if (RGBvalue == colorlist_full[i].color){
+				return colorlist_full[i].name;	
+			}
+		}
+		return RGBvalue; //not found?
+	}
+	
 	function clonecolorarray(list){
 		var clone = new Array();
 		for (var i=0; i<list.length; i++){
