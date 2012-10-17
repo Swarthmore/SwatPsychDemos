@@ -150,7 +150,7 @@ for key in analysis['present'].keys() or analysis['absent'].keys():
         analysis['present'][key]['mean'] = 0
     
     #handles analysis['absent'] for probe absent
-	if key not in analysis['absent']:
+    if key not in analysis['absent']:
         analysis['absent'][key] = {}
     if analysis['absent'][key]['number'] != 0:
         analysis['absent'][key]['mean'] = analysis['absent'][key]['mean']/analysis['absent'][key]['number']
