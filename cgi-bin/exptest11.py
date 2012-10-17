@@ -142,7 +142,7 @@ if option == 'csv':
 	print "Content-Disposition:attachment;filename=dataResults.csv\n"
 	print 'Trial Results:'
 	print 'Trial Number', ",", 'Number of Distractors',",", 'Target Present?',",","Subject's Response",",", 'Response Time (ms)',","
-	for trial, results  in enumerate(data['trials'], start=0):
+	for trial, results  in enumerate(data['trials']):
 		print (str(trial) + ',' + str(results['distractors']) + ',' + str(results['targetPresent']) + ',' + str(results['subjectResponse']) + ',' + str(results['time']))
 	print
 	print 'Average Response Times'
