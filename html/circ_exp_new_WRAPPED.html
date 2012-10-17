@@ -223,7 +223,7 @@
     }
 	
 	function colorRGBtoWord(RGBvalue){
-		for (var i = 0; i < colorlist_full.length; i++){
+		for (var i in colorlist_full){
 			if (RGBvalue == colorlist_full[i].color){
 				return colorlist_full[i].name;	
 			}
@@ -354,9 +354,9 @@
                               colorKV("purple","#800080")];
         
             // gives two lists of colors to work with
-            colorlist_full = shuffle(colorlist_full);
-            colorlist1 = colorlist_full.splice(0,4);
-            colorlist2 = colorlist_full;
+            var colorlist_split = shuffle(colorlist_full);
+            colorlist1 = colorlist_split.splice(0,4);
+            colorlist2 = colorlist_split;
         
             // create the Raphael canvases for drawing
             //title_canvas = Raphael("title", pic_width, text_height);
