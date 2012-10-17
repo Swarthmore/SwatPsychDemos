@@ -342,8 +342,8 @@
             x_cent = pic_width/2;
             y_cent = pic_height/2;
         
-            // this is our color database
-            colorlist_full = colorlist_split = [colorKV("gray","#808080"),
+            // this is our color database(global, used later)
+            colorlist_full = [colorKV("gray","#808080"),
                               colorKV("red","#FF0000"), 
                               colorKV("yellow","#FFFF00"), 
                               colorKV("orange","#FFA500"),
@@ -352,6 +352,16 @@
                               colorKV("brown","#8B4513"), 
                               colorKV("pink","#FF1493"),
                               colorKV("purple","#800080")];
+            //copy of DB which is sliced
+            var colorlist_split = [colorKV("gray","#808080"),
+                                   colorKV("red","#FF0000"), 
+                                   colorKV("yellow","#FFFF00"), 
+                                   colorKV("orange","#FFA500"),
+                                   colorKV("green","#008000"), 
+                                   colorKV("blue","#0000FF"),
+                                   colorKV("brown","#8B4513"), 
+                                   colorKV("pink","#FF1493"),
+                                   colorKV("purple","#800080")];
         
             // gives two lists of colors to work with
             colorlist_split = shuffle(colorlist_split);
