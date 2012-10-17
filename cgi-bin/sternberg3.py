@@ -140,27 +140,31 @@ for trial in Global['trials']:
 
 # averages the time for each list length
 for key in analysis['present'].keys() or analysis['absent'].keys():
-    
+
     #handles analysis for probe present
+    if key not in analysis['present']:
+        analysis['present'][key] = {}
     if analysis['present'][key]['number'] != 0:
         analysis['present'][key]['mean'] = analysis['present'][key]['mean']/analysis['present'][key]['number']
     else:
         analysis['present'][key]['mean'] = 0
     
     #handles analysis['absent'] for probe absent
+	if key not in analysis['absent']:
+        analysis['absent'][key] = {}
     if analysis['absent'][key]['number'] != 0:
         analysis['absent'][key]['mean'] = analysis['absent'][key]['mean']/analysis['absent'][key]['number']
     else:
         analysis['absent'][key]['mean'] = 0
     
+    if key not in analysis['errors']:
+        analysis['errors'][key] = {}
     if (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors']) != 0:
-
         analysis['errors'][key]['responseErrors'] = (float(analysis['absent'][key]['responseErrors']) + analysis['present'][key]['responseErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors'])
     else:
-        analysis['errors'][key]['responseErrors'] = 0
+    	analysis['errors'][key]['responseErrors'] = 0
     if (analysis['present'][key]['number'] + analysis['present'][key]['recallErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['recallErrors']) != 0:
-
-        analysis['errors'][key]['recallErrors'] = (float(analysis['absent'][key]['recallErrors']) + analysis['present'][key]['recallErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['recallErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['recallErrors'])
+		analysis['errors'][key]['recallErrors'] = (float(analysis['absent'][key]['recallErrors']) + analysis['present'][key]['recallErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['recallErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['recallErrors'])
     else:
         analysis['errors'][key]['recallErrors'] = 0
     
