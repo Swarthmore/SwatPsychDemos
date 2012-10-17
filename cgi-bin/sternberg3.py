@@ -157,6 +157,7 @@ for key in analysis['present'].keys() or analysis['absent'].keys():
     else:
         analysis['absent'][key]['mean'] = 0
     
+    #handle response/recall errors
     if key not in analysis['errors']:
         analysis['errors'][key] = {}
     if (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors']) != 0:
