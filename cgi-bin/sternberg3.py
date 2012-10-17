@@ -140,7 +140,7 @@ for trial in Global['trials']:
 
 # averages the time for each list length
 for key in analysis['present'].keys() or analysis['absent'].keys():
-    
+
     #handles analysis for probe present
     if analysis['present'][key]['number'] != 0:
         analysis['present'][key]['mean'] = analysis['present'][key]['mean']/analysis['present'][key]['number']
@@ -154,8 +154,10 @@ for key in analysis['present'].keys() or analysis['absent'].keys():
         analysis['absent'][key]['mean'] = 0
     
     if (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors']) != 0:
-
+        if key not in analysis['errors']:
+            analysis['errors'][key] = {}
         analysis['errors'][key]['responseErrors'] = (float(analysis['absent'][key]['responseErrors']) + analysis['present'][key]['responseErrors']) / (analysis['present'][key]['number'] + analysis['present'][key]['responseErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['responseErrors'])
+
     else:
         analysis['errors'][key]['responseErrors'] = 0
     if (analysis['present'][key]['number'] + analysis['present'][key]['recallErrors'] + analysis['absent'][key]['number'] + analysis['absent'][key]['recallErrors']) != 0:
