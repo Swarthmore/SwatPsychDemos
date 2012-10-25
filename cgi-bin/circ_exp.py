@@ -26,12 +26,13 @@ if option == 'csv':
 	print "Content-Type:application/csv"
 	print "Content-Disposition:attachment;filename=dataResults.csv\n"
 	print 'Trial Results:'
-	print 'Trial Number',",", 'Reaction Time',",", 'Color Word Printed',",","True Color",",", 'Correct?'
+	print 'Trial Number,Reaction Time (ms),Word Displayed,Color of Text,Text Color in Set,Correct'
 	for i in range(len(json_data)):
 		trialresults = json_data[i]
-		print (str(trialresults["trial number"]) + ',' + 
+		print (str(trialresults["trialNumber"]) + ',' + 
 		       str(trialresults["time"]) + ',' + 
 		       str(trialresults["printed"]) + ',' + 
-		       str(trialresults["true color"]) + ',' + 
-		       str(trialresults["correct?"])  
+		       str(trialresults["trueColor"]) + ',' + 
+		       str(trialresults["inSet"]) + ',' + 
+		       str(trialresults["correct"])  
 		      )
