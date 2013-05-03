@@ -8,6 +8,7 @@
 	<link type="text/css" href="jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
     <link rel="shortcut icon" href="favicon.ico">
 	<script src="bootstrap/docs/assets/js/jquery.js"></script> 
+	<script src='jquery-ui/js/jquery-ui-1.8.21.custom.min.js'></script>
     <script src="raphael.js"></script>
     
     <script src="jquery.fileDownload.js"></script>  
@@ -99,9 +100,10 @@
                                     <fieldset>
                                         <legend>Parameters</legend>
                                         <div class='control-group'>
-                                            <label class='control-label'>Number of Trials (multiple of 4) </label>
+                                            <label class='control-label'>Number of Trials</label>
                                             <div class='controls'>
-                                                <input type='text' id='trialnum' class='input-large'>
+                                                <input type='text' id='trialnum' class="input-large" value="4" disabled>
+                               					<div id='trialSlider' class='slider'></div>
                                             </div>
                                         </div>
                                         <div class='controls'>
@@ -138,9 +140,13 @@
 		<!-- simply four divs, no other distractions -->
      	<div id="holder" class='hide'>
        		<!--<div id="title"></div> -->
-       		<div id="instruction"></div>
+       		<div class="instruction">
+				Instructions:
+				Click to start, then move your cursor over the circle that has the color indicated by the word.
+			</div>
        		<!-- <div id="time"> </div> -->
        		<div id="canvas"></div>
+       		<div class="footer">"ESC" = Exit</div>
      	</div>
    <!-- now starts the code proper -->
     <script>
@@ -375,94 +381,122 @@
 			drawcircle(trial);
 		});
 	}
-    $('#start').click(function(){
-        if (!$('#trialnum').parent().parent().hasClass('error') && $('#trialnum').val() != ''){
-            //hide form
-            $('form').hide()
-            $('.body_outer_container').hide();
-            $('#holder').show();
-            
-            
-            // this is the main function
-            // we have a database of 9 colors and
-            // there are only 6 colors present on the peripherals
-        
-            total_pop = 9;
-            shown_pop = 6;
-        
-            // set the parameters first
-            radius = 95;
-            dist = 200;
-            pic_height = dist*2 + radius*2 + 20;
-            pic_width = pic_height;
-            text_height = 100;
-        
-            // get the position of the center
-            x_cent = pic_width/2;
-            y_cent = pic_height/2;
-        
-            // this is our color database(global, used later)
-            colorlist_full = [colorKV("gray","#808080"),
-                              colorKV("red","#FF0000"), 
-                              colorKV("yellow","#FFFF00"), 
-                              colorKV("orange","#FFA500"),
-                              colorKV("green","#008000"), 
-                              colorKV("blue","#0000FF"),
-                              colorKV("brown","#8B4513"), 
-                              colorKV("pink","#FF1493"),
-                              colorKV("purple","#800080")];
-            //copy of DB which is sliced
-            var colorlist_split = [colorKV("gray","#808080"),
-                                   colorKV("red","#FF0000"), 
-                                   colorKV("yellow","#FFFF00"), 
-                                   colorKV("orange","#FFA500"),
-                                   colorKV("green","#008000"), 
-                                   colorKV("blue","#0000FF"),
-                                   colorKV("brown","#8B4513"), 
-                                   colorKV("pink","#FF1493"),
-                                   colorKV("purple","#800080")];
-        
-            // gives two lists of colors to work with
-            colorlist_split = shuffle(colorlist_split);
-            colorlist1 = colorlist_split.splice(0,4);
-            colorlist2 = colorlist_split;
-        
-            // create the Raphael canvases for drawing
-            //title_canvas = Raphael("title", pic_width, text_height);
-            instruction_canvas = Raphael("instruction", pic_width, text_height); 
-            //time_canvas = Raphael("time", pic_width, text_height);
-            canvas = Raphael("canvas", pic_width, pic_height);
-        
-            // put down instructions first
-            drawTandI();
-        
-            numoftrials = $('#trialnum').val();
-        
-            // create trials
-            alltrials = createtrials(numoftrials, colorlist1, colorlist2);
-            // and initialize the experiment
-            init();
-            trialnum = 0;
-            exportdata = new Array();
-        }
-    });
-    
-    $('#trialnum').change(function(){
-        if (this.value % 4 == 0 && this.value >=1 && Math.floor(this.value) == this.value){   
-            //Remove Error Message if it exists attached to elt's grandparent in the DOM
-            if ($(this).parent().parent().hasClass('error')){
-                $(this).parent().parent().removeClass('error');
-                $(this).siblings('.help-inline').remove();
+	
+	$(document).ready(function(){
+	    $('#start').click(function(){
+	        if (!$('#trialnum').parent().parent().hasClass('error') && $('#trialnum').val() != ''){
+	        	
+	        	$(document).keydown(function (e) {
+	                 
+	                 //sets keycode according to the downpress
+	                 var code = (e.keyCode ? e.keyCode : e.which);
+	                 
+	                 //Escape key ends experiment
+	                 if (code == 27) {
+	                     location.reload();
+	                 }
+	            });
+	        	
+	            //hide form
+	            $('form').hide()
+	            $('.body_outer_container').hide();
+	            $('#holder').show();
+	            
+	            
+	            // this is the main function
+	            // we have a database of 9 colors and
+	            // there are only 6 colors present on the peripherals
+	        
+	            total_pop = 9;
+	            shown_pop = 6;
+	        
+	            // set the parameters first
+	            radius = 95;
+	            dist = 200;
+	            pic_height = dist*2 + radius*2 + 20;
+	            pic_width = pic_height;
+	            text_height = 100;
+	        
+	            // get the position of the center
+	            x_cent = pic_width/2;
+	            y_cent = pic_height/2;
+	        
+	            // this is our color database(global, used later)
+	            colorlist_full = [colorKV("gray","#808080"),
+	                              colorKV("red","#FF0000"), 
+	                              colorKV("yellow","#FFFF00"), 
+	                              colorKV("orange","#FFA500"),
+	                              colorKV("green","#008000"), 
+	                              colorKV("blue","#0000FF"),
+	                              colorKV("brown","#8B4513"), 
+	                              colorKV("pink","#FF1493"),
+	                              colorKV("purple","#800080")];
+	            //copy of DB which is sliced
+	            var colorlist_split = [colorKV("gray","#808080"),
+	                                   colorKV("red","#FF0000"), 
+	                                   colorKV("yellow","#FFFF00"), 
+	                                   colorKV("orange","#FFA500"),
+	                                   colorKV("green","#008000"), 
+	                                   colorKV("blue","#0000FF"),
+	                                   colorKV("brown","#8B4513"), 
+	                                   colorKV("pink","#FF1493"),
+	                                   colorKV("purple","#800080")];
+	        
+	            // gives two lists of colors to work with
+	            colorlist_split = shuffle(colorlist_split);
+	            colorlist1 = colorlist_split.splice(0,4);
+	            colorlist2 = colorlist_split;
+	        
+	            // create the Raphael canvases for drawing
+	            //title_canvas = Raphael("title", pic_width, text_height);
+	            //instruction_canvas = Raphael("instruction", pic_width, text_height); 
+	            //time_canvas = Raphael("time", pic_width, text_height);
+	            canvas = Raphael("canvas", pic_width, pic_height);
+	        
+	            // put down instructions first
+	            //drawTandI();
+	        
+	            numoftrials = $('#trialnum').val();
+	        
+	            // create trials
+	            alltrials = createtrials(numoftrials, colorlist1, colorlist2);
+	            // and initialize the experiment
+	            init();
+	            trialnum = 0;
+	            exportdata = new Array();
+	        }
+	    });
+	    
+	  //Initialize trialSlider
+        $('#trialSlider').slider({
+            value: 4,
+            min:4,
+            max:400,
+            step:4,
+            animate:true,
+            slide: function(event,ui){
+                //Resets associated field value when slider is changed:
+                $('#trialnum').val(ui.value);
+
             }
-        }            
-        else if (!$(this).parent().parent().hasClass('error')){
-            $(this).parent().parent().addClass('error');
-            $(this).parent()
-                .append('<span class="help-inline"> Please submit a positive multiple of 4 </span>')
-        }
-
-    });
-
+        });
+	  
+	    $('#trialnum').change(function(){
+	        if (this.value % 4 == 0 && this.value >=1 && Math.floor(this.value) == this.value){   
+	            //Remove Error Message if it exists attached to elt's grandparent in the DOM
+	            if ($(this).parent().parent().hasClass('error')){
+	                $(this).parent().parent().removeClass('error');
+	                $(this).siblings('.help-inline').remove();
+	            }
+	        }            
+	        else if (!$(this).parent().parent().hasClass('error')){
+	            $(this).parent().parent().addClass('error');
+	            $(this).parent()
+	                .append('<span class="help-inline"> Please submit a positive multiple of 4 </span>')
+	        }
+	
+	    });
+	});
     </script>
 
    </body>
