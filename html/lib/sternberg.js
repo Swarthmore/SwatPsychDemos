@@ -477,11 +477,4 @@
             $('document').ready(function(){
                 varSet();
                 formInitializer();
-                
-              /*  $('#start').click(function(){
-                    $('form').hide();
-                    $('.body_outer_container').hide();
-                    $('.experiment').show();
-                    runExperiment();
-                });*/
             });

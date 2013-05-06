@@ -10,8 +10,8 @@
                 <li><a href="visual_search.php">Visual Search</a></li>
                 <li><a href="sternberg.php">Sternberg</a></li>
                 <li><a href="reverse_stroop.php">Reverse Stroop</a></li>
-                <li><a href="index.php#density" class="tab-link">Pattern Density</a></li>
-                <li><a href="index.php#RSVP" class="tab-link">Rapid Sentence Reading</a></li>
+                <li><a href="pattern_density.php">Pattern Density</a></li>
+                <li><a href="RSVP.php">Rapid Sentence Reading</a></li>
             </ul>
         </div>
     </nav>

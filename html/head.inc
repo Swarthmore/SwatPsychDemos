@@ -45,20 +45,12 @@
                 $('#restart').click(function () {
                     location.reload(true);
                 });
-               
-                
-                $('#stroop-btn').click(function(){
-                    window.location = 'circ_exp_new_WRAPPED.html#stroop';
-                });
-                
-                $('#density-btn').click(function(){
-                    window.location = 'patterndensity2.html#density';
-                });
+           
                 
                 $('#rsvp-btn').click(function(){
                     window.location = 'RSVP.html#RSVP';
                 });
-            }
+            };
             
             $(document).ready(function(){
                 initializeButtons();
