@@ -34,7 +34,7 @@
 		
 		                    	<p>To practice the task and see how it works, click the "Try it" button below.  By default you should press "F" when the target is present and "J" when the target is not present. Press the space bar to start each new trial.  Try to go as quickly as you can without making more than a couple mistakes. </p>
 		                    
-		                    	<button class="btn btn-primary tryit">Try it!</button>
+		                    	<button id="tryit" class="btn btn-primary tryit">Try it!</button>
 		              		</div>
 	                		<!-- Setup Form -->
 	                		<div id="experiment-form" class="exp-pane hide">
@@ -68,7 +68,7 @@
 				                        </div>
 				                        
 				                        <div class="controls">
-				                            <input id="start" class="btn btn-primary" type="button" value="Start Experiment">
+				                            <button id="start" class="btn btn-primary">Start Experiment</button>
 				                        </div>
 				                        
 				                    </fieldset>
@@ -92,8 +92,8 @@
 					                </ol>
 					            </p>
                 				<div id="buttons"> 
-                    				<input type="button" class="btn dataReport" id="restart" value="Try Again"> 
-                    				<input type="button" class="btn dataReport" id="download" value="Download Data"> 
+                    				<input type="button" class="btn btn-primary dataReport" id="restart" value="Try Again"> 
+                    				<input type="button" class="btn btn-primary dataReport" id="download" value="Download Data"> 
             					</div>
                 			</div>
             

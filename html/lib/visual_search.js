@@ -132,19 +132,19 @@
         $('#target').change(function(){
             global['target'] = $(this).val();
         });
-        
-        //Create Click function for Start Experiment Button
-        $('#start').click(function(){
-            $('form').hide();
-            generateTrials();
-            initializeModal();
-
-            //updates trial counter
-            $('.counter').text( t + '/' + global.trials.length );
-            
-            runExperiment();
-        });
     }
+
+//Start the Experiement
+    function startExperiment(){
+        generateTrials();
+        initializeModal();
+
+        //updates trial counter
+        $('.counter').text( t + '/' + global.trials.length );
+        
+        runExperiment();
+    }
+    
 //Generate Trials
     function generateTrials(){
         //Create Local Pointer
@@ -201,9 +201,6 @@
         
         //throw out trials that haven't been run
         global.trials = global.trials.slice(0,t); 
-        
-        //Run DataAnalyis
-        dataAnalysis();
     }
     
 //Generates a Random Placement of distractor
@@ -331,7 +328,7 @@
     
 //Prints Instructions
     function generateInstructions(){
-        $('#experiment').append("<div id='instructions'> Press the space bar to start each trial. If you see the target, press the \"F\" key. If you do not see the target, press the \"J\" key. Don't worry if you make a mistake. </div>");
+        $('#experiment').html("<div id='instructions'> Press the space bar to start each trial. If you see the target, press the \"F\" key. If you do not see the target, press the \"J\" key. Don't worry if you make a mistake. </div>");
     }
         
 //Sets up Keydown function
@@ -390,16 +387,18 @@
                     //if this is the end of the experiment
                     else { 
                         closeModal();
+                        
+                        //Run DataAnalyis
+                        dataAnalysis();
+                        
+                        //show the results
+                        $("#experiment-results").show();
                     }
 
                 } 
                 //if subject hits escape key
                 else if (code == 27) {                           
-                    //experiment is off
-                    experimentStart = undefined;
-                    
-                    //close the modal
-                    closeModal();
+                	document.location.reload(true);
                 }
             }
         });
@@ -411,10 +410,10 @@
         //sends to server to get regression data
         $.ajax({
             type: 'POST',
-            url: '../cgi-bin/exptest11.py',
+            url: '../cgi-bin/visual_search.py',
             data: {
                 exp_data: JSON.stringify(global),
-                option: JSON.stringify('analysis')
+                option: 'analysis'
             }
         }).done(function (analysis) {
             
@@ -427,18 +426,13 @@
             //Send Data to Server for Download as a CSV file        
             $('#download').click(function () {
                 console.log('clicked');
-                $.fileDownload("../cgi-bin/exptest11.py", {
+                $.fileDownload("../cgi-bin/visual_search.py", {
                     httpMethod: 'POST',
                     data: {
                         exp_data: JSON.stringify(global),
-                        option: JSON.stringify('csv')
+                        option: 'csv'
                     }
                 });
-            });
-            
-            //restart the experiment
-            $('#restart').click(function () {
-                location.reload();
             });
         });
     }

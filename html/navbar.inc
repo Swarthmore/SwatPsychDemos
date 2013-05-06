@@ -8,8 +8,8 @@
             <ul class="nav nav-tabs" id="myTab">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="visual_search.php">Visual Search</a></li>
-                <li><a href="index.php#sternberg" class="tab-link">Sternberg</a></li>
-                <li><a href="index.php#stroop" class="tab-link">Reverse Stroop</a></li>
+                <li><a href="sternberg.php">Sternberg</a></li>
+                <li><a href="reverse_stroop.php">Reverse Stroop</a></li>
                 <li><a href="index.php#density" class="tab-link">Pattern Density</a></li>
                 <li><a href="index.php#RSVP" class="tab-link">Rapid Sentence Reading</a></li>
             </ul>

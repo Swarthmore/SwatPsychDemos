@@ -1,56 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    
-    <head>
-        <meta charset="utf-8">
-        <title>Sternberg Vision</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <!-- Le styles -->
-        
-        <link href="bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
-       
-       <link type="text/css" href="jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />	
-        
-        <link rel="shortcut icon" href="favicon.ico">
-        
-        <script src="bootstrap/docs/assets/js/jquery.js"></script>      
-        
-        <script src='jquery-ui/js/jquery-ui-1.8.21.custom.min.js'></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-transition.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-alert.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-modal.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-dropdown.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-scrollspy.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-tab.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-tooltip.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-popover.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-button.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-collapse.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-carousel.js"></script>
-        
-        <script src="bootstrap/docs/assets/js/bootstrap-typeahead.js"></script>
-
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-        <script src="jquery.fileDownload.js"></script>
-        
-        <link href='stylesheet.css' rel='stylesheet'>
-        
-        <script>
-            //Load Google's Visualizer Package for Scatterplots
+//Load Google's Visualizer Package for Scatterplots
             google.load('visualization', '1', {
                 packages: ["corechart", 'table']
             });
@@ -226,7 +174,6 @@
                             var t2 = new Date();
                             var end = t2.getTime();
                             global.trials[t]['time']=(end-start);
-                            console.log(global.trials[t].time);
                             
                             //records if they said true:
                             if (code==70){global.trials[t]['response']=true;} 
@@ -297,18 +244,23 @@
                         //if we are done the trials:
                         else {
                             $(this).unbind('keydown') //turn off keypress listner
+                            
+                             //hide experiment
+                            $('.experiment').hide()
+                    
+                            //show text body
+                            $('.body_outer_container').show();
+                            
                             dataAnalysis(t); //run the data analysis
+                           
+                            //show the results
+                            $("#experiment-results").show();
                         }
                     }
                     
                     //Escape key ends experiment
                     if (code == 27) {
-                        $(this).unbind('keydown');
-                        if (typeof timer !== 'undefined'){
-                            clearInterval(timer); //stop the interval loop
-                        }
-                        global.trials = global.trials.slice(0,t);
-                        dataAnalysis(t);
+                        document.location.reload(true);
                     }
                 });
             }
@@ -355,42 +307,29 @@
             };
             
             function dataAnalysis(t){
-                console.log('data Analysis');
                 //Send Data to Server
                 
                 $.ajax({
                     type: 'POST',
-                    url: '../cgi-bin/sternberg3.py',
+                    url: '../cgi-bin/sternberg.py',
                     data: {
                         exp_data: JSON.stringify(global),
-                        option: JSON.stringify('analysis')
+                        option: 'analysis'
                     }
                 }).done(function (analysis) {
 
                     //stores JSON data from server in global object
                     global['analysis'] = analysis
-
-                    //hide experiment
-                    $('.experiment').hide()
-                    
-                    //show text body
-                    $('.body_outer_container').show();
-                    
-                    //show analysis
-                    $('#analysis').show();
                     
                     //Send Data to Server for Download as a CSV file        
                     $('#download').click(function () {
-                        $.fileDownload("../cgi-bin/sternberg3.py", {
+                        $.fileDownload("../cgi-bin/sternberg.py", {
                             httpMethod: 'POST',
                             data: {
                                 exp_data: JSON.stringify(global),
-                                option: JSON.stringify('csv')
+                                option: 'csv'
                             }
                         });
-                    });
-                    $('#restart').click(function () {
-                        location.reload();
                     });
                     
                     drawChart();
@@ -529,139 +468,20 @@
                 });
             }
             
+            function startExperiment(){
+            	$('.body_outer_container').hide();
+            	$('.experiment').show();
+                runExperiment();
+            }
             
             $('document').ready(function(){
                 varSet();
                 formInitializer();
                 
-                $('#start').click(function(){
+              /*  $('#start').click(function(){
                     $('form').hide();
                     $('.body_outer_container').hide();
                     $('.experiment').show();
                     runExperiment();
-                });
+                });*/
             });
-        </script>
-    
-    </head>
-    
-    <body>
-        <div class='body_outer_container'>
-            <div class='body_inner_container'>    
-                <header id='header'  class="header">
-                    <hgroup class="header_title">
-                        <h1>
-                            <a href="/" target="_self" title="Swarthmore College">Swarthmore College</a>
-                        </h1>
-                </hgroup>
-            </header>
-            <div class='body_content'>    
-                <div class='row'>           
-                    <script>
-                        $.ajax({
-                            url: 'navbar.html',
-                            context: $('.row:first')
-                        }).done(function(data){
-                            $(this).prepend(data);
-                            $('#myTab a[href="home.html'+window.location.hash +'"]')
-                                .parent() 
-                                .addClass('active')
-                                .children()
-                                .attr('href', window.location);
-                        });
-                    </script>
-                <div class='module_type1 span8'>
-                    <div class='module_title'>
-                        <h2>
-                        Sternberg Vision Experiment
-                        </h2>
-                    </div>
-                    <div class='module_content'>
-                <form class='form-horizontal'>
-                    <legend>Parameters</legend>
-                    <fieldset>                  
-                        <div class='control-group'>
-                            <label class='control-label'> Number of Trials </label>
-                            <div class='controls'>
-                                <input type='text' id='trials' input-large' disabled>
-                                <div id='trialSlider' class='slider'></div>
-                            </div>
-                        </div>
-    
-    
-                         <div class='control-group'>
-                            <label class='control-label'> Display Time (ms) </label>
-                            <div class='controls'>
-                                <input type='text' id='display' class='input-large'>
-                            </div>
-                        </div>
-                        <div class='control-group'>
-                            <label class='control-label'> Recall Time (ms) </label>
-                            <div class='controls'>
-                                <input type='text' id='recall' class='input-large'>
-                            </div>
-                        </div>
-    
-                        <div id='listElts'></div>
-                        <div class='controls'>
-                            <input id='start' class='btn btn-primary' type='button' value='Start Experiment'>
-                        </div>
-                    </fieldset>
-                </form>
-                <div id='analysis' class='hide'> 
-                    <p> Your results have been saved into a file called "dataResults". It contains information about each trial including the response latency of your responses. You can download it as a ".csv" file by clicking the download data button below.</p>
-
-                    <p> Sternberg (1966) found that for each additional item in the list, people took about 40 additional ms to respond. Sternberg suggested that this showed that the search was a serial search through memory, rather than a parallel search of all the items at once.  However, this speed is much faster than you can say the items in your head, so the search is probably unconscious. </p>
-
-                    <div id = 'chart_div' class = 'dataReport'></div>
-
-                    <p> Surprisingly, however, Sternberg also observed that the rate for saying "present" was no faster than the rate for saying absent.  Sternberg argued that this meant the search involved comparisons to ALL the items in the list (exhaustive search) rather than only until the matching item was found (self-terminating search). </p>                         
-
-                    <div id = 'table_div' class = 'dataReport' style = 'width:400; height:300'></div>
-                    
-                    <p> Questions to ponder: </p>
-                    
-                    <ol>
-                        <li> Is the slope different for "present" trials and "absent" trials? </li>
-                        <li> Sternberg found that the slopes were the same (and both about 40 ms per item). </li> 
-                        <li> Why might the memory scanning process be serial AND exhaustive (rather than self-terminating)? </li>
-                    </ol>
-                    <div id='buttons'>
-                        <input type='button' class = 'btn btn-primary dataReport' id = 'restart' value = 'Try Again' />
-                        <input type='button' class = 'btn btn-primary dataReport' id = 'download' value = 'Download Data'/>
-                    </div>
-                </div>
-                
-                <div id='analysis_error' class='hide'> 
-                    <p> We are sorry, but it seems that an error has occured while processing your data.  We are unable to plot your results for you at the present time.  The raw data from your experiment can most likely be retrieved by clicking the "Download Data" button below.  It has been saved into a file called "dataResults", which contains information about each trial including the response latency of your responses. </p>
-
-                    <p> Sternberg (1966) found that for each additional item in the list, people took about 40 additional ms to respond. Sternberg suggested that this showed that the search was a serial search through memory, rather than a parallel search of all the items at once.  However, this speed is much faster than you can say the items in your head, so the search is probably unconscious. </p>
-
-                    <p> Surprisingly, however, Sternberg also observed that the rate for saying "present" was no faster than the rate for saying absent.  Sternberg argued that this meant the search involved comparisons to ALL the items in the list (exhaustive search) rather than only until the matching item was found (self-terminating search). </p>                         
-                   
-                    <p> Questions to ponder: </p>
-                    <ol>
-                        <li> Is the slope different for "present" trials and "absent" trials? </li>
-                        <li> Sternberg found that the slopes were the same (and both about 40 ms per item). </li> 
-                        <li> Why might the memory scanning process be serial AND exhaustive (rather than self-terminating)? </li>
-                    </ol>
-                    <div id='buttons'>
-                        <input type='button' class = 'btn btn-primary dataReport' id = 'restart' value = 'Try Again' />
-                        <input type='button' class = 'btn btn-primary dataReport' id = 'download' value = 'Download Data'/>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-    </div>
-        <div id='experiment' class='experiment hide'> </div>
-        <div id='experiment_footer' class='experiment hide'> 
-                <div class='instructions'> "F" = Yes, "J" = No, "Space" = New Trial, "Enter" = Submit List </div>
-                <div class='counter'> </div>
-        </div>
-    </body>
-
-</html>

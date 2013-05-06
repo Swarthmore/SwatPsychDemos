@@ -31,17 +31,21 @@
         <script>            
             initializeButtons = function(){
                 //load the experiment form
-                $("button.tryit").click(function(){
+                $("#tryit").click(function(){
 					$(".exp-pane").hide();
 					$("#experiment-form").show();
                 });
-                $('#search-btn').click(function(){
-                    window.location = 'exptest12.html#visionSearch';
+                //start the experiemnt
+                $("#start").click(function(){
+                	$(".exp-pane").hide();
+                	startExperiment();
+                	return false;
                 });
-                
-                $('#sternberg-btn').click(function(){
-                    window.location = 'sternberg3.html#sternberg';
+                //restart the experiment
+                $('#restart').click(function () {
+                    location.reload(true);
                 });
+               
                 
                 $('#stroop-btn').click(function(){
                     window.location = 'circ_exp_new_WRAPPED.html#stroop';
