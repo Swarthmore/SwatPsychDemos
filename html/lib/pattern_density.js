@@ -257,7 +257,7 @@
                     url: '../cgi-bin/pattern_density.py',
                     data: {
                         exp_data: JSON.stringify(global.trials),
-                        option: 'analysis'
+                        option: JSON.stringify('analysis')
                     }
                 }).done(function (analysis) {
     
@@ -296,7 +296,7 @@
                             httpMethod: 'POST',
                             data: {
                                 exp_data: JSON.stringify(global.trials),
-                                option: 'csv'
+                                option: JSON.stringify('csv')
                             }
                         });
                     });

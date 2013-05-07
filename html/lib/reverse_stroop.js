@@ -96,7 +96,7 @@
 			httpMethod: "POST",
 			data:{
 				exp_data: JSON.stringify(data),
-				option: 'csv'
+				option: JSON.stringify('csv')
             }
 		});
 	}

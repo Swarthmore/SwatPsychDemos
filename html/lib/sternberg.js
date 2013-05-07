@@ -314,7 +314,7 @@
                     url: '../cgi-bin/sternberg.py',
                     data: {
                         exp_data: JSON.stringify(global),
-                        option: 'analysis'
+                        option: JSON.stringify('analysis')
                     }
                 }).done(function (analysis) {
 
@@ -327,7 +327,7 @@
                             httpMethod: 'POST',
                             data: {
                                 exp_data: JSON.stringify(global),
-                                option: 'csv'
+                                option: JSON.stringify('csv')
                             }
                         });
                     });
