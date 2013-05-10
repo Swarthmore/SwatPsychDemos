@@ -103,12 +103,13 @@
 	        </div>
     	</div>
     </div>
-    
-    <!-- Experiment -->
-    <div id="experiment" class="experiment hide exp-pane"> </div>
-    <div id="experiment_footer" class="experiment hide exp-pane "> 
-            <div class="instructions"> "F" = Present "J" = Not Present </div>
-            <div class="counter"> </div>
-    </div>
+    <div id="experiment-modal" title="Parallel and Serial Search Patterns">
+	    <!-- Experiment -->
+	    <div id="experiment" class="experiment"> </div>
+	    <div id="experiment_footer" class="experiment"> 
+	            <div class="instructions"> "F" = Present "J" = Not Present </div>
+	            <div class="counter"> </div>
+	    </div>
+	</div>
 </body>
 </html>

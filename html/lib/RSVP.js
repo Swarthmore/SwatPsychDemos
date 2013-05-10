@@ -277,7 +277,6 @@
                        //sets ups recall list for this trial:
                        
                             global.trials[t]['recall']="";
-                            console.log(global.trials);
                             
                             //clears experiment box
                             $('#experiment').text('');
@@ -390,7 +389,6 @@
                 
                 //initialize keydown listener and start presenting the experiment
                 $('#experiment').append('<div id="ready" class="listDisplay">Ready?</div>');
-                console.log(global.trials);
                 select=true;
                 
                 initializeKeyDown();

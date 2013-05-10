@@ -12,16 +12,12 @@ formset {
     margin-top: 10px;
 }
 #instructions {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    margin-left:-200px;
-    margin-top: -216px;
-    text-align: center;
-    font-size: 300%;
-    width:400px;
-    line-height:1em;
-    
+    font-size: 20px;
+    margin: 0 auto 0 auto;
+	padding: 40px 0 0 0;
+	width: 90%;
+	text-align: center;
+	line-height: auto;
 }
 div.centered {
     /*set the div in the center of the screen*/
@@ -380,31 +376,24 @@ fieldset{
 .module-content{
     width: 100%;
 }
+#experiment-modal{
+	position: relative;
+	padding: 0;
+}
+
 #experiment{
     width:600px;
     height:600px;
     background: white;
-    -webkit-border-radius: 10px 10px 0 0;
-    -moz-border-radius: 10px 10px 0 0;
-    border-radius: 10px 10px 0 0;
-    top: 50%;
-    left:50%;
-    margin: -300px 0 0 -300px;
-    position:absolute;
-    border:solid;
+    position: relative;
 }
 #experiment_footer{
     width:600px;
     height:20px;
     background: white;
-    -webkit-border-radius: 0 0 10px 10px;
-    -moz-border-radius: 0 0 10px 10px;
-    border-radius:0 0 10px 10px;
-    top: 50%;
-    left: 50%;
-    margin: 300px 0 0 -300px;
-    position:fixed;
-    border:solid;
+    border-width: 3px 0 0 0;
+    border-color: #000;
+    border-style: solid;
 }
 #right_experiment{
     position: relative;
@@ -461,7 +450,7 @@ fieldset{
     text-align: -webkit-match-parent;
 }
 .listDisplay{
-    position: fixed;
+    position: absolute;
     top: 50%;
     text-align: center;
     font-size: 500%;
@@ -481,23 +470,6 @@ fieldset{
 }
 .column-left{
     margin-left: 0px;
-}
-/* reverse stroop experiment holder */
-#holder {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -350px 0 0 -305px;
-    width: 610px;
-    background: white;
-    border: solid;
-    -webkit-border-radius: 10px 10px 10px 10px;
-    -moz-border-radius: 10px 10px 10px 10px;
-    border-radius:10px 10px 10px 10px;
-}
-#holder .instructions{
-	font-weight: bold;
-	padding: .25em 1em;
 }
 .wide {
     width: 900px;

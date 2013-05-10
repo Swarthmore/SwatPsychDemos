@@ -1,4 +1,8 @@
-    google.load('visualization', '1', {
+    var global = {
+    	trials: 4
+    };
+    
+	google.load('visualization', '1', {
         packages: ['table']
     });
         
@@ -164,14 +168,10 @@
                                             "trueColor": colorRGBtoWord(color),
                                             "correct": check};
                     trialnum = trialnum + 1;
-					init();
                     if (trialnum > numoftrials-1){
-						canvas.clear();
-                       	$('#holder').hide();
-                       	$('.body_outer_container').show();
-                       	$('#experiment-results').show();
-                        drawTable(exportdata);
-                       	$('#download').click(function(){ExportDataToCSV(exportdata)});
+                    	experimentControls.deliver("endExperiment");
+					} else {
+						init();
 					}
 				}
 			}
@@ -264,106 +264,31 @@
 	}
 
 	function init(){
+		//updates trial counter
+        experimentControls.deliver("incrementCounter");
+        experimentControls.updateFooter("");
         start = canvas.text(x_cent, y_cent, "Click to Start");
 	    start.attr("font-size", 20)
 	         .attr("fill", "#000000")
              .attr("font-weight", 900)
-             .attr("font-family", "Courier New");
+             .attr("font-family", "Courier New")
+             .attr("cursor", "pointer");
 		started = -1;
 		start.click(function() {
+			$('#instructions').remove(); //remove instructions if present
+			experimentControls.updateFooter('<span style="font-size: .85em">Move the cursor over the circle that has the color indicated by the word</span>');
 			canvas.clear();
 			var trial = alltrials.splice(0,1)[0];
 			drawcircle(trial);
 		});
 	}
 	
-	function startExperiment(){
-		if (!$('#trialnum').parent().parent().hasClass('error') && $('#trialnum').val() != ''){
-        	
-        	$(document).keydown(function (e) {
-                 
-                 //sets keycode according to the downpress
-                 var code = (e.keyCode ? e.keyCode : e.which);
-                 
-                 //Escape key ends experiment
-                 if (code == 27) {
-                     document.location.reload(true);
-                 }
-            });
-        	
-            $('.body_outer_container').hide();
-            $('#holder').show();
-            
-            
-            // this is the main function
-            // we have a database of 9 colors and
-            // there are only 6 colors present on the peripherals
-        
-            total_pop = 9;
-            shown_pop = 6;
-        
-            // set the parameters first
-            radius = 95;
-            dist = 200;
-            pic_height = dist*2 + radius*2 + 20;
-            pic_width = pic_height;
-            text_height = 100;
-        
-            // get the position of the center
-            x_cent = pic_width/2;
-            y_cent = pic_height/2;
-        
-            // this is our color database(global, used later)
-            colorlist_full = [colorKV("gray","#808080"),
-                              colorKV("red","#FF0000"), 
-                              colorKV("yellow","#FFFF00"), 
-                              colorKV("orange","#FFA500"),
-                              colorKV("green","#008000"), 
-                              colorKV("blue","#0000FF"),
-                              colorKV("brown","#8B4513"), 
-                              colorKV("pink","#FF1493"),
-                              colorKV("purple","#800080")];
-            //copy of DB which is sliced
-            var colorlist_split = [colorKV("gray","#808080"),
-                                   colorKV("red","#FF0000"), 
-                                   colorKV("yellow","#FFFF00"), 
-                                   colorKV("orange","#FFA500"),
-                                   colorKV("green","#008000"), 
-                                   colorKV("blue","#0000FF"),
-                                   colorKV("brown","#8B4513"), 
-                                   colorKV("pink","#FF1493"),
-                                   colorKV("purple","#800080")];
-        
-            // gives two lists of colors to work with
-            colorlist_split = shuffle(colorlist_split);
-            colorlist1 = colorlist_split.splice(0,4);
-            colorlist2 = colorlist_split;
-        
-            // create the Raphael canvases for drawing
-            //title_canvas = Raphael("title", pic_width, text_height);
-            //instruction_canvas = Raphael("instruction", pic_width, text_height); 
-            //time_canvas = Raphael("time", pic_width, text_height);
-            canvas = Raphael("canvas", pic_width, pic_height);
-        
-            // put down instructions first
-            //drawTandI();
-        
-            numoftrials = $('#trialnum').val();
-        
-            // create trials
-            alltrials = createtrials(numoftrials, colorlist1, colorlist2);
-            // and initialize the experiment
-            init();
-            trialnum = 0;
-            exportdata = new Array();
-        }
-	}
-	
-	$(document).ready(function(){
-	    
-	  //Initialize trialSlider
+	//initialize the form controls
+	function initializeForm(){
+		global.trials = 4;
+		//Initialize trialSlider
         $('#trialSlider').slider({
-            value: 4,
+            value: global.trials,
             min:4,
             max:400,
             step:4,
@@ -371,7 +296,7 @@
             slide: function(event,ui){
                 //Resets associated field value when slider is changed:
                 $('#trialnum').val(ui.value);
-
+                global.trials = ui.value;
             }
         });
 	  
@@ -382,6 +307,7 @@
 	                $(this).parent().parent().removeClass('error');
 	                $(this).siblings('.help-inline').remove();
 	            }
+	            global.trials = this.value;
 	        }            
 	        else if (!$(this).parent().parent().hasClass('error')){
 	            $(this).parent().parent().addClass('error');
@@ -390,4 +316,97 @@
 	        }
 	
 	    });
+	}
+	
+	//call this function to start the first trial/experiment
+	function startTrials(){
+
+        // this is the main function
+        // we have a database of 9 colors and
+        // there are only 6 colors present on the peripherals
+    
+        total_pop = 9;
+        shown_pop = 6;
+    
+        // set the parameters first
+        radius = 95;
+        dist = 200;
+        pic_height = dist*2 + radius*2 + 10;
+        pic_width = pic_height;
+        text_height = 100;
+    
+        // get the position of the center
+        x_cent = pic_width/2;
+        y_cent = pic_height/2;
+    
+        // this is our color database(global, used later)
+        colorlist_full = [colorKV("gray","#808080"),
+                          colorKV("red","#FF0000"), 
+                          colorKV("yellow","#FFFF00"), 
+                          colorKV("orange","#FFA500"),
+                          colorKV("green","#008000"), 
+                          colorKV("blue","#0000FF"),
+                          colorKV("brown","#8B4513"), 
+                          colorKV("pink","#FF1493"),
+                          colorKV("purple","#800080")];
+        //copy of DB which is sliced
+        var colorlist_split = [colorKV("gray","#808080"),
+                               colorKV("red","#FF0000"), 
+                               colorKV("yellow","#FFFF00"), 
+                               colorKV("orange","#FFA500"),
+                               colorKV("green","#008000"), 
+                               colorKV("blue","#0000FF"),
+                               colorKV("brown","#8B4513"), 
+                               colorKV("pink","#FF1493"),
+                               colorKV("purple","#800080")];
+    
+        // gives two lists of colors to work with
+        colorlist_split = shuffle(colorlist_split);
+        colorlist1 = colorlist_split.splice(0,4);
+        colorlist2 = colorlist_split;
+    
+        // create the Raphael canvases for drawing
+        //title_canvas = Raphael("title", pic_width, text_height);
+        //instruction_canvas = Raphael("instruction", pic_width, text_height); 
+        //time_canvas = Raphael("time", pic_width, text_height);
+        canvas = Raphael("canvas", pic_width, pic_height);
+    
+        // put down instructions first
+        //drawTandI();
+    
+        numoftrials = $('#trialnum').val();
+    
+        // create trials
+        alltrials = createtrials(numoftrials, colorlist1, colorlist2);
+        // and initialize the experiment
+        init();
+        trialnum = 0;
+        exportdata = new Array();
+	}
+	
+	//Global event subscription
+    experimentControls.subscribe("tryExperiment", function(){
+        initializeForm();
+    }); 
+    experimentControls.subscribe("startExperiment", function(){
+		
+    	$(document).keydown(function (e) {
+             //sets keycode according to the downpress
+             var code = (e.keyCode ? e.keyCode : e.which);
+             
+             //Escape key ends experiment
+             if (code == 27) {
+            	 experimentControls.deliver("cancelExperiment");
+             }
+        });
+    	
+    	startTrials();
 	});
+    experimentControls.subscribe("endExperiment", function(){
+    	canvas.clear();
+        drawTable(exportdata);
+       	$('#download').click(function(){
+       		ExportDataToCSV(exportdata)
+       	});
+    });
+    

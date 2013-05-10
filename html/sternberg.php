@@ -104,10 +104,13 @@
         	</div>
     	</div>
     </div>
-    <div id="experiment" class="experiment hide"> </div>
-    <div id="experiment_footer" class="experiment hide"> 
-		<div class="instructions"> "F" = Yes, "J" = No, "Space" = New Trial, "Enter" = Submit List </div>
-		<div class="counter"> </div>
+    <div id="experiment-modal" title="Sternberg Vision Experiment">
+	    <!-- Experiment -->
+	    <div id="experiment" class="experiment"> </div>
+	    <div id="experiment_footer" class="experiment"> 
+			<div class="instructions"> "F" = Yes, "J" = No, "Space" = New Trial, "Enter" = Submit List </div>
+			<div class="counter"> </div>
+		</div>
 	</div>
 </body>
 </html>

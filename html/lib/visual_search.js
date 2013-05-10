@@ -133,17 +133,6 @@
             global['target'] = $(this).val();
         });
     }
-
-//Start the Experiement
-    function startExperiment(){
-        generateTrials();
-        initializeModal();
-
-        //updates trial counter
-        $('.counter').text( t + '/' + global.trials.length );
-        
-        runExperiment();
-    }
     
 //Generate Trials
     function generateTrials(){
@@ -180,39 +169,17 @@
         //Shuffles trial order
         global.trials = shuffleArray(trials);
     }
-
-//Initialize the Experiment Modal -- not a real jQuery modal
-    function initializeModal(){
-        $('.body_outer_container').hide();
-        $('.experiment').show();
-    }
-
-//Close the experiment modal
-    function closeModal(){
-        
-        //remove modal
-        $('.experiment').hide();
-        
-        //turn off keypress
-        $(document).unbind('keydown');
-        
-        //show main page
-        $('.body_outer_container').show();
-        
-        //throw out trials that haven't been run
-        global.trials = global.trials.slice(0,t); 
-    }
     
 //Generates a Random Placement of distractor
     function randomPlacement() {
-        randNum1 = Math.floor(Math.random() * 560) + 10;
-        randNum2 = Math.floor(Math.random() * 530) + 10;
-    };
+        return [(Math.floor(Math.random() * 560) + 10),
+                (Math.floor(Math.random() * 530) + 10)];
+    }
 
     function letterPlacement(letter, number){
     
         //generates new placement
-        randomPlacement();
+        var randNums = randomPlacement();
 
         //adds letter
         $("#experiment").append("<div id='trial_" + t + "_letter_div_" + number + "' class='letters trial_" + t + "'  style= 'width:12px; color:none'>" + letter + "</div>"); 
@@ -222,19 +189,19 @@
             of: $('#experiment'),
             my: 'left top',
             at: 'left top',
-            offset: randNum1 + ' ' + randNum2
+            offset: randNums[0] + ' ' + randNums[1]
         }); 
         
         //Checks that the letter doesn't overlap anything
         while ($("#trial_" + t + "_letter_div_" + number).overlaps('.placed')) {
             
             //if it does, then reposition the letter
-            randomPlacement();
+        	randNums = randomPlacement();
             $("#trial_" + t + "_letter_div_" + number).position({
                 of: $('#experiment'),
                 my: 'left top',
                 at: 'left top',
-                offset: randNum1 + ' ' + randNum2
+                offset: randNums[0] + ' ' + randNums[1]
             }); 
         }
         
@@ -250,10 +217,6 @@
         }
         $('#experiment').text('');
         
-        console.log('trial: ' + t);
-        console.log('target present? ' + global.trials[t].targetPresent);
-        console.log('distractors: ' + global.trials[t].distractors);
-        
         //counter for how many letters have been placed
         var u = 0;
         
@@ -265,12 +228,12 @@
                 letterPlacement(global.distractors[n], u)
                 
                 //increase counter.  
-                u = u + 1;
+                u++;
             }
         }
         
         //places some extra letters to account for rounding earlier
-        
+ 
         if (Math.floor(ratio) != ratio) {
             
             //determine how many extra letters are necessary
@@ -290,40 +253,15 @@
             }
         }
         
-        var rand = Math.random();
-    
     //places target letter    
-        randomPlacement();
-        
         //determines if target should be placed based on trial order
         if (global.trials[t].targetPresent) {
-            $("#experiment").append("<div id='trial_" + t + "_targ_letter' class='letters trial_" + t + "' style='width:12px; color:none'>" + global.target + "</div>");
-        } 
+        	letterPlacement(global.target , u);
         //if not, place random distractor letter instead
-        else {
-            $("#experiment").append("<div id='trial_" + t + "_targ_letter' class='letters trial_" + t + "' style='width:12px; color:none'>" + global.distractors[Math.floor(Math.random() * global.numberDistractors)] + "</div>");
+        } else {
+        	letterPlacement(global.distractors[Math.floor(Math.random() * global.numberDistractors)], u); 
         }
-        
-        //positions letter randomly
-        $("#trial_" + t + "_targ_letter").position({
-            of: $('#experiment'),
-            my: 'left top',
-            at: 'left top',
-            offset: randNum1 + ' ' + randNum2
-        }); 
-        
-        //if target is overlapping other letter, reposition
-        while ($("#trial_" + t + "_targ_letter").overlaps( $('.placed')) ) {
-            randomPlacement()
-            $("#trial_" + t + "_targ_letter").position({
-                of: $('#experiment'),
-                my: 'left top',
-                at: 'left top',
-                offset: randNum1 + ' ' + randNum2
-            }); 
-        }
-        $("#trial_" + t + "_targ_letter").addClass('placed');
-        console.log('placed: ' + $('.placed').length)
+  
     };
     
 //Prints Instructions
@@ -339,7 +277,9 @@
             //CHECKS TO MAKE SURE EXPERIMENT HAS BEEN STARTED
             if (typeof experimentStart != 'undefined') { 
                 if (code == 32 && t < global.trials.length && select) {
-                    
+                	
+                	experimentControls.updateFooter('Press "F" if Present or "J" if Not Present');
+                	
                     //pulls down keypress time
                     var t1 = new Date();
                     var keypress = t1.getTime();
@@ -353,11 +293,16 @@
                     //start defined globally so it can be accessed outside the the if statement...
                     start = t2.getTime(); 
                     
+                    //updates trial counter
+                    experimentControls.deliver("incrementCounter");
+                    
                     //user has not yet made a selection...
                     select = false;
                 }
                 if ( (code == 70 || code == 74) && t < global.trials.length && !select) {
                     
+                	experimentControls.updateFooter("Press the space bar to continue");
+                	
                     //pulls down time for response
                     var t3 = new Date();
                     end = t3.getTime();
@@ -373,32 +318,24 @@
                     }
                     
                     //clears screen
-                    $('#experiment').text('').append('<div class="listDisplay cross"><center> + </center></div>');
+                    $('#experiment').html('<div class="listDisplay cross" style="text-align:center;"> + </div>');
                     
                     //subject has made selection
                     select = true;
                     
                     //iterates trial counter
                     if (t < global.trials.length - 1) {
-                        t = t + 1;
-                        //updates trial counter
-                        $('.counter').text( t + '/' + global.trials.length );
+                        t++;
                     } 
                     //if this is the end of the experiment
                     else { 
-                        closeModal();
-                        
-                        //Run DataAnalyis
-                        dataAnalysis();
-                        
-                        //show the results
-                        $("#experiment-results").show();
+                        experimentControls.deliver("endExperiment");
                     }
 
                 } 
                 //if subject hits escape key
                 else if (code == 27) {                           
-                	document.location.reload(true);
+                	experimentControls.deliver("cancelExperiment");
                 }
             }
         });
@@ -424,8 +361,7 @@
             drawChart();
 
             //Send Data to Server for Download as a CSV file        
-            $('#download').click(function () {
-                console.log('clicked');
+            $('#download').click(function (){
                 $.fileDownload("../cgi-bin/visual_search.py", {
                     httpMethod: 'POST',
                     data: {
@@ -554,20 +490,24 @@
             showRowNumber: false,
             width: 600,
         });
-        
-        $('#analysis').show();
     }
-//Runs the script when document is ready:
-    $(document).ready(function(){
-        varSet();
-
-        //will initialize start button that calls runExperiment()
-        initializeForm(); 
-    });
     
-//Runs Experiment -- gets called when the user clicks the start button
-    function runExperiment(){
+    //Global event subscription
+    experimentControls.subscribe("tryExperiment", function(){
+        varSet();
+        initializeForm();
+    });   
+    experimentControls.subscribe("startExperiment", function(){
+    	//Start the Experiement
+        generateTrials();
         experimentStart = true;
         generateInstructions();
         initializeKeydown();
-    }
+        experimentControls.updateFooter("Press the space bar to start");
+    });
+    experimentControls.subscribe("endExperiment", function(){
+    	//Run DataAnalyis
+        dataAnalysis();
+    });
+
+    

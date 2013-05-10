@@ -189,8 +189,7 @@
                                         );
                                     }
                                     else {
-                                        clearInterval(timer);  
-                                        console.log(t);
+                                        clearInterval(timer);
                                         printScreen(global.density[ Math.floor( (global.trials[t].staircase - 1)/2)] , global.trials[t].density);
                                         global.trials[t].left = global.density[Math.floor((global.trials[t].staircase - 1)/2)];
                                         global.trials[t].right = global.trials[t].density;

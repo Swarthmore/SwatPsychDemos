@@ -23,7 +23,7 @@
 	            	<?php include("navbar.inc"); ?>          
 	            	<div class="module_type1 span8">
 	                	<div class="module_title">
-	                    	<h2>Reverse Stroop Vision Experiment </h2>
+	                    	<h2>Reverse Stroop Vision Experiment</h2>
 	                	</div>
 	                	<div class="module_content">
                            <!-- Information -->
@@ -79,13 +79,19 @@
             </div>
         </div>
 	</div>
-	<!-- simply four divs, no other distractions -->
-    <div id="holder" class="hide">
-       		<div class="instructions">
-				Instructions:
-				Click to start, then move your cursor over the circle that has the color indicated by the word.
+	<div id="experiment-modal" title="Reverse Stroop Vision Experiment">
+		<!-- simply four divs, no other distractions -->
+    	<div id="experiment" class="experiment">
+       		<div id="instructions" style="position: absolute; padding: 20px;">
+				Instructions:<br />
+				You will be presented with a word surrounded by 6 circles. Move the cursor over the circle that has the color indicated by the word.
 			</div>
        		<div id="canvas"></div>
+    	</div>
+    	<div id="experiment_footer" class="experiment"> 
+	        <div class="instructions"></div>
+	        <div class="counter"> </div>
+	    </div>
     </div>
 </body>
 </html>
