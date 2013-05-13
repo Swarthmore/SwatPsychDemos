@@ -266,8 +266,7 @@ fieldset{
 .module_title h3 {
     margin: 1px 0 3px 0;
     padding: 0;
-    color: 
-    #FDFDFD;
+    color: #FDFDFD;
     font-family: "Times New Roman",Times,serif;
     font-size: 1.5em;
     font-style: normal;
@@ -379,6 +378,7 @@ fieldset{
 #experiment-modal{
 	position: relative;
 	padding: 0;
+	display: none;
 }
 
 #experiment{

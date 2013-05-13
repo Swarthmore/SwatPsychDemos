@@ -3,7 +3,8 @@
         <link rel="shortcut icon" href="favicon.ico">
         
         <link href="lib/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
-        <link href="lib/jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet">
+        <!-- <link href="lib/jquery-ui/css/ui-lightness/jquery-ui-1.8.21.custom.css" rel="stylesheet"> -->
+        <link href="lib/jquery-ui-1.9.2.custom/css/custom-theme/jquery-ui-1.9.2.custom.css" rel="stylesheet">
         <link href="lib/stylesheet.css" rel="stylesheet">
         <script src="lib/bootstrap/docs/assets/js/jquery.js"></script>
         

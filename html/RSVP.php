@@ -101,10 +101,12 @@
         	</div>
     	</div>
     </div>
-    <div id="experiment" class="experiment hide"> </div>
-    <div id="experiment_footer" class="experiment hide"> 
-		<div class="instructions"> "Space" = New Trial, "Enter" = Submit Sentence </div>
-		<div class="counter"> </div>
-    </div>
+    <div id="experiment-modal" title="Rapid Sentence Reading">
+	    <div id="experiment" class="experiment"> </div>
+	    <div id="experiment_footer" class="experiment"> 
+			<div class="instructions"> "Space" = New Trial, "Enter" = Submit Sentence </div>
+			<div class="counter"> </div>
+	    </div>
+	</div>
 </body>
 </html>

@@ -118,14 +118,16 @@
     		</div>
     	</div>
     </div>
-    <div id="experiment" class="experiment wide hide"> 
-        <div id="left_experiment" class="left"> </div>
-        <div id="center_experiment" class="listDisplay cross"> + </div>
-        <div id="right_experiment" class="right"> </div>
-    </div>
-    <div id="experiment_footer" class="experiment hide"> 
-            <div class="instructions"> "F" = Present "J" = Not Present </div>
-            <div class="counter"> </div>
-    </div>
+    <div id="experiment-modal" title="Pattern Density">
+	    <div id="experiment" class="experiment"> 
+	        <div id="left_experiment" class="left"> </div>
+	        <div id="center_experiment" class="listDisplay cross"> + </div>
+	        <div id="right_experiment" class="right"> </div>
+	    </div>
+	    <div id="experiment_footer" class="experiment"> 
+	            <div class="instructions"> "F" = Present "J" = Not Present </div>
+	            <div class="counter"> </div>
+	    </div>
+	</div>
 </body>
 </html>
