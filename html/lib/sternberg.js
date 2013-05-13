@@ -163,7 +163,7 @@
 //General Keydown Function -- used across all functions.  
     function initializeKeyDown(){    
         $(document).keydown(function (e) {
-            
+        	e.preventDefault();
             //sets keycode according to the downpress
             var code = (e.keyCode ? e.keyCode : e.which);
             

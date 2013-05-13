@@ -272,6 +272,7 @@
 //Sets up Keydown function
     function initializeKeydown(){
         $(document).keydown(function (e) {
+        	e.preventDefault();
             var code = (e.keyCode ? e.keyCode : e.which);
 
             //CHECKS TO MAKE SURE EXPERIMENT HAS BEEN STARTED

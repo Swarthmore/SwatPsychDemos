@@ -116,6 +116,7 @@ function search(start, staircase){
 function initializeKeyDown(){
 	experimentControls.updateFooter("Press the space bar to start");
     $(document).keydown(function(e){
+    	e.preventDefault();
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == leftcode || code == rightcode) && select == false && presenting == false){
             select = true;

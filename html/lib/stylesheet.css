@@ -459,7 +459,7 @@ fieldset{
     line-height:1em;
 }
 .enterList{
-    position: fixed;
+    position: absolute;
     text-align: center;
     font-size: 500%;
     width:600px;
